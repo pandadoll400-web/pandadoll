@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>검 강화하기 (Sword Enhancement)</title>
+    <title>寃 媛뺥솕?섍린 (Sword Enhancement)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=2">
 </head>
@@ -12,16 +12,16 @@
         <!-- Top Stats Bar -->
         <header id="stats-bar">
             <div class="stat-item">
-                <span class="stat-label">플레이어 HP</span>
+                <span class="stat-label">?뚮젅?댁뼱 HP</span>
                 <span class="stat-value hp-value">3000 / 3000</span>
             </div>
             <div class="stat-item clickable" id="btn-trophy-road">
-                <span class="stat-label">🏆 트로피</span>
+                <span class="stat-label">?룇 ?몃줈??/span>
                 <span class="stat-value" id="trophy-count">0</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">💰 소지 금액</span>
-                <span class="stat-value" id="money-count">0원</span>
+                <span class="stat-label">?뮥 ?뚯? 湲덉븸</span>
+                <span class="stat-value" id="money-count">0??/span>
             </div>
         </header>
 
@@ -29,10 +29,10 @@
         <main id="main-area">
             <!-- Sword Display -->
             <section id="sword-display" class="level-0">
-                <h1 id="sword-name">초보자에 칼</h1>
+                <h1 id="sword-name">珥덈낫?먯뿉 移?/h1>
                 <div class="sword-stats">
-                    <p>데미지: <span id="sword-damage">10</span></p>
-                    <p>강화 단계: <span id="sword-level">+0</span></p>
+                    <p>?곕?吏: <span id="sword-damage">10</span></p>
+                    <p>媛뺥솕 ?④퀎: <span id="sword-level">+0</span></p>
                 </div>
                 <div class="sword-visual">
                     <div id="sword-blade"></div>
@@ -40,112 +40,110 @@
                     <div id="sword-hilt"></div>
                 </div>
                 <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                    <button id="btn-open-fuse" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: #eab308; color: black; font-weight:bold;">⚙️ 퓨즈머신으로 가기</button>
-                    <button id="btn-stash" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: var(--secondary); color: white;">🎒 인벤토리에 보관</button>
+                    <button id="btn-open-fuse" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: #eab308; color: black; font-weight:bold;">?숋툘 ?⑥쫰癒몄떊?쇰줈 媛湲?/button>
+                    <button id="btn-stash" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: var(--secondary); color: white;">?럲 ?몃깽?좊━??蹂닿?</button>
                 </div>
             </section>
 
             <!-- Action Buttons -->
             <section id="actions">
                 <button id="btn-enhance" class="action-btn primary-btn">
-                    <span class="btn-icon">🔨</span> 강화하기 <br><span id="enhance-cost" style="font-size: 0.9rem; font-weight:normal;">(비용: 100원)</span>
+                    <span class="btn-icon">?뵪</span> 媛뺥솕?섍린 <br><span id="enhance-cost" style="font-size: 0.9rem; font-weight:normal;">(鍮꾩슜: 100??</span>
                 </button>
                 <button id="btn-train" class="action-btn">
-                    <span class="btn-icon">🎯</span> 훈련장 가기
-                </button>
+                    <span class="btn-icon">?렞</span> ?덈젴??媛湲?                </button>
                 <button id="btn-battle" class="action-btn danger-btn">
-                    <span class="btn-icon">⚔️</span> 전투하기
+                    <span class="btn-icon">?뷂툘</span> ?꾪닾?섍린
                 </button>
                 <button id="btn-shop" class="action-btn special-btn">
-                    <span class="btn-icon">🛒</span> 상점 가기
-                </button>
+                    <span class="btn-icon">?썟</span> ?곸젏 媛湲?                </button>
                 <button id="btn-inventory" class="action-btn" style="background: #475569;">
-                    <span class="btn-icon">🎒</span> 인벤토리
+                    <span class="btn-icon">?럲</span> ?몃깽?좊━
                 </button>
             </section>
 
             <!-- Special Skill Area -->
             <section id="skill-area">
                 <button id="btn-skill" class="action-btn special-btn hidden">
-                    <span class="btn-icon">✨</span> 검기 스킬 사용! [E]
+                    <span class="btn-icon">??/span> 寃湲??ㅽ궗 ?ъ슜! [E]
                 </button>
                 <button id="btn-skill-double" class="action-btn double-btn hidden">
-                    <span class="btn-icon">💥</span> 이중베기 사용! [R]
+                    <span class="btn-icon">?뮙</span> ?댁쨷踰좉린 ?ъ슜! [R]
                 </button>
             </section>
 
             <!-- Event Log -->
             <section id="event-log-container">
-                <h3>📜 이벤트 로그</h3>
+                <h3>?뱶 ?대깽??濡쒓렇</h3>
                 <div id="event-log"></div>
             </section>
         </main>
 
-        <!-- ====== 전투 모드 선택 Modal ====== -->
+        <!-- ====== ?꾪닾 紐⑤뱶 ?좏깮 Modal ====== -->
         <div id="mode-select-modal" class="modal hidden">
             <div class="modal-content mode-select-content">
-                <h2>⚔️ 전투 모드 선택</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">원하는 전투 모드를 선택하세요!</p>
+                <h2>?뷂툘 ?꾪닾 紐⑤뱶 ?좏깮</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">?먰븯???꾪닾 紐⑤뱶瑜??좏깮?섏꽭??</p>
                 <div class="mode-buttons">
                     <button id="btn-mode-pve" class="mode-btn pve-btn">
-                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">🤖</div>
+                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">?쨼</div>
                         <div class="mode-name" style="font-size: 1.8rem; font-weight: bold;">PVE</div>
                     </button>
                     <button id="btn-mode-pvp" class="mode-btn pvp-btn">
-                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">👥</div>
+                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">?뫁</div>
                         <div class="mode-name" style="font-size: 1.8rem; font-weight: bold;">PVP</div>
                     </button>
                     <button id="btn-mode-boss" class="mode-btn boss-btn">
-                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">👹</div>
-                        <div class="mode-name" style="font-size: 1.8rem; font-weight: bold;">보스전</div>
+                        <div class="mode-icon" style="font-size: 4rem; margin-bottom: 10px;">?뫗</div>
+                        <div class="mode-name" style="font-size: 1.8rem; font-weight: bold;">蹂댁뒪??/div>
                     </button>
                 </div>
-                <button id="btn-exit-mode-select" class="action-btn" style="width:100%; margin-top: 15px;">취소</button>
+                <button id="btn-exit-mode-select" class="action-btn" style="width:100%; margin-top: 15px;">痍⑥냼</button>
             </div>
         </div>
 
-        <!-- ====== PVP 플레이어2 이름 입력 Modal ====== -->
+        <!-- ====== PVP ?뚮젅?댁뼱2 ?대쫫 ?낅젰 Modal ====== -->
         <div id="pvp-setup-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>👥 PVP 모드 설정</h2>
+                <h2>?뫁 PVP 紐⑤뱶 ?ㅼ젙</h2>
                 <div style="margin: 20px 0;">
-                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">플레이어 1 이름</label>
-                    <input id="pvp-p1-name" type="text" placeholder="플레이어 1" class="pvp-input" value="플레이어 1"/>
+                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">?뚮젅?댁뼱 1 ?대쫫</label>
+                    <input id="pvp-p1-name" type="text" placeholder="?뚮젅?댁뼱 1" class="pvp-input" value="?뚮젅?댁뼱 1"/>
                 </div>
                 <div style="margin: 20px 0;">
-                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">플레이어 2 강화 단계 (0~13)</label>
+                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">?뚮젅?댁뼱 2 媛뺥솕 ?④퀎 (0~13)</label>
                     <input id="pvp-p2-level" type="number" min="0" max="13" placeholder="0" class="pvp-input" value="0"/>
-                    <label style="display:block; margin-top: 12px; margin-bottom: 8px; color: var(--text-secondary);">플레이어 2 이름</label>
-                    <input id="pvp-p2-name" type="text" placeholder="플레이어 2" class="pvp-input" value="플레이어 2"/>
+                    <label style="display:block; margin-top: 12px; margin-bottom: 8px; color: var(--text-secondary);">?뚮젅?댁뼱 2 ?대쫫</label>
+                    <input id="pvp-p2-name" type="text" placeholder="?뚮젅?댁뼱 2" class="pvp-input" value="?뚮젅?댁뼱 2"/>
                 </div>
-                <button id="btn-start-pvp" class="action-btn danger-btn" style="width:100%;">⚔️ PVP 시작!</button>
-                <button id="btn-exit-pvp-setup" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
+                <button id="btn-start-pvp" class="action-btn danger-btn" style="width:100%;">?뷂툘 PVP ?쒖옉!</button>
+                <button id="btn-exit-pvp-setup" class="action-btn" style="width:100%; margin-top: 8px;">痍⑥냼</button>
             </div>
         </div>
 
         <!-- Battle Modal -->
         <div id="battle-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 id="battle-title">⚔️ 전투 중 ⚔️</h2>
+                <h2 id="battle-title">?뷂툘 ?꾪닾 以??뷂툘</h2>
                 <div id="battle-mode-badge"></div>
-                <p id="slice-instruction" class="blinking-text">마우스를 드래그하여 적을 베어 공격하세요!</p>
+                <p id="slice-instruction" class="blinking-text">留덉슦?ㅻ? ?쒕옒洹명븯???곸쓣 踰좎뼱 怨듦꺽?섏꽭??</p>
                 <div class="battle-arena" style="position: relative;">
                     <!-- Slicing Canvas -->
                     <canvas id="slice-canvas"></canvas>
                     
                     <div class="fighter player">
-                        <h3 id="battle-player-name">나 (HP: <span id="battle-player-hp">3000</span>)</h3>
+                        <h3 id="battle-player-name">??(HP: <span id="battle-player-hp">3000</span>)</h3>
                         <div class="health-bar"><div id="player-hp-fill" class="hp-fill"></div></div>
-                        <p id="battle-player-status">대기 중...</p>
+                        <p id="battle-player-status">?湲?以?..</p>
                     </div>
                     <div class="vs">VS</div>
                     <div class="fighter enemy">
-                        <h3 id="enemy-name">무명 기사 (HP: <span id="battle-enemy-hp">???</span>)</h3>
+                        <h3 id="enemy-name">臾대챸 湲곗궗 (HP: <span id="battle-enemy-hp">???</span>)</h3>
                         <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill enemy-hp-bar"></div></div>
                         <div id="enemy-visual-container">
-                            <div id="enemy-character">🧛‍♂️</div>
+                            <div id="enemy-character">?쭧?띯셽截?/div>
                         </div>
-                        <p id="battle-enemy-status">대기 중...</p>
+                        <p id="battle-enemy-status">?湲?以?..</p>
                     </div>
                 </div>
 
@@ -153,8 +151,8 @@
                 <div id="pvp-turn-indicator" class="hidden" style="text-align:center; font-size:1.1rem; margin: 8px 0; font-weight:bold; color: #fbbf24;"></div>
 
                 <div class="battle-actions">
-                    <button id="btn-attack" class="action-btn primary-btn hidden">공격하기!</button>
-                    <button id="btn-flee" class="action-btn">도망치기</button>
+                    <button id="btn-attack" class="action-btn primary-btn hidden">怨듦꺽?섍린!</button>
+                    <button id="btn-flee" class="action-btn">?꾨쭩移섍린</button>
                 </div>
             </div>
         </div>
@@ -162,132 +160,132 @@
         <!-- Training Modal -->
         <div id="training-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>🎯 훈련장 🎯</h2>
-                <p class="blinking-text">마우스로 로봇을 마구 베어 데미지를 올리세요! (+0.5)</p>
+                <h2>?렞 ?덈젴???렞</h2>
+                <p class="blinking-text">留덉슦?ㅻ줈 濡쒕큸??留덇뎄 踰좎뼱 ?곕?吏瑜??щ━?몄슂! (+0.5)</p>
                 <div class="training-arena" style="position: relative; width: 100%; height: 300px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
                     <canvas id="train-slice-canvas"></canvas>
-                    <div id="robot-dummy">🤖</div>
+                    <div id="robot-dummy">?쨼</div>
                 </div>
-                <button id="btn-exit-train" class="action-btn">훈련 종료</button>
+                <button id="btn-exit-train" class="action-btn">?덈젴 醫낅즺</button>
             </div>
         </div>
 
         <!-- Trophy Road Modal -->
         <div id="trophy-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>🏆 트로피 진척도</h2>
+                <h2>?룇 ?몃줈??吏꾩쿃??/h2>
                 <div id="trophy-road-container">
                     <div class="trophy-milestone" id="milestone-100">
-                        <span class="milestone-req">100점</span>
-                        <span class="milestone-reward">💥 이중베기 스킬 해금!</span>
+                        <span class="milestone-req">100??/span>
+                        <span class="milestone-reward">?뮙 ?댁쨷踰좉린 ?ㅽ궗 ?닿툑!</span>
                     </div>
                 </div>
-                <button id="btn-exit-trophy" class="action-btn">닫기</button>
+                <button id="btn-exit-trophy" class="action-btn">?リ린</button>
             </div>
         </div>
 
         <!-- Shop Modal -->
         <div id="shop-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>🛒 비밀 상점</h2>
+                <h2>?썟 鍮꾨? ?곸젏</h2>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <p style="color:var(--accent-gold); margin: 0;">트로피: <span id="shop-trophy-count">0</span>점</p>
-                    <p id="shop-timer" style="color:var(--text-secondary); margin: 0; font-size: 0.9rem;">다음 갱신: 00:00</p>
+                    <p style="color:var(--accent-gold); margin: 0;">?몃줈?? <span id="shop-trophy-count">0</span>??/p>
+                    <p id="shop-timer" style="color:var(--text-secondary); margin: 0; font-size: 0.9rem;">?ㅼ쓬 媛깆떊: 00:00</p>
                 </div>
                 
                 <div id="shop-items-container" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
-                    <!-- 상점 아이템 동적 렌더링 -->
+                    <!-- ?곸젏 ?꾩씠???숈쟻 ?뚮뜑留?-->
                 </div>
-                <button id="btn-exit-shop" class="action-btn" style="width:100%;">닫기</button>
+                <button id="btn-exit-shop" class="action-btn" style="width:100%;">?リ린</button>
             </div>
         </div>
 
         <!-- Inventory Modal -->
         <div id="inventory-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>🎒 인벤토리</h2>
+                <h2>?럲 ?몃깽?좊━</h2>
                 
                 <div class="inv-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button id="tab-sword" class="action-btn" style="flex:1; background: var(--primary);">⚔️ 검</button>
-                    <button id="tab-effect" class="action-btn" style="flex:1; background: #334155;">✨ 이펙트</button>
+                    <button id="tab-sword" class="action-btn" style="flex:1; background: var(--primary);">?뷂툘 寃</button>
+                    <button id="tab-effect" class="action-btn" style="flex:1; background: #334155;">???댄럺??/button>
                 </div>
                 
-                <!-- 검 인벤토리 -->
+                <!-- 寃 ?몃깽?좊━ -->
                 <div id="inventory-swords-section">
-                    <p style="color:var(--text-secondary); margin-bottom:10px;">보관된 검을 선택하여 꺼낼 수 있습니다.</p>
+                    <p style="color:var(--text-secondary); margin-bottom:10px;">蹂닿???寃???좏깮?섏뿬 爰쇰궪 ???덉뒿?덈떎.</p>
                     <div id="inventory-list" style="margin: 10px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
                         <!-- Inventory items go here -->
                     </div>
                 </div>
                 
-                <!-- 이펙트 인벤토리 -->
+                <!-- ?댄럺???몃깽?좊━ -->
                 <div id="inventory-effects-section" class="hidden">
-                    <p style="color:var(--text-secondary); margin-bottom:10px;">보유한 스킨/이펙트를 장착하세요.</p>
+                    <p style="color:var(--text-secondary); margin-bottom:10px;">蹂댁쑀???ㅽ궓/?댄럺?몃? ?μ갑?섏꽭??</p>
                     <div id="effect-inventory-list" style="margin: 10px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
                         <!-- Effect items go here -->
                     </div>
                 </div>
 
-                <button id="btn-exit-inventory" class="action-btn" style="width:100%;">닫기</button>
+                <button id="btn-exit-inventory" class="action-btn" style="width:100%;">?リ린</button>
             </div>
         </div>
 
-        <!-- ====== 퓨즈머신(Fuse Machine) 메인 Modal ====== -->
+        <!-- ====== ?⑥쫰癒몄떊(Fuse Machine) 硫붿씤 Modal ====== -->
         <div id="fuse-modal" class="modal hidden">
             <div class="modal-content fuse-content" style="max-width: 500px;">
-                <h2 style="color: #fbbf24;">⚙️ 퓨즈머신 ⚙️</h2>
+                <h2 style="color: #fbbf24;">?숋툘 ?⑥쫰癒몄떊 ?숋툘</h2>
                 <div class="fuse-image-container" style="margin: 15px 0; border: 2px solid #fbbf24; border-radius: 10px; overflow: hidden; background: #0f172a;">
-                    <!-- 유저가 넣은 이미지가 여기에 표시됩니다 -->
-                    <img src="fuse_machine.png" alt="퓨즈머신" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(퓨즈머신 이미지 없음 - 폴더에 fuse_machine.png를 넣어주세요)'; this.style.padding='40px'; this.style.color='#94a3b8';">
+                    <!-- ?좎?媛 ?ｌ? ?대?吏媛 ?ш린???쒖떆?⑸땲??-->
+                    <img src="fuse_machine.png" alt="?⑥쫰癒몄떊" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(?⑥쫰癒몄떊 ?대?吏 ?놁쓬 - ?대뜑??fuse_machine.png瑜??ｌ뼱二쇱꽭??'; this.style.padding='40px'; this.style.color='#94a3b8';">
                 </div>
                 
                 <div id="fuse-status-box" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                    <h3 id="fuse-status-text" style="margin:0; color: #38bdf8;">대기 중...</h3>
+                    <h3 id="fuse-status-text" style="margin:0; color: #38bdf8;">?湲?以?..</h3>
                     <p id="fuse-timer-text" style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;"></p>
                 </div>
 
-                <button id="btn-fuse-insert" class="action-btn danger-btn" style="width:100%; margin-bottom: 20px;">🔥 퓨즈에 넣기 (1~6강 2개 필요)</button>
+                <button id="btn-fuse-insert" class="action-btn danger-btn" style="width:100%; margin-bottom: 20px;">?뵦 ?⑥쫰???ｊ린 (1~6媛?2媛??꾩슂)</button>
                 
-                <!-- 확률표가 원래 있던 자리 (이동됨) -->
-                <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
+                <!-- ?뺣쪧?쒓? ?먮옒 ?덈뜕 ?먮━ (?대룞?? -->
+                <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">?リ린</button>
             </div>
         </div>
 
-        <!-- ====== 퓨즈머신 선택 Modal ====== -->
+        <!-- ====== ?⑥쫰癒몄떊 ?좏깮 Modal ====== -->
         <div id="fuse-select-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>⚔️ 퓨즈머신 제물 선택</h2>
-                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 1~6강 사이의 검 2개를 선택하세요.</p>
-                <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">선택한 검은 영구적으로 파괴됩니다!</p>
+                <h2>?뷂툘 ?⑥쫰癒몄떊 ?쒕Ъ ?좏깮</h2>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">?몃깽?좊━?먯꽌 1~6媛??ъ씠??寃 2媛쒕? ?좏깮?섏꽭??</p>
+                <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">?좏깮??寃? ?곴뎄?곸쑝濡??뚭눼?⑸땲??</p>
                 
                 <div id="fuse-inventory-list" style="margin: 15px 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
                     <!-- Selectable inventory items go here -->
                 </div>
                 
-                <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#fbbf24;">0</span> / 2</p>
+                <p style="text-align: center; font-weight: bold;">?좏깮?? <span id="fuse-selected-count" style="color:#fbbf24;">0</span> / 2</p>
 
-                <!-- 확률표 (돌리기 버튼 바로 전) -->
+                <!-- ?뺣쪧??(?뚮━湲?踰꾪듉 諛붾줈 ?? -->
                 <div class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표</h4>
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">?듯빀 寃곌낵 ?뺣쪧??/h4>
                     <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
+                        <span style="color: #94a3b8;">?됰쾾??寃 (2媛뺢낵 ?숆툒)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
+                        <span style="color: #a855f7;">怨듯뿀??寃 (8媛뺢낵 ?숆툒)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">釉붾옓? 寃 (11媛뺢낵 ?숆툒)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
                     </div>
                 </div>
                 
-                <button id="btn-fuse-start" class="action-btn danger-btn" style="width:100%; margin-top: 10px;" disabled>융합 시작! (5분 소요)</button>
-                <button id="btn-exit-fuse-select" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
+                <button id="btn-fuse-start" class="action-btn danger-btn" style="width:100%; margin-top: 10px;" disabled>?듯빀 ?쒖옉! (5遺??뚯슂)</button>
+                <button id="btn-exit-fuse-select" class="action-btn" style="width:100%; margin-top: 8px;">痍⑥냼</button>
             </div>
         </div>
     </div>
     <script>
         window.onerror = function(msg, url, line, col, error) {
-            alert("스크립트 에러 발생!\n메시지: " + msg + "\n줄 번호: " + line);
+            alert("?ㅽ겕由쏀듃 ?먮윭 諛쒖깮!\n硫붿떆吏: " + msg + "\n以?踰덊샇: " + line);
             return false;
         };
         fetch('game.js').then(r => r.text()).then(code => {
@@ -297,10 +295,1264 @@
                 // If it's a syntax error, some browsers provide e.lineNumber
                 // If not, we can at least show the exact error message.
                 let lines = code.split('\n');
-                alert("구문 오류(Syntax Error) 발견!\n" + e.message + "\nLine: " + e.lineNumber);
+                alert("援щЦ ?ㅻ쪟(Syntax Error) 諛쒓껄!\n" + e.message + "\nLine: " + e.lineNumber);
             }
         });
     </script>
-    <script src="game.js?v=3"></script>
+    <script>
+try {
+let gameState = {
+    level: 0,
+    baseDamage: 10,
+    hp: 3000,
+    maxHp: 3000,
+    trophies: 0,
+    money: 0,
+    inventory: [],
+    fuse: { active: false, endTime: 0, resultLevel: null },
+    hasHiddenSkill: false,
+    hasDoubleSkill: false,
+    currentSkin: 'default',
+    ownedSkins: ['default'],
+    shopNextReroll: 0,
+    currentShopItems: []
+};
+
+function saveGame() {
+    try {
+        localStorage.setItem('swordGameState', JSON.stringify(gameState));
+    } catch(e) {
+        console.warn('localStorage is blocked or not available.');
+    }
+}
+
+function loadGame() {
+    let saved = null;
+    try {
+        saved = localStorage.getItem('swordGameState');
+    } catch(e) {
+        console.warn('localStorage is blocked or not available.');
+    }
+    
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            gameState = { ...gameState, ...parsed };
+            if (!gameState.inventory) gameState.inventory = [];
+            if (!gameState.fuse) gameState.fuse = { active: false, endTime: 0, resultLevel: null };
+            if (!gameState.shopNextReroll) gameState.shopNextReroll = 0;
+            if (!gameState.currentShopItems) gameState.currentShopItems = [];
+        } catch(e) {
+            console.error("Save file corrupted");
+        }
+    } else {
+        // 泥섏쓬 ?묒냽 ??500??吏湲?        gameState.money = 500;
+        logEvent('?섏쁺?⑸땲?? 吏?먭툑 500?먯씠 吏湲됰릺?덉뒿?덈떎.', 'success');
+    }
+}
+
+const swordNames = [
+    "珥덈낫?먯뿉 移?,         // 0
+    "媛뺥솕??珥덈낫?먯쓽 ?뺤닔", // 1
+    "以묒닔??寃",           // 2
+    "怨좎닔??寃",           // 3
+    "援?닔??寃",           // 4
+    "怨⑥닔??寃",           // 5
+    "?꾩꽕??寃",           // 6
+    "珥덉썡??寃",           // 7
+    "吏꾪솕??寃",           // 8
+    "?щ옉??寃",           // 9
+    "理쒖쥌?섍?",            // 10
+    "????섍?",             // 11
+    "鍮꾨???寃",           // 12
+    "遊됱씤??寃",           // 13
+    "?됰쾾??寃",           // 14 (?⑥쫰)
+    "怨듯뿀??寃",           // 15 (?⑥쫰)
+    "釉붾옓? 寃"            // 16 (?⑥쫰)
+];
+
+// Enhance Costs (0 to 13)
+const enhanceCosts = [
+    100,    // 0->1
+    300,    // 1->2
+    800,    // 2->3
+    1500,   // 3->4
+    3000,   // 4->5
+    6000,   // 5->6
+    10000,  // 6->7
+    18000,  // 7->8
+    30000,  // 8->9
+    45000,  // 9->10
+    65000,  // 10->11
+    85000,  // 11->12
+    100000, // 12->13
+    Infinity, // 14
+    Infinity, // 15
+    Infinity  // 16
+];
+
+const levelDamage = [
+    10, 20, 40, 70, 110, 160, 220, 300, 400, 550, 750, 1000, 1500, 2000,
+    40,     // 14: 2媛뺢낵 ?숆툒
+    400,    // 15: 8媛뺢낵 ?숆툒
+    1000    // 16: 11媛뺢낵 ?숆툒
+];
+
+const gradeColors = {
+    '?ш?': '#3b82f6',
+    '?곸썒': '#a855f7',
+    '?꾩꽕': '#eab308',
+    '?좏솕': '#ef4444',
+    '鍮꾨?': '#10b981'
+};
+
+const allEffectsPool = [
+    // ?ш?
+    { id: 'ice', name: '?쒕━?쒖쓽 ?쒓린', grade: '?ш?', color: 'rgba(59, 130, 246, 0.8)', price: 100 },
+    { id: 'wind', name: '移쇰궇 諛붾엺', grade: '?ш?', color: 'rgba(16, 185, 129, 0.8)', price: 100 },
+    { id: 'earth', name: '?吏???몃┝', grade: '?ш?', color: 'rgba(217, 119, 6, 0.8)', price: 100 },
+    // ?곸썒
+    { id: 'poison', name: '留밸룆????, grade: '?곸썒', color: 'rgba(34, 197, 94, 0.8)', price: 300 },
+    { id: 'blood', name: '?뤿튆 踰좉린', grade: '?곸썒', color: 'rgba(220, 38, 38, 0.8)', price: 300 },
+    { id: 'shadow', name: '洹몃┝???쇨꺽', grade: '?곸썒', color: 'rgba(71, 85, 105, 0.8)', price: 300 },
+    // ?꾩꽕
+    { id: 'light', name: '泥쒖긽??鍮?, grade: '?꾩꽕', color: 'rgba(250, 204, 21, 0.8)', price: 1000 },
+    { id: 'lightning', name: '?뚯쟾??遺꾨끂', grade: '?꾩꽕', color: 'rgba(14, 165, 233, 0.8)', price: 1000 },
+    // ?좏솕
+    { id: 'dragon', name: '?쒕옒怨?釉뚮젅??, grade: '?좏솕', color: 'rgba(249, 115, 22, 0.9)', price: 3000 },
+    { id: 'void', name: '怨듯뿀???덉깉', grade: '?좏솕', color: 'rgba(147, 51, 234, 0.9)', price: 3000 },
+    // 鍮꾨?
+    { id: 'galaxy', name: '??섏닔 踰좉린', grade: '鍮꾨?', color: 'rgba(255, 255, 255, 1)', price: 10000 }
+];
+
+// Fallback old colors for backwards compatibility
+const skinColors = {
+    'default': 'rgba(239, 68, 68, 0.8)',
+    'flame': 'rgba(249, 115, 22, 0.8)',
+    'poison': 'rgba(34, 197, 94, 0.8)',
+    'lightning': 'rgba(6, 182, 212, 0.8)',
+    'dark': 'rgba(168, 85, 247, 0.8)'
+};
+
+// DOM Elements
+const hpValueEl = document.querySelector('.hp-value');
+const trophyCountEl = document.getElementById('trophy-count');
+const moneyCountEl = document.getElementById('money-count');
+const swordDisplay = document.getElementById('sword-display');
+const swordNameEl = document.getElementById('sword-name');
+const swordDamageEl = document.getElementById('sword-damage');
+const swordLevelEl = document.getElementById('sword-level');
+const enhanceCostEl = document.getElementById('enhance-cost');
+const eventLogEl = document.getElementById('event-log');
+const skillArea = document.getElementById('skill-area');
+
+const btnEnhance = document.getElementById('btn-enhance');
+const btnTrain = document.getElementById('btn-train');
+const btnBattle = document.getElementById('btn-battle');
+const btnSkill = document.getElementById('btn-skill');
+const btnSkillDouble = document.getElementById('btn-skill-double');
+const btnTrophyRoad = document.getElementById('btn-trophy-road');
+const btnShop = document.getElementById('btn-shop');
+const btnInventory = document.getElementById('btn-inventory');
+const btnStash = document.getElementById('btn-stash');
+
+const trophyModal = document.getElementById('trophy-modal');
+const btnExitTrophy = document.getElementById('btn-exit-trophy');
+const milestone100 = document.getElementById('milestone-100');
+
+const inventoryModal = document.getElementById('inventory-modal');
+const btnExitInventory = document.getElementById('btn-exit-inventory');
+const inventoryList = document.getElementById('inventory-list');
+
+// Fuse DOM
+const btnOpenFuse = document.getElementById('btn-open-fuse');
+const fuseModal = document.getElementById('fuse-modal');
+const btnExitFuse = document.getElementById('btn-exit-fuse');
+const btnFuseInsert = document.getElementById('btn-fuse-insert');
+const fuseStatusText = document.getElementById('fuse-status-text');
+const fuseTimerText = document.getElementById('fuse-timer-text');
+
+const fuseSelectModal = document.getElementById('fuse-select-modal');
+const btnExitFuseSelect = document.getElementById('btn-exit-fuse-select');
+const btnFuseStart = document.getElementById('btn-fuse-start');
+const fuseInventoryList = document.getElementById('fuse-inventory-list');
+const fuseSelectedCount = document.getElementById('fuse-selected-count');
+let fuseSelectedIndices = [];
+
+const shopModal = document.getElementById('shop-modal');
+const btnExitShop = document.getElementById('btn-exit-shop');
+const shopTrophyCount = document.getElementById('shop-trophy-count');
+const shopItemsContainer = document.getElementById('shop-items-container');
+const shopTimerEl = document.getElementById('shop-timer');
+
+const tabSword = document.getElementById('tab-sword');
+const tabEffect = document.getElementById('tab-effect');
+const invSwordsSection = document.getElementById('inventory-swords-section');
+const invEffectsSection = document.getElementById('inventory-effects-section');
+const effectInventoryList = document.getElementById('effect-inventory-list');
+
+const trainingModal = document.getElementById('training-modal');
+const btnExitTrain = document.getElementById('btn-exit-train');
+const trainSliceCanvas = document.getElementById('train-slice-canvas');
+const trainSliceCtx = trainSliceCanvas.getContext('2d');
+const robotDummy = document.getElementById('robot-dummy');
+
+// Battle DOM
+const battleModal = document.getElementById('battle-modal');
+const battlePlayerHp = document.getElementById('battle-player-hp');
+const battleEnemyHp = document.getElementById('battle-enemy-hp');
+const playerHpFill = document.getElementById('player-hp-fill');
+const enemyHpFill = document.getElementById('enemy-hp-fill');
+const battlePlayerStatus = document.getElementById('battle-player-status');
+const battleEnemyStatus = document.getElementById('battle-enemy-status');
+const btnAttack = document.getElementById('btn-attack'); // Optional now
+const btnFlee = document.getElementById('btn-flee');
+const enemyNameEl = document.getElementById('enemy-name');
+const enemyCharacterEl = document.getElementById('enemy-character');
+const battleTitle = document.getElementById('battle-title');
+const battleModeBadge = document.getElementById('battle-mode-badge');
+const pvpTurnIndicator = document.getElementById('pvp-turn-indicator');
+const battlePlayerName = document.getElementById('battle-player-name');
+
+// Mode Select DOM
+const modeSelectModal = document.getElementById('mode-select-modal');
+const btnModePve = document.getElementById('btn-mode-pve');
+const btnModePvp = document.getElementById('btn-mode-pvp');
+const btnModeBoss = document.getElementById('btn-mode-boss');
+const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
+
+// PVP Setup DOM
+const pvpSetupModal = document.getElementById('pvp-setup-modal');
+const pvpP1NameEl = document.getElementById('pvp-p1-name');
+const pvpP2LevelEl = document.getElementById('pvp-p2-level');
+const pvpP2NameEl = document.getElementById('pvp-p2-name');
+const btnStartPvp = document.getElementById('btn-start-pvp');
+const btnExitPvpSetup = document.getElementById('btn-exit-pvp-setup');
+
+// Slicing Canvas
+const sliceCanvas = document.getElementById('slice-canvas');
+const sliceCtx = sliceCanvas.getContext('2d');
+let isSlicing = false;
+let slicePath = [];
+let canAttack = true;
+
+// Battle State
+let battleState = {
+    active: false,
+    mode: 'pve', // pve, pvp, boss
+    enemyMaxHp: 0,
+    enemyHp: 0,
+    enemyDamage: 0,
+    playerHp: 3000,
+    skillUsed: false,
+    doubleSkillUsed: false,
+    pvpTurn: 1, // 1 for player 1, 2 for player 2
+    p1Name: '??,
+    p2Name: '?곷?諛?,
+    p2Level: 0
+};
+
+const skinColors = {
+    'default': 'rgba(239, 68, 68, 0.8)', // Red
+    'flame': 'rgba(249, 115, 22, 0.8)',  // Orange
+    'poison': 'rgba(34, 197, 94, 0.8)',  // Green
+    'lightning': 'rgba(6, 182, 212, 0.8)',// Cyan
+    'dark': 'rgba(168, 85, 247, 0.8)'    // Purple
+};
+
+// Utilities
+function logEvent(msg, type = 'info') {
+    const p = document.createElement('p');
+    p.className = `log-entry log-${type}`;
+    p.textContent = msg;
+    eventLogEl.prepend(p);
+}
+
+function updateUI() {
+    hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
+    trophyCountEl.textContent = gameState.trophies;
+    moneyCountEl.textContent = gameState.money.toLocaleString() + '??;
+    
+    swordNameEl.textContent = swordNames[gameState.level];
+    
+    if (gameState.level >= 14) {
+        swordLevelEl.textContent = `[?뱀닔 寃]`;
+        enhanceCostEl.textContent = '(媛뺥솕 遺덇?)';
+    } else {
+        swordLevelEl.textContent = `+${gameState.level}`;
+        if (gameState.level >= 13) {
+            enhanceCostEl.textContent = '(理쒓퀬 ?덈꺼 ?ъ꽦)';
+        } else {
+            enhanceCostEl.textContent = `(鍮꾩슜: ${enhanceCosts[gameState.level].toLocaleString()}??`;
+        }
+    }
+    
+    // Total damage = level damage + any training bonuses
+    const currentBase = levelDamage[gameState.level];
+    
+    swordDamageEl.textContent = getPlayerDamage().toFixed(1);
+    
+    // Update sword classes for visual
+    swordDisplay.className = '';
+    swordDisplay.classList.add(`level-${gameState.level}`);
+    
+    if (gameState.level === 12 && !gameState.hasHiddenSkill) {
+        gameState.hasHiddenSkill = true;
+        logEvent('?럦 ?덈뱺 議곌굔 ?ъ꽦! [寃湲? ?ㅽ궗???띾뱷?덉뒿?덈떎!', 'success');
+        btnSkill.classList.remove('hidden');
+    }
+    
+    if (gameState.trophies >= 100 && !gameState.hasDoubleSkill) {
+        gameState.hasDoubleSkill = true;
+        logEvent('?뮙 ?몃줈??100???ъ꽦! [?댁쨷踰좉린] ?ㅽ궗???띾뱷?덉뒿?덈떎!', 'success');
+        btnSkillDouble.classList.remove('hidden');
+        milestone100.classList.add('achieved');
+    } else if (gameState.trophies >= 100) {
+        milestone100.classList.add('achieved');
+        btnSkillDouble.classList.remove('hidden');
+    }
+    
+    if (gameState.hasHiddenSkill) {
+        btnSkill.classList.remove('hidden');
+    }
+    
+    // Update shop UI
+    shopTrophyCount.textContent = gameState.trophies;
+    saveGame();
+}
+
+function getPlayerDamage() {
+    // Training adds to baseDamage (starts at 10). Level adds its own base.
+    // Let's say total damage = levelDamage[level] + (gameState.baseDamage - 10)
+    const trainingBonus = gameState.baseDamage - 10;
+    return levelDamage[gameState.level] + trainingBonus;
+}
+
+// Actions
+btnEnhance.addEventListener('click', () => {
+    if (gameState.level >= 14) {
+        logEvent('?뱀닔 寃? 媛뺥솕?????놁뒿?덈떎.', 'info');
+        return;
+    }
+    if (gameState.level >= 13) {
+        logEvent('遊됱씤??寃... ?대? 理쒓퀬??寃쎌????꾨떖?덉뒿?덈떎.', 'info');
+        return;
+    }
+    
+    const cost = enhanceCosts[gameState.level];
+    
+    if (gameState.money < cost) {
+        logEvent(`???덉씠 遺議깊빀?덈떎. (?꾩슂: ${cost.toLocaleString()}??`, 'fail');
+        return;
+    }
+    
+    // Pay and 100% Enhance
+    gameState.money -= cost;
+    
+    swordDisplay.classList.add('shake');
+    setTimeout(() => swordDisplay.classList.remove('shake'), 500);
+
+    gameState.level++;
+    logEvent(`??媛뺥솕 ?깃났! [${swordNames[gameState.level]}] (??濡?吏꾪솕?덉뒿?덈떎!`, 'success');
+    
+    updateUI();
+});
+
+btnTrain.addEventListener('click', () => {
+    trainingModal.classList.remove('hidden');
+    trainSliceCanvas.width = trainSliceCanvas.offsetWidth;
+    trainSliceCanvas.height = trainSliceCanvas.offsetHeight;
+});
+
+btnExitTrain.addEventListener('click', () => {
+    trainingModal.classList.add('hidden');
+});
+
+btnTrophyRoad.addEventListener('click', () => {
+    trophyModal.classList.remove('hidden');
+});
+
+btnExitTrophy.addEventListener('click', () => {
+    trophyModal.classList.add('hidden');
+});
+
+// Shop Logic
+function rerollShop() {
+    gameState.currentShopItems = [];
+    const numItems = 4;
+    
+    for (let i = 0; i < numItems; i++) {
+        const roll = Math.random() * 100;
+        let selectedGrade = '?ш?';
+        
+        if (roll > 50 && roll <= 80) selectedGrade = '?곸썒';
+        else if (roll > 80 && roll <= 95) selectedGrade = '?꾩꽕';
+        else if (roll > 95 && roll <= 99.9) selectedGrade = '?좏솕';
+        else if (roll > 99.9) selectedGrade = '鍮꾨?';
+        
+        const pool = allEffectsPool.filter(e => e.grade === selectedGrade);
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        gameState.currentShopItems.push(randomItem.id);
+    }
+    
+    gameState.shopNextReroll = Date.now() + 5 * 60 * 1000;
+    saveGame();
+    renderShop();
+}
+
+function renderShop() {
+    shopItemsContainer.innerHTML = '';
+    
+    gameState.currentShopItems.forEach(id => {
+        const effect = allEffectsPool.find(e => e.id === id);
+        if (!effect) return;
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.style.borderLeft = `4px solid ${gradeColors[effect.grade]}`;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = gradeColors[effect.grade];
+        nameSpan.style.textShadow = effect.grade === '鍮꾨?' ? '0 0 5px #fff' : 'none';
+        nameSpan.innerHTML = `[${effect.grade}] ${effect.name}`;
+        
+        const buyBtn = document.createElement('button');
+        buyBtn.className = 'action-btn shop-btn';
+        
+        if (gameState.ownedSkins.includes(effect.id)) {
+            if (gameState.currentSkin === effect.id) {
+                buyBtn.textContent = '?μ갑 以?;
+                buyBtn.disabled = true;
+                buyBtn.style.background = '#475569';
+            } else {
+                buyBtn.textContent = '?μ갑?섍린';
+                buyBtn.style.background = 'var(--secondary)';
+                buyBtn.style.color = 'white';
+                buyBtn.addEventListener('click', () => {
+                    gameState.currentSkin = effect.id;
+                    logEvent(`[${effect.name}] ?댄럺?몃? ?μ갑?덉뒿?덈떎!`, 'info');
+                    saveGame();
+                    renderShop();
+                    updateUI();
+                });
+            }
+        } else {
+            buyBtn.innerHTML = `${effect.price} ?룇`;
+            buyBtn.style.background = 'var(--accent-gold)';
+            buyBtn.style.color = 'black';
+            
+            buyBtn.addEventListener('click', () => {
+                if (gameState.trophies >= effect.price) {
+                    gameState.trophies -= effect.price;
+                    gameState.ownedSkins.push(effect.id);
+                    logEvent(`[${effect.name}] ?댄럺?몃? 援щℓ?덉뒿?덈떎! ?몃깽?좊━瑜??뺤씤?섏꽭??`, 'success');
+                    saveGame();
+                    renderShop();
+                    updateUI();
+                } else {
+                    logEvent('?몃줈?쇨? 遺議깊빀?덈떎!', 'fail');
+                }
+            });
+        }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(buyBtn);
+        shopItemsContainer.appendChild(div);
+    });
+}
+
+btnShop.addEventListener('click', () => {
+    updateUI();
+    if (!gameState.shopNextReroll || Date.now() > gameState.shopNextReroll || gameState.currentShopItems.length === 0) {
+        rerollShop();
+    } else {
+        renderShop();
+    }
+    shopModal.classList.remove('hidden');
+});
+
+btnExitShop.addEventListener('click', () => {
+    shopModal.classList.add('hidden');
+});
+
+// Inventory Logic
+btnStash.addEventListener('click', () => {
+    gameState.inventory.push(gameState.level);
+    logEvent(`[${swordNames[gameState.level]}] (??瑜??몃깽?좊━??蹂닿??덉뒿?덈떎.`, 'info');
+    gameState.level = 0;
+    updateUI();
+});
+
+// Inventory Tabs
+tabSword.addEventListener('click', () => {
+    tabSword.style.background = 'var(--primary)';
+    tabEffect.style.background = '#334155';
+    invSwordsSection.classList.remove('hidden');
+    invEffectsSection.classList.add('hidden');
+});
+
+tabEffect.addEventListener('click', () => {
+    tabEffect.style.background = 'var(--primary)';
+    tabSword.style.background = '#334155';
+    invEffectsSection.classList.remove('hidden');
+    invSwordsSection.classList.add('hidden');
+});
+
+btnInventory.addEventListener('click', () => {
+    renderInventory();
+    renderEffectInventory();
+    inventoryModal.classList.remove('hidden');
+});
+
+btnExitInventory.addEventListener('click', () => {
+    inventoryModal.classList.add('hidden');
+});
+
+function renderEffectInventory() {
+    effectInventoryList.innerHTML = '';
+    
+    // Add default effect
+    if (!gameState.ownedSkins.includes('default')) {
+        gameState.ownedSkins.unshift('default');
+    }
+    
+    gameState.ownedSkins.forEach(id => {
+        let name = '湲곕낯 踰좉린';
+        let colorStr = 'white';
+        let gradeStr = '湲곕낯';
+        
+        const eff = allEffectsPool.find(e => e.id === id);
+        if (eff) {
+            name = eff.name;
+            colorStr = gradeColors[eff.grade];
+            gradeStr = eff.grade;
+        }
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.style.borderLeft = `4px solid ${colorStr}`;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = colorStr;
+        nameSpan.textContent = `[${gradeStr}] ${name}`;
+        
+        const equipBtn = document.createElement('button');
+        equipBtn.className = 'action-btn shop-btn';
+        
+        if (gameState.currentSkin === id) {
+            equipBtn.textContent = '?μ갑 以?;
+            equipBtn.classList.add('equipped');
+        } else {
+            equipBtn.textContent = '?μ갑?섍린';
+            equipBtn.addEventListener('click', () => {
+                gameState.currentSkin = id;
+                logEvent(`[${name}] ?댄럺?몃? ?μ갑?덉뒿?덈떎!`, 'success');
+                saveGame();
+                renderEffectInventory();
+            });
+        }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(equipBtn);
+        effectInventoryList.appendChild(div);
+    });
+}
+
+function renderInventory() {
+    inventoryList.innerHTML = '';
+    if (gameState.inventory.length === 0) {
+        inventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">蹂닿???寃???놁뒿?덈떎.</p>';
+        return;
+    }
+    
+    gameState.inventory.forEach((lvl, index) => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        const equipBtn = document.createElement('button');
+        equipBtn.className = 'action-btn shop-btn';
+        equipBtn.textContent = '爰쇰궡湲?;
+        
+        equipBtn.addEventListener('click', () => {
+            // ?꾩옱 寃???몃깽?좊━???ｊ퀬 ?좏깮??寃??爰쇰깂
+            gameState.inventory.push(gameState.level);
+            gameState.level = lvl;
+            gameState.inventory.splice(index, 1);
+            logEvent(`?몃깽?좊━?먯꽌 [${swordNames[lvl]}] (??瑜?爰쇰깉?듬땲??`, 'success');
+            renderInventory(); // Re-render list
+            updateUI();
+        });
+        
+        div.appendChild(nameSpan);
+        div.appendChild(equipBtn);
+        inventoryList.appendChild(div);
+    });
+}
+
+// =======================
+// Fuse Logic
+// =======================
+btnOpenFuse.addEventListener('click', () => {
+    updateFuseUI();
+    fuseModal.classList.remove('hidden');
+});
+
+btnExitFuse.addEventListener('click', () => {
+    fuseModal.classList.add('hidden');
+});
+
+btnFuseInsert.addEventListener('click', () => {
+    if (gameState.fuse.active) {
+        logEvent('?대? ?듯빀??吏꾪뻾 以묒엯?덈떎!', 'fail');
+        return;
+    }
+    openFuseSelect();
+});
+
+btnExitFuseSelect.addEventListener('click', () => {
+    fuseSelectModal.classList.add('hidden');
+});
+
+function updateFuseUI() {
+    if (gameState.fuse.active) {
+        btnFuseInsert.disabled = true;
+        btnFuseInsert.style.opacity = '0.5';
+        fuseStatusText.textContent = '?듯빀 吏꾪뻾 以?.. ?숋툘??;
+        fuseStatusText.style.color = '#fbbf24';
+    } else {
+        btnFuseInsert.disabled = false;
+        btnFuseInsert.style.opacity = '1';
+        fuseStatusText.textContent = '?湲?以?..';
+        fuseStatusText.style.color = '#38bdf8';
+        fuseTimerText.textContent = '';
+    }
+}
+
+function openFuseSelect() {
+    fuseSelectedIndices = [];
+    fuseSelectModal.classList.remove('hidden');
+    renderFuseInventory();
+}
+
+function renderFuseInventory() {
+    fuseInventoryList.innerHTML = '';
+    fuseSelectedCount.textContent = fuseSelectedIndices.length;
+    btnFuseStart.disabled = fuseSelectedIndices.length !== 2;
+    
+    let validItemsFound = false;
+    
+    gameState.inventory.forEach((lvl, index) => {
+        if (lvl < 1 || lvl > 6) return; // 1~6媛뺣쭔 ?⑥쫰 媛??        validItemsFound = true;
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        const selBtn = document.createElement('button');
+        selBtn.className = 'action-btn shop-btn';
+        
+        const isSelected = fuseSelectedIndices.includes(index);
+        if (isSelected) {
+            div.classList.add('fuse-item-selected');
+            selBtn.textContent = '?좏깮 痍⑥냼';
+            selBtn.style.background = 'var(--danger)';
+        } else {
+            selBtn.textContent = '?좏깮?섍린';
+            selBtn.style.background = 'var(--secondary)';
+        }
+        
+        selBtn.addEventListener('click', () => {
+            const selIdx = fuseSelectedIndices.indexOf(index);
+            if (selIdx > -1) {
+                fuseSelectedIndices.splice(selIdx, 1);
+            } else {
+                if (fuseSelectedIndices.length >= 2) {
+                    logEvent('?쒕Ъ? 2媛쒓퉴吏留??좏깮?????덉뒿?덈떎.', 'info');
+                    return;
+                }
+                fuseSelectedIndices.push(index);
+            }
+            renderFuseInventory();
+        });
+        
+        div.appendChild(nameSpan);
+        div.appendChild(selBtn);
+        fuseInventoryList.appendChild(div);
+    });
+    
+    if (!validItemsFound) {
+        fuseInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">?몃깽?좊━??1~6媛?寃???놁뒿?덈떎.</p>';
+    }
+}
+
+btnFuseStart.addEventListener('click', () => {
+    if (fuseSelectedIndices.length !== 2) return;
+    
+    // 媛???믪? ?몃뜳?ㅻ???吏?뚯빞 ?몃깽?좊━ 諛곗뿴??瑗ъ씠吏 ?딆쓬
+    fuseSelectedIndices.sort((a,b) => b - a);
+    fuseSelectedIndices.forEach(idx => {
+        gameState.inventory.splice(idx, 1);
+    });
+    
+    // ?뺣쪧 怨꾩궛
+    const roll = Math.random() * 100;
+    let resultLvl = 14; // 湲곕낯 ?됰쾾??寃 (90%)
+    if (roll > 90 && roll <= 97) resultLvl = 15; // 怨듯뿀 (7%)
+    if (roll > 97) resultLvl = 16; // 釉붾옓? (3%)
+    
+    // 5遺???대㉧ (300,000 ms)
+    gameState.fuse.active = true;
+    gameState.fuse.endTime = Date.now() + 5 * 60 * 1000;
+    gameState.fuse.resultLevel = resultLvl;
+    
+    saveGame();
+    
+    fuseSelectModal.classList.add('hidden');
+    updateFuseUI();
+    logEvent('?뵦 ?⑥쫰癒몄떊 媛???쒖옉! 5遺??ㅼ뿉 ?꾨즺?⑸땲??', 'success');
+});
+
+setInterval(() => {
+    const now = Date.now();
+    
+    // Shop Reroll Timer
+    if (gameState.shopNextReroll) {
+        const shopRemain = gameState.shopNextReroll - now;
+        if (shopRemain <= 0) {
+            if (!shopModal.classList.contains('hidden')) {
+                rerollShop();
+            } else {
+                gameState.currentShopItems = []; // Force reroll next time opened
+                gameState.shopNextReroll = 0;
+            }
+        } else {
+            if (!shopModal.classList.contains('hidden')) {
+                const totalSec = Math.ceil(shopRemain / 1000);
+                const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+                const s = (totalSec % 60).toString().padStart(2, '0');
+                shopTimerEl.textContent = `?ㅼ쓬 媛깆떊: ${m}:${s}`;
+            }
+        }
+    }
+    
+    // Fuse Timer
+    if (!gameState.fuse.active) return;
+    
+    const remain = gameState.fuse.endTime - now;
+    
+    if (remain <= 0) {
+        // ?듯빀 ?꾨즺
+        gameState.fuse.active = false;
+        gameState.inventory.push(gameState.fuse.resultLevel);
+        const resultName = swordNames[gameState.fuse.resultLevel];
+        logEvent(`?숋툘 ?⑥쫰癒몄떊 ?꾨즺! ?몃깽?좊━??[${resultName}] ??媛) 異붽??섏뿀?듬땲??`, 'success');
+        updateFuseUI();
+        saveGame();
+    } else {
+        // ?⑥? ?쒓컙 ?뚮뜑留?        if (!fuseModal.classList.contains('hidden')) {
+            const totalSec = Math.ceil(remain / 1000);
+            const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+            const s = (totalSec % 60).toString().padStart(2, '0');
+            fuseTimerText.textContent = `?⑥? ?쒓컙: ${m}:${s}`;
+        }
+    }
+}, 1000);
+
+// Battle Logic
+btnBattle.addEventListener('click', () => {
+    modeSelectModal.classList.remove('hidden');
+});
+
+btnExitModeSelect.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+});
+
+btnModePve.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    startBattle('pve');
+});
+
+btnModeBoss.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    startBattle('boss');
+});
+
+btnModePvp.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    pvpSetupModal.classList.remove('hidden');
+});
+
+btnExitPvpSetup.addEventListener('click', () => {
+    pvpSetupModal.classList.add('hidden');
+});
+
+btnStartPvp.addEventListener('click', () => {
+    battleState.p1Name = pvpP1NameEl.value || '?뚮젅?댁뼱 1';
+    battleState.p2Name = pvpP2NameEl.value || '?뚮젅?댁뼱 2';
+    battleState.p2Level = parseInt(pvpP2LevelEl.value) || 0;
+    
+    pvpSetupModal.classList.add('hidden');
+    startBattle('pvp');
+});
+
+btnFlee.addEventListener('click', () => {
+    endBattle(false, '?꾨쭩爾ㅼ뒿?덈떎...');
+});
+
+btnAttack.addEventListener('click', () => {
+    processTurn('none');
+});
+
+btnSkill.addEventListener('click', () => {
+    if (!battleState.active) {
+        logEvent('?꾪닾 以묒뿉留??ㅽ궗???ъ슜?????덉뒿?덈떎!', 'fail');
+        return;
+    }
+    if (battleState.skillUsed) {
+        logEvent('?대? ?대쾲 ?꾪닾?먯꽌 寃湲곕? ?ъ슜?덉뒿?덈떎.', 'fail');
+        return;
+    }
+    processTurn('aura');
+});
+
+btnSkillDouble.addEventListener('click', () => {
+    if (!battleState.active) {
+        logEvent('?꾪닾 以묒뿉留??ㅽ궗???ъ슜?????덉뒿?덈떎!', 'fail');
+        return;
+    }
+    if (battleState.doubleSkillUsed) {
+        logEvent('?대? ?대쾲 ?꾪닾?먯꽌 ?댁쨷踰좉린瑜??ъ슜?덉뒿?덈떎.', 'fail');
+        return;
+    }
+    processTurn('double');
+});
+
+// Keyboard Shortcuts
+window.addEventListener('keydown', (e) => {
+    if (!battleState.active) return;
+    const key = e.key.toLowerCase();
+    
+    if (key === 'e') {
+        if (!gameState.hasHiddenSkill) {
+            logEvent('[寃湲? ?ㅽ궗???꾩쭅 ?띾뱷?섏? 紐삵뻽?듬땲??', 'info');
+            return;
+        }
+        btnSkill.click();
+    } else if (key === 'r') {
+        if (!gameState.hasDoubleSkill) {
+            logEvent('[?댁쨷踰좉린] ?ㅽ궗???꾩쭅 ?띾뱷?섏? 紐삵뻽?듬땲??', 'info');
+            return;
+        }
+        btnSkillDouble.click();
+    }
+});
+
+function startBattle(mode) {
+    battleState.active = true;
+    battleState.mode = mode;
+    battleState.skillUsed = false;
+    battleState.doubleSkillUsed = false;
+    battleState.playerHp = gameState.maxHp;
+    battleState.pvpTurn = 1;
+    canAttack = true;
+    
+    // Resize slice canvas
+    sliceCanvas.width = sliceCanvas.offsetWidth;
+    sliceCanvas.height = sliceCanvas.offsetHeight;
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+    
+    battlePlayerName.textContent = battleState.p1Name;
+    
+    if (mode === 'pve') {
+        battleTitle.textContent = '?뷂툘 PVE ?꾪닾 ?뷂툘';
+        battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
+        battleState.enemyDamage = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
+        
+        const enemies = ['?쨼', '?뫗', '?뫝', '??', '?ㄱ', '?쭧?띯셽截?, '?Ⅷ', '?쭫?띯셽截?];
+        enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
+        enemyNameEl.textContent = `AI ?꾩궗 (?몃줈??${gameState.trophies})`;
+        
+    } else if (mode === 'boss') {
+        battleTitle.textContent = '?뫚 蹂댁뒪???뫚';
+        battleModeBadge.innerHTML = '<span style="background:var(--danger);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">BOSS</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 30000;
+        battleState.enemyDamage = 200 + Math.floor(Math.random() * 100);
+        
+        enemyCharacterEl.textContent = '?릧';
+        enemyNameEl.textContent = `?덈? 蹂댁뒪 (HP: 30000)`;
+        
+    } else if (mode === 'pvp') {
+        battleTitle.textContent = '?뷂툘 PVP ????뷂툘';
+        battleModeBadge.innerHTML = '<span style="background:var(--accent-gold);color:black;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVP</span>';
+        
+        battleState.enemyMaxHp = 3000; // P2 HP
+        battleState.enemyDamage = levelDamage[battleState.p2Level] || 10;
+        
+        enemyCharacterEl.textContent = '?뫀';
+        enemyNameEl.textContent = `${battleState.p2Name} (+${battleState.p2Level}媛?`;
+        
+        pvpTurnIndicator.classList.remove('hidden');
+        pvpTurnIndicator.textContent = `??${battleState.p1Name}????`;
+    }
+    
+    battleState.enemyHp = battleState.enemyMaxHp;
+    
+    battlePlayerStatus.textContent = '?꾪닾 以鍮??꾨즺!';
+    battleEnemyStatus.textContent = mode === 'pvp' ? '?꾪닾 以鍮??꾨즺!' : '?곷?媛 ?몃젮蹂닿퀬 ?덉뒿?덈떎.';
+    
+    updateBattleUI();
+    battleModal.classList.remove('hidden');
+    logEvent(`?뷂툘 ${mode.toUpperCase()} ?꾪닾瑜??쒖옉?⑸땲??`, 'battle');
+}
+
+function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
+    battleState.enemyHp -= dmg;
+    
+    // Enemy Hit Animation
+    enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
+    setTimeout(() => {
+        enemyCharacterEl.style.transform = 'scale(1) rotate(0deg)';
+    }, 150);
+    
+    if (battleState.enemyHp <= 0) {
+        battleState.enemyHp = 0;
+        updateBattleUI();
+        
+        let earnedTrophies = 0;
+        let earnedMoney = 0;
+        let msg = '';
+        
+        if (battleState.mode === 'pve') {
+            earnedTrophies = Math.floor(Math.random() * 7) + 27; // 27 ~ 33
+            earnedMoney = Math.floor(Math.random() * 1500) + 500; // 500 ~ 2000
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `?밸━?덉뒿?덈떎! ?몃줈??${earnedTrophies}?먭낵 ${earnedMoney.toLocaleString()}?먯쓣 ?띾뱷?덉뒿?덈떎.`;
+        } else if (battleState.mode === 'boss') {
+            earnedTrophies = Math.floor(Math.random() * 50) + 100; // 100 ~ 150
+            earnedMoney = 30000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `?럦 蹂댁뒪 寃⑺뙆 ?깃났! ?몃줈??${earnedTrophies}?먭낵 嫄곗븸 ${earnedMoney.toLocaleString()}?먯쓣 ?띾뱷?덉뒿?덈떎!`;
+        } else if (battleState.mode === 'pvp') {
+            msg = `PVP 紐⑤뱶 ?밸━! ?뚮젅?댁뼱???밸━?낅땲??`;
+        }
+        
+        endBattle(true, msg);
+        if (isWinCallback) isWinCallback();
+        return;
+    }
+    
+    updateBattleUI();
+    if (isNextHitCallback) {
+        isNextHitCallback();
+    } else {
+        if (battleState.mode === 'pvp') {
+            battleState.pvpTurn = battleState.pvpTurn === 1 ? 2 : 1;
+            const currentName = battleState.pvpTurn === 1 ? battleState.p1Name : battleState.p2Name;
+            pvpTurnIndicator.textContent = `??${currentName}????`;
+            canAttack = true; // allow slicing again immediately for PVP
+        } else {
+            // PVE / Boss Enemy Turn
+            setTimeout(() => {
+                if (!battleState.active) return;
+                
+                const enemyDmg = battleState.enemyDamage;
+                battleState.playerHp -= enemyDmg;
+                
+                battlePlayerStatus.textContent = `?곸쓽 怨듦꺽! ${enemyDmg} ?곕?吏!`;
+                
+                if (battleState.playerHp <= 0) {
+                    battleState.playerHp = 0;
+                    updateBattleUI();
+                    endBattle(false, '?⑤같?덉뒿?덈떎...');
+                    return;
+                }
+                
+                updateBattleUI();
+                canAttack = true;
+            }, 1000);
+        }
+    }
+}
+
+function processTurn(skillType) {
+    if (!battleState.active || !canAttack) return;
+    canAttack = false; // Prevent spamming
+    
+    let dmg = getPlayerDamage();
+    
+    if (skillType === 'aura') {
+        dmg = dmg * 2; // 2x damage for skill
+        battleState.skillUsed = true;
+        battlePlayerStatus.textContent = `??寃湲?諛쒕룞! ${dmg.toFixed(1)}???쇳빐!`;
+        logEvent(`??寃湲???컻! ?곸뿉寃?${dmg.toFixed(1)}???곕?吏瑜??낇삍?듬땲??`, 'battle');
+        dealEnemyDamage(dmg);
+    } else if (skillType === 'double') {
+        const doubleDmg = dmg * 2; 
+        battleState.doubleSkillUsed = true;
+        battlePlayerStatus.textContent = `?뮙 1?곌꺽! ${doubleDmg.toFixed(1)}???쇳빐!`;
+        logEvent(`?뮙 ?댁쨷踰좉린 1?! ?곸뿉寃?${doubleDmg.toFixed(1)}???곕?吏!`, 'battle');
+        
+        dealEnemyDamage(doubleDmg, null, () => {
+            if (!battleState.active) return;
+            // Second hit after a short delay
+            setTimeout(() => {
+                if (!battleState.active) return;
+                battlePlayerStatus.textContent = `?뮙 2?곌꺽! ${doubleDmg.toFixed(1)}???쇳빐!`;
+                logEvent(`?뮙 ?댁쨷踰좉린 2?! ?곸뿉寃?${doubleDmg.toFixed(1)}???곕?吏!`, 'battle');
+                dealEnemyDamage(doubleDmg);
+            }, 300);
+        });
+    } else {
+        battlePlayerStatus.textContent = `怨듦꺽! ${dmg.toFixed(1)}???쇳빐!`;
+        dealEnemyDamage(dmg);
+    }
+}
+
+// --- Slicing Logic ---
+sliceCanvas.addEventListener('mousedown', startSlice);
+sliceCanvas.addEventListener('mousemove', drawSlice);
+window.addEventListener('mouseup', endSlice);
+
+sliceCanvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    startSlice(touch);
+}, {passive: false});
+sliceCanvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    drawSlice(touch);
+}, {passive: false});
+window.addEventListener('touchend', endSlice);
+
+function getCanvasPos(evt) {
+    const rect = sliceCanvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function startSlice(e) {
+    if (!battleState.active || !canAttack) return;
+    isSlicing = true;
+    slicePath = [getCanvasPos(e)];
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+}
+
+function drawSlice(e) {
+    if (!isSlicing || !battleState.active || !canAttack) return;
+    
+    const pos = getCanvasPos(e);
+    slicePath.push(pos);
+    
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+    sliceCtx.beginPath();
+    sliceCtx.moveTo(slicePath[0].x, slicePath[0].y);
+    for (let i = 1; i < slicePath.length; i++) {
+        sliceCtx.lineTo(slicePath[i].x, slicePath[i].y);
+    }
+    
+    const eff = allEffectsPool.find(e => e.id === gameState.currentSkin);
+    const currentColor = eff ? eff.color : (skinColors[gameState.currentSkin] || skinColors['default']);
+    
+    sliceCtx.strokeStyle = currentColor;
+    sliceCtx.lineWidth = 4;
+    sliceCtx.lineCap = 'round';
+    sliceCtx.lineJoin = 'round';
+    sliceCtx.shadowColor = currentColor.replace('0.8)', '1)');
+    sliceCtx.shadowBlur = 10;
+    sliceCtx.stroke();
+    
+    // Continuous Slicing Attack check
+    if (slicePath.length > 5) {
+        const start = slicePath[0];
+        const end = pos;
+        const dist = Math.hypot(end.x - start.x, end.y - start.y);
+        
+        if (dist > 50 && canAttack) {
+            // Immediate Hit Animation
+            enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
+            setTimeout(() => {
+                enemyCharacterEl.style.transform = 'scale(1) rotate(0deg)';
+            }, 150);
+            
+            // Visual feedback
+            sliceCtx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            sliceCtx.lineWidth = 6;
+            sliceCtx.stroke();
+            
+            setTimeout(() => {
+                sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            }, 100);
+            
+            processTurn('none');
+            slicePath = [pos]; // Reset path to start a new slice from here
+        }
+    }
+}
+
+function endSlice(e) {
+    if (!isSlicing) return;
+    isSlicing = false;
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+    slicePath = [];
+}
+// ---------------------
+
+// --- Training Slicing Logic ---
+let isTrainSlicing = false;
+let trainSlicePath = [];
+
+trainSliceCanvas.addEventListener('mousedown', startTrainSlice);
+trainSliceCanvas.addEventListener('mousemove', drawTrainSlice);
+window.addEventListener('mouseup', endTrainSlice);
+
+trainSliceCanvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    startTrainSlice(e.touches[0]);
+}, {passive: false});
+trainSliceCanvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    drawTrainSlice(e.touches[0]);
+}, {passive: false});
+window.addEventListener('touchend', endTrainSlice);
+
+function getTrainCanvasPos(evt) {
+    const rect = trainSliceCanvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function startTrainSlice(e) {
+    if (trainingModal.classList.contains('hidden')) return;
+    isTrainSlicing = true;
+    trainSlicePath = [getTrainCanvasPos(e)];
+    trainSliceCtx.clearRect(0, 0, trainSliceCanvas.width, trainSliceCanvas.height);
+}
+
+function drawTrainSlice(e) {
+    if (!isTrainSlicing || trainingModal.classList.contains('hidden')) return;
+    
+    const pos = getTrainCanvasPos(e);
+    trainSlicePath.push(pos);
+    
+    trainSliceCtx.clearRect(0, 0, trainSliceCanvas.width, trainSliceCanvas.height);
+    trainSliceCtx.beginPath();
+    trainSliceCtx.moveTo(trainSlicePath[0].x, trainSlicePath[0].y);
+    for (let i = 1; i < trainSlicePath.length; i++) {
+        trainSliceCtx.lineTo(trainSlicePath[i].x, trainSlicePath[i].y);
+    }
+    
+    const eff = allEffectsPool.find(e => e.id === gameState.currentSkin);
+    const currentColor = eff ? eff.color : (skinColors[gameState.currentSkin] || skinColors['default']);
+    
+    trainSliceCtx.strokeStyle = currentColor;
+    trainSliceCtx.lineWidth = 4;
+    trainSliceCtx.lineCap = 'round';
+    trainSliceCtx.lineJoin = 'round';
+    trainSliceCtx.shadowColor = currentColor.replace('0.8)', '1)');
+    trainSliceCtx.shadowBlur = 10;
+    trainSliceCtx.stroke();
+    
+    // Continuous Training Attack check
+    if (trainSlicePath.length > 5) {
+        const start = trainSlicePath[0];
+        const end = pos;
+        const dist = Math.hypot(end.x - start.x, end.y - start.y);
+        
+        if (dist > 30) {
+            gameState.baseDamage += 0.5;
+            
+            // Dummy animation
+            robotDummy.style.transform = `translate(-50%, -50%) rotate(${Math.random()*20 - 10}deg) scale(1.1)`;
+            setTimeout(() => {
+                robotDummy.style.transform = 'translate(-50%, -50%) rotate(0deg) scale(1)';
+            }, 100);
+            
+            // Visual feedback
+            trainSliceCtx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            trainSliceCtx.lineWidth = 6;
+            trainSliceCtx.stroke();
+            
+            setTimeout(() => {
+                trainSliceCtx.clearRect(0, 0, trainSliceCanvas.width, trainSliceCanvas.height);
+            }, 100);
+            
+            updateUI();
+            trainSlicePath = [pos]; // Reset path
+        }
+    }
+}
+
+function endTrainSlice(e) {
+    if (!isTrainSlicing) return;
+    isTrainSlicing = false;
+    trainSliceCtx.clearRect(0, 0, trainSliceCanvas.width, trainSliceCanvas.height);
+    trainSlicePath = [];
+}
+// ------------------------------
+
+// Initial Setup
+loadGame();
+updateUI();
+
+function updateBattleUI() {
+    battlePlayerHp.textContent = battleState.playerHp;
+    battleEnemyHp.textContent = battleState.enemyHp;
+    
+    const pPercent = Math.max(0, (battleState.playerHp / gameState.maxHp) * 100);
+    const ePercent = Math.max(0, (battleState.enemyHp / battleState.enemyMaxHp) * 100);
+    
+    playerHpFill.style.width = `${pPercent}%`;
+    enemyHpFill.style.width = `${ePercent}%`;
+    
+    if (pPercent < 30) playerHpFill.style.background = 'var(--accent-red)';
+    else playerHpFill.style.background = 'var(--success)';
+    
+    if (ePercent < 30) enemyHpFill.style.background = 'var(--accent-red)';
+    else enemyHpFill.style.background = 'var(--success)';
+}
+
+function endBattle(won, msg) {
+    battleState.active = false;
+    logEvent(msg, won ? 'success' : 'fail');
+    
+    setTimeout(() => {
+        battleModal.classList.add('hidden');
+        // Restore Player HP after battle
+        gameState.hp = gameState.maxHp;
+        
+        updateUI();
+    }, 1500);
+}
+
+// Initial Setup
+updateUI();
+} catch (e) {
+    alert("?곸꽭 ?먮윭:\n" + e.message + "\n" + e.stack);
+}
+
+</script>
 </body>
 </html>
