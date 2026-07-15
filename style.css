@@ -45,7 +45,7 @@ h1, h2, h3, .stat-value, .btn-icon {
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 /* Stats Bar */
