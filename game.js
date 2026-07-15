@@ -5,6 +5,7 @@ let gameState = {
     maxHp: 3000,
     trophies: 0,
     money: 0,
+    inventory: [],
     hasHiddenSkill: false,
     hasDoubleSkill: false,
     currentSkin: 'default',
@@ -21,9 +22,14 @@ function loadGame() {
         try {
             const parsed = JSON.parse(saved);
             gameState = { ...gameState, ...parsed };
+            if (!gameState.inventory) gameState.inventory = [];
         } catch(e) {
             console.error("Save file corrupted");
         }
+    } else {
+        // 처음 접속 시 500원 지급
+        gameState.money = 500;
+        logEvent('환영합니다! 지원금 500원이 지급되었습니다.', 'success');
     }
 }
 
@@ -84,10 +90,16 @@ const btnSkill = document.getElementById('btn-skill');
 const btnSkillDouble = document.getElementById('btn-skill-double');
 const btnTrophyRoad = document.getElementById('btn-trophy-road');
 const btnShop = document.getElementById('btn-shop');
+const btnInventory = document.getElementById('btn-inventory');
+const btnStash = document.getElementById('btn-stash');
 
 const trophyModal = document.getElementById('trophy-modal');
 const btnExitTrophy = document.getElementById('btn-exit-trophy');
 const milestone100 = document.getElementById('milestone-100');
+
+const inventoryModal = document.getElementById('inventory-modal');
+const btnExitInventory = document.getElementById('btn-exit-inventory');
+const inventoryList = document.getElementById('inventory-list');
 
 const shopModal = document.getElementById('shop-modal');
 const btnExitShop = document.getElementById('btn-exit-shop');
@@ -315,6 +327,59 @@ shopBtns.forEach(btn => {
         }
     });
 });
+
+// Inventory Logic
+btnStash.addEventListener('click', () => {
+    gameState.inventory.push(gameState.level);
+    logEvent(`[${swordNames[gameState.level]}] (을)를 인벤토리에 보관했습니다.`, 'info');
+    gameState.level = 0;
+    updateUI();
+});
+
+btnInventory.addEventListener('click', () => {
+    renderInventory();
+    inventoryModal.classList.remove('hidden');
+});
+
+btnExitInventory.addEventListener('click', () => {
+    inventoryModal.classList.add('hidden');
+});
+
+function renderInventory() {
+    inventoryList.innerHTML = '';
+    if (gameState.inventory.length === 0) {
+        inventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">인벤토리가 비어 있습니다.</p>';
+        return;
+    }
+    
+    gameState.inventory.forEach((lvl, index) => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        const equipBtn = document.createElement('button');
+        equipBtn.className = 'action-btn shop-btn';
+        equipBtn.textContent = '꺼내기';
+        
+        equipBtn.addEventListener('click', () => {
+            // 현재 검을 인벤토리에 넣고 선택한 검을 꺼냄
+            gameState.inventory.push(gameState.level);
+            gameState.level = lvl;
+            gameState.inventory.splice(index, 1);
+            logEvent(`인벤토리에서 [${swordNames[lvl]}] (을)를 꺼냈습니다!`, 'success');
+            renderInventory(); // Re-render list
+            updateUI();
+        });
+        
+        div.appendChild(nameSpan);
+        div.appendChild(equipBtn);
+        inventoryList.appendChild(div);
+    });
+}
 
 // Battle Logic
 btnBattle.addEventListener('click', () => {
@@ -785,10 +850,6 @@ function endBattle(won, msg) {
         battleModal.classList.add('hidden');
         // Restore Player HP after battle
         gameState.hp = gameState.maxHp;
-        
-        // Reset sword level
-        gameState.level = 0;
-        logEvent('검이 처음(0강)으로 초기화되었습니다.', 'info');
         
         updateUI();
     }, 1500);
