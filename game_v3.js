@@ -1322,6 +1322,13 @@ function endBattle(won, msg) {
 }
 
 // Initial Setup
+const splashScreen = document.getElementById('splash-screen');
+if (splashScreen) {
+    setTimeout(() => {
+        splashScreen.classList.add('fade-out');
+        setTimeout(() => splashScreen.remove(), 500);
+    }, 3000);
+}
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);

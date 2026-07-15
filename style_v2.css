@@ -1,4 +1,4 @@
-﻿* {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -648,4 +648,38 @@ h1, h2, h3, .stat-value, .btn-icon {
     height: 180px;
     border-radius: 50% 50% 10% 10%;
     animation: darkPulse 0.5s infinite alternate;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.splash-text {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+    animation: splashPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes splashPop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.splash-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
 }
