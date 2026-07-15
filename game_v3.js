@@ -640,10 +640,12 @@ function renderFuseInventory() {
     
     let validItemsFound = false;
     
+    if (gameState.inventory.length === 0) {
+        fuseInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">보관된 검이 없습니다.</p>';
+        return;
+    }
+    
     gameState.inventory.forEach((lvl, index) => {
-        if (lvl < 1 || lvl > 6) return; // 1~6강만 퓨즈 가능
-        validItemsFound = true;
-        
         const div = document.createElement('div');
         div.className = 'shop-item';
         
@@ -655,38 +657,44 @@ function renderFuseInventory() {
         const selBtn = document.createElement('button');
         selBtn.className = 'action-btn shop-btn';
         
-        const isSelected = fuseSelectedIndices.includes(index);
-        if (isSelected) {
-            div.classList.add('fuse-item-selected');
-            selBtn.textContent = '선택 취소';
-            selBtn.style.background = 'var(--danger)';
-        } else {
-            selBtn.textContent = '선택하기';
-            selBtn.style.background = 'var(--secondary)';
-        }
+        const isValid = (lvl >= 1 && lvl <= 6);
         
-        selBtn.addEventListener('click', () => {
-            const selIdx = fuseSelectedIndices.indexOf(index);
-            if (selIdx > -1) {
-                fuseSelectedIndices.splice(selIdx, 1);
+        if (!isValid) {
+            selBtn.textContent = '불가 (1~6강만)';
+            selBtn.disabled = true;
+            selBtn.style.background = '#475569';
+            selBtn.style.opacity = '0.5';
+        } else {
+            validItemsFound = true;
+            const isSelected = fuseSelectedIndices.includes(index);
+            if (isSelected) {
+                div.classList.add('fuse-item-selected');
+                selBtn.textContent = '선택 취소';
+                selBtn.style.background = 'var(--danger)';
             } else {
-                if (fuseSelectedIndices.length >= 2) {
-                    logEvent('제물은 2개까지만 선택할 수 있습니다.', 'info');
-                    return;
-                }
-                fuseSelectedIndices.push(index);
+                selBtn.textContent = '선택하기';
+                selBtn.style.background = 'var(--secondary)';
             }
-            renderFuseInventory();
-        });
+            
+            selBtn.addEventListener('click', () => {
+                const selIdx = fuseSelectedIndices.indexOf(index);
+                if (selIdx > -1) {
+                    fuseSelectedIndices.splice(selIdx, 1);
+                } else {
+                    if (fuseSelectedIndices.length >= 2) {
+                        logEvent('제물은 2개까지만 선택할 수 있습니다.', 'info');
+                        return;
+                    }
+                    fuseSelectedIndices.push(index);
+                }
+                renderFuseInventory();
+            });
+        }
         
         div.appendChild(nameSpan);
         div.appendChild(selBtn);
         fuseInventoryList.appendChild(div);
     });
-    
-    if (!validItemsFound) {
-        fuseInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">인벤토리에 1~6강 검이 없습니다.</p>';
-    }
 }
 
 btnFuseStart.addEventListener('click', () => {
