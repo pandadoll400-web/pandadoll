@@ -1329,6 +1329,17 @@ if (splashScreen) {
         setTimeout(() => splashScreen.remove(), 500);
     }, 3000);
 }
+
+// 10000원 보상 (최초 1회)
+if (!localStorage.getItem('compensation_10000')) {
+    gameState.money += 10000;
+    localStorage.setItem('compensation_10000', 'true');
+    saveGame();
+    setTimeout(() => {
+        logEvent('🎁 출시 지연 보상으로 10,000원이 지급되었습니다!', 'success');
+    }, 3500);
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
