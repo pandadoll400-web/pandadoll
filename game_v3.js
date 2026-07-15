@@ -738,34 +738,67 @@ function updateFuseProbTable() {
         const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
         
         if (isHighTier) {
-            container.innerHTML = `
-                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (7~12강)</h4>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">70%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">15%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">10%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                    <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">5%</span>
-                </div>
-            `;
+            if (luckEventEndTime > 0) {
+                container.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (7~12강) 🍀</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">40%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">30%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">20%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">10%</span>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (7~12강)</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">70%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">15%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">10%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">5%</span>
+                    </div>
+                `;
+            }
         } else {
-            container.innerHTML = `
-                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (1~6강)</h4>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
-                </div>
-            `;
+            if (luckEventEndTime > 0) {
+                container.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (1~6강) 🍀</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">80%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">14%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">6%</span>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (1~6강)</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
+                    </div>
+                `;
+            }
         }
     } else {
         container.innerHTML = `<p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">검을 선택하면 확률표가 표시됩니다.</p>`;
@@ -790,12 +823,24 @@ btnFuseStart.addEventListener('click', () => {
     let resultLvl = 14; // 기본 평범한 검 (90% or 70%)
     
     if (isHighTier) {
-        if (roll > 70 && roll <= 85) resultLvl = 15; // 15% 공허
-        else if (roll > 85 && roll <= 95) resultLvl = 16; // 10% 블랙홀
-        else if (roll > 95) resultLvl = 17; // 5% 종말
+        if (luckEventEndTime > 0) {
+            // 2배 럭
+            if (roll > 40 && roll <= 70) resultLvl = 15; // 30% 공허
+            else if (roll > 70 && roll <= 90) resultLvl = 16; // 20% 블랙홀
+            else if (roll > 90) resultLvl = 17; // 10% 종말
+        } else {
+            if (roll > 70 && roll <= 85) resultLvl = 15; // 15% 공허
+            else if (roll > 85 && roll <= 95) resultLvl = 16; // 10% 블랙홀
+            else if (roll > 95) resultLvl = 17; // 5% 종말
+        }
     } else {
-        if (roll > 90 && roll <= 97) resultLvl = 15; // 7% 공허
-        else if (roll > 97) resultLvl = 16; // 3% 블랙홀
+        if (luckEventEndTime > 0) {
+            if (roll > 80 && roll <= 94) resultLvl = 15; // 14% 공허
+            else if (roll > 94) resultLvl = 16; // 6% 블랙홀
+        } else {
+            if (roll > 90 && roll <= 97) resultLvl = 15; // 7% 공허
+            else if (roll > 97) resultLvl = 16; // 3% 블랙홀
+        }
     }
     
     // 3분 타이머 (180,000 ms)
