@@ -290,7 +290,17 @@
             alert("스크립트 에러 발생!\n메시지: " + msg + "\n줄 번호: " + line);
             return false;
         };
+        fetch('game.js').then(r => r.text()).then(code => {
+            try {
+                new Function(code);
+            } catch (e) {
+                // If it's a syntax error, some browsers provide e.lineNumber
+                // If not, we can at least show the exact error message.
+                let lines = code.split('\n');
+                alert("구문 오류(Syntax Error) 발견!\n" + e.message + "\nLine: " + e.lineNumber);
+            }
+        });
     </script>
-    <script src="game.js"></script>
+    <script src="game.js?v=3"></script>
 </body>
 </html>

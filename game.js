@@ -17,11 +17,21 @@ let gameState = {
 };
 
 function saveGame() {
-    localStorage.setItem('swordGameState', JSON.stringify(gameState));
+    try {
+        localStorage.setItem('swordGameState', JSON.stringify(gameState));
+    } catch(e) {
+        console.warn('localStorage is blocked or not available.');
+    }
 }
 
 function loadGame() {
-    const saved = localStorage.getItem('swordGameState');
+    let saved = null;
+    try {
+        saved = localStorage.getItem('swordGameState');
+    } catch(e) {
+        console.warn('localStorage is blocked or not available.');
+    }
+    
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
