@@ -234,6 +234,17 @@ const pvpP2NameEl = document.getElementById('pvp-p2-name');
 const btnStartPvp = document.getElementById('btn-start-pvp');
 const btnExitPvpSetup = document.getElementById('btn-exit-pvp-setup');
 
+// Luck Event DOM
+const luckEventUi = document.getElementById('luck-event-ui');
+const luckTimerText = document.getElementById('luck-timer-text');
+let luckEventEndTime = 0;
+
+window.triggerLuckEvent = function(minutes) {
+    luckEventEndTime = Date.now() + (minutes * 60 * 1000);
+    luckEventUi.classList.remove('hidden');
+    logEvent(`🍀 특별 이벤트! ${minutes}분 동안 퓨즈머신 성공 확률이 대폭 증가합니다!`, 'success');
+};
+
 // Slicing Canvas
 const sliceCanvas = document.getElementById('slice-canvas');
 const sliceCtx = sliceCanvas.getContext('2d');
@@ -819,6 +830,21 @@ setInterval(() => {
                 const s = (totalSec % 60).toString().padStart(2, '0');
                 shopTimerEl.textContent = `다음 갱신: ${m}:${s}`;
             }
+        }
+    }
+    
+    // Luck Event Timer
+    if (luckEventEndTime > 0) {
+        const remain = luckEventEndTime - now;
+        if (remain <= 0) {
+            luckEventEndTime = 0;
+            luckEventUi.classList.add('hidden');
+            logEvent('❌ 퓨즈머신 럭 이벤트가 종료되었습니다.', 'info');
+        } else {
+            const totalSec = Math.ceil(remain / 1000);
+            const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+            const s = (totalSec % 60).toString().padStart(2, '0');
+            luckTimerText.textContent = `${m}:${s}`;
         }
     }
     

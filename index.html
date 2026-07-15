@@ -284,5 +284,14 @@
         };
     </script>
     <script src="game_v3.js" charset="utf-8"></script>
+
+    <!-- Luck Event UI -->
+    <div id="luck-event-ui" class="hidden" style="position: fixed; bottom: 20px; right: 20px; text-align: center; z-index: 100; pointer-events: none;">
+        <div style="background: rgba(0,0,0,0.6); padding: 10px; border-radius: 15px; border: 2px solid #a855f7; box-shadow: 0 0 15px #a855f7;">
+            <img src="luck_icon.png" style="width: 60px; height: 60px; filter: drop-shadow(0 0 10px #c084fc); animation: pulse 1s infinite alternate;" />
+            <div id="luck-timer-text" style="color: #fbbf24; font-weight: bold; font-size: 1.2rem; text-shadow: 0 0 5px #000; margin-top: 5px;">00:00</div>
+            <div style="color: #e2e8f0; font-size: 0.8rem; font-weight: bold;">퓨즈 럭 증가!</div>
+        </div>
+    </div>
 </body>
 </html>
