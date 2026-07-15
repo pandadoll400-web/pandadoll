@@ -112,6 +112,25 @@ const btnAttack = document.getElementById('btn-attack'); // Optional now
 const btnFlee = document.getElementById('btn-flee');
 const enemyNameEl = document.getElementById('enemy-name');
 const enemyCharacterEl = document.getElementById('enemy-character');
+const battleTitle = document.getElementById('battle-title');
+const battleModeBadge = document.getElementById('battle-mode-badge');
+const pvpTurnIndicator = document.getElementById('pvp-turn-indicator');
+const battlePlayerName = document.getElementById('battle-player-name');
+
+// Mode Select DOM
+const modeSelectModal = document.getElementById('mode-select-modal');
+const btnModePve = document.getElementById('btn-mode-pve');
+const btnModePvp = document.getElementById('btn-mode-pvp');
+const btnModeBoss = document.getElementById('btn-mode-boss');
+const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
+
+// PVP Setup DOM
+const pvpSetupModal = document.getElementById('pvp-setup-modal');
+const pvpP1NameEl = document.getElementById('pvp-p1-name');
+const pvpP2LevelEl = document.getElementById('pvp-p2-level');
+const pvpP2NameEl = document.getElementById('pvp-p2-name');
+const btnStartPvp = document.getElementById('btn-start-pvp');
+const btnExitPvpSetup = document.getElementById('btn-exit-pvp-setup');
 
 // Slicing Canvas
 const sliceCanvas = document.getElementById('slice-canvas');
@@ -123,12 +142,17 @@ let canAttack = true;
 // Battle State
 let battleState = {
     active: false,
+    mode: 'pve', // pve, pvp, boss
     enemyMaxHp: 0,
     enemyHp: 0,
     enemyDamage: 0,
     playerHp: 3000,
     skillUsed: false,
-    doubleSkillUsed: false
+    doubleSkillUsed: false,
+    pvpTurn: 1, // 1 for player 1, 2 for player 2
+    p1Name: '나',
+    p2Name: '상대방',
+    p2Level: 0
 };
 
 const skinColors = {
@@ -294,7 +318,39 @@ shopBtns.forEach(btn => {
 
 // Battle Logic
 btnBattle.addEventListener('click', () => {
-    startBattle();
+    modeSelectModal.classList.remove('hidden');
+});
+
+btnExitModeSelect.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+});
+
+btnModePve.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    startBattle('pve');
+});
+
+btnModeBoss.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    startBattle('boss');
+});
+
+btnModePvp.addEventListener('click', () => {
+    modeSelectModal.classList.add('hidden');
+    pvpSetupModal.classList.remove('hidden');
+});
+
+btnExitPvpSetup.addEventListener('click', () => {
+    pvpSetupModal.classList.add('hidden');
+});
+
+btnStartPvp.addEventListener('click', () => {
+    battleState.p1Name = pvpP1NameEl.value || '플레이어 1';
+    battleState.p2Name = pvpP2NameEl.value || '플레이어 2';
+    battleState.p2Level = parseInt(pvpP2LevelEl.value) || 0;
+    
+    pvpSetupModal.classList.add('hidden');
+    startBattle('pvp');
 });
 
 btnFlee.addEventListener('click', () => {
@@ -349,11 +405,13 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-function startBattle() {
+function startBattle(mode) {
     battleState.active = true;
+    battleState.mode = mode;
     battleState.skillUsed = false;
     battleState.doubleSkillUsed = false;
     battleState.playerHp = gameState.maxHp;
+    battleState.pvpTurn = 1;
     canAttack = true;
     
     // Resize slice canvas
@@ -361,24 +419,53 @@ function startBattle() {
     sliceCanvas.height = sliceCanvas.offsetHeight;
     sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
     
-    // Enemy stats scale with trophies
-    battleState.enemyMaxHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
+    battlePlayerName.textContent = battleState.p1Name;
+    
+    if (mode === 'pve') {
+        battleTitle.textContent = '⚔️ PVE 전투 ⚔️';
+        battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
+        battleState.enemyDamage = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
+        
+        const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
+        enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
+        enemyNameEl.textContent = `AI 전사 (트로피 ${gameState.trophies})`;
+        
+    } else if (mode === 'boss') {
+        battleTitle.textContent = '👺 보스전 👺';
+        battleModeBadge.innerHTML = '<span style="background:var(--danger);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">BOSS</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 30000;
+        battleState.enemyDamage = 200 + Math.floor(Math.random() * 100);
+        
+        enemyCharacterEl.textContent = '🐉';
+        enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
+        
+    } else if (mode === 'pvp') {
+        battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
+        battleModeBadge.innerHTML = '<span style="background:var(--accent-gold);color:black;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVP</span>';
+        
+        battleState.enemyMaxHp = 3000; // P2 HP
+        battleState.enemyDamage = levelDamage[battleState.p2Level] || 10;
+        
+        enemyCharacterEl.textContent = '👤';
+        enemyNameEl.textContent = `${battleState.p2Name} (+${battleState.p2Level}강)`;
+        
+        pvpTurnIndicator.classList.remove('hidden');
+        pvpTurnIndicator.textContent = `▶ ${battleState.p1Name}의 턴!`;
+    }
+    
     battleState.enemyHp = battleState.enemyMaxHp;
-    battleState.enemyDamage = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
-    
-    // Pick random enemy character
-    const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
-    const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
-    enemyCharacterEl.textContent = randomEnemy;
-    
-    enemyNameEl.textContent = `AI 전사 (트로피 ${gameState.trophies})`;
     
     battlePlayerStatus.textContent = '전투 준비 완료!';
-    battleEnemyStatus.textContent = '상대가 노려보고 있습니다.';
+    battleEnemyStatus.textContent = mode === 'pvp' ? '전투 준비 완료!' : '상대가 노려보고 있습니다.';
     
     updateBattleUI();
     battleModal.classList.remove('hidden');
-    logEvent('⚔️ 전투를 시작합니다!', 'battle');
+    logEvent(`⚔️ ${mode.toUpperCase()} 전투를 시작합니다!`, 'battle');
 }
 
 function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
@@ -423,23 +510,32 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
     if (isNextHitCallback) {
         isNextHitCallback();
     } else {
-        // Enemy Turn
-        setTimeout(() => {
-            if (!battleState.active) return;
-            
-            const enemyDmg = battleState.enemyDamage;
-            battleState.playerHp -= enemyDmg;
-            battleEnemyStatus.textContent = `반격! ${enemyDmg}의 피해를 입었습니다.`;
-            
-            if (battleState.playerHp <= 0) {
-                battleState.playerHp = 0;
+        if (battleState.mode === 'pvp') {
+            battleState.pvpTurn = battleState.pvpTurn === 1 ? 2 : 1;
+            const currentName = battleState.pvpTurn === 1 ? battleState.p1Name : battleState.p2Name;
+            pvpTurnIndicator.textContent = `▶ ${currentName}의 턴!`;
+            canAttack = true; // allow slicing again immediately for PVP
+        } else {
+            // PVE / Boss Enemy Turn
+            setTimeout(() => {
+                if (!battleState.active) return;
+                
+                const enemyDmg = battleState.enemyDamage;
+                battleState.playerHp -= enemyDmg;
+                
+                battlePlayerStatus.textContent = `적의 공격! ${enemyDmg} 데미지!`;
+                
+                if (battleState.playerHp <= 0) {
+                    battleState.playerHp = 0;
+                    updateBattleUI();
+                    endBattle(false, '패배했습니다...');
+                    return;
+                }
+                
                 updateBattleUI();
-                endBattle(false, '패배했습니다... 체력을 회복합니다.');
-            } else {
-                updateBattleUI();
-                canAttack = true; // Enemy turn finished, player can attack again
-            }
-        }, 500);
+                canAttack = true;
+            }, 1000);
+        }
     }
 }
 
