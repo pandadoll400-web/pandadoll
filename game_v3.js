@@ -1330,13 +1330,13 @@ if (splashScreen) {
     }, 3000);
 }
 
-// 45000원 보상 (최초 1회)
-if (!localStorage.getItem('compensation_45000')) {
-    gameState.money += 45000;
-    localStorage.setItem('compensation_45000', 'true');
+// 7강 검 보상 (최초 1회)
+if (!localStorage.getItem('compensation_sword_7')) {
+    gameState.inventory.push(7);
+    localStorage.setItem('compensation_sword_7', 'true');
     saveGame();
     setTimeout(() => {
-        logEvent('🎁 통 큰 보상으로 45,000원이 지급되었습니다!', 'success');
+        logEvent('🎁 특별 이벤트! 7강 검(초월의 검)이 인벤토리에 지급되었습니다!', 'success');
     }, 3500);
 }
 
