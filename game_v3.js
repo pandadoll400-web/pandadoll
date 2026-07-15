@@ -784,16 +784,16 @@ btnFuseStart.addEventListener('click', () => {
         else if (roll > 97) resultLvl = 16; // 3% 블랙홀
     }
     
-    // 5분 타이머 (300,000 ms)
+    // 즉시 완료
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now() + 5 * 60 * 1000;
+    gameState.fuse.endTime = Date.now();
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
     
     fuseSelectModal.classList.add('hidden');
     updateFuseUI();
-    logEvent('🔥 퓨즈머신 가동 시작! 5분 뒤에 완료됩니다.', 'success');
+    logEvent('🔥 퓨즈머신 가동! 즉시 완료되었습니다.', 'success');
 });
 
 setInterval(() => {
@@ -1322,6 +1322,10 @@ function endBattle(won, msg) {
 }
 
 // Initial Setup
+if (gameState.fuse && gameState.fuse.active) {
+    gameState.fuse.endTime = Date.now() - 1000; // Auto complete pending fuse
+}
+
 const splashScreen = document.getElementById('splash-screen');
 if (splashScreen) {
     setTimeout(() => {
