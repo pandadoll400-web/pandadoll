@@ -127,7 +127,7 @@ const allEffectsPool = [
     // 비밀
     { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 10000 },
     // 한정 (이벤트용, 상점 미등장)
-    { id: 'brainrot', name: '브레인롯 훔치기', grade: '한정', color: 'rgba(255, 0, 128, 1)', price: 999999 }
+    { id: 'absolute', name: '절대자의 권능', grade: '한정', color: 'rgba(255, 0, 128, 1)', price: 999999 }
 ];
 
 // Fallback old colors for backwards compatibility
