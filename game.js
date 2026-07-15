@@ -6,6 +6,7 @@ let gameState = {
     trophies: 0,
     money: 0,
     inventory: [],
+    fuse: { active: false, endTime: 0, resultLevel: null },
     hasHiddenSkill: false,
     hasDoubleSkill: false,
     currentSkin: 'default',
@@ -23,6 +24,7 @@ function loadGame() {
             const parsed = JSON.parse(saved);
             gameState = { ...gameState, ...parsed };
             if (!gameState.inventory) gameState.inventory = [];
+            if (!gameState.fuse) gameState.fuse = { active: false, endTime: 0, resultLevel: null };
         } catch(e) {
             console.error("Save file corrupted");
         }
@@ -47,7 +49,10 @@ const swordNames = [
     "최종의검",            // 10
     "???의검",             // 11
     "비밀의 검",           // 12
-    "봉인된 검"            // 13
+    "봉인된 검",           // 13
+    "평범한 검",           // 14 (퓨즈)
+    "공허의 검",           // 15 (퓨즈)
+    "블랙홀 검"            // 16 (퓨즈)
 ];
 
 // Enhance Costs (0 to 13)
@@ -64,11 +69,17 @@ const enhanceCosts = [
     45000,  // 9->10
     65000,  // 10->11
     85000,  // 11->12
-    100000  // 12->13
+    100000, // 12->13
+    Infinity, // 14
+    Infinity, // 15
+    Infinity  // 16
 ];
 
 const levelDamage = [
-    10, 20, 40, 70, 110, 160, 220, 300, 400, 550, 750, 1000, 1500, 2000
+    10, 20, 40, 70, 110, 160, 220, 300, 400, 550, 750, 1000, 1500, 2000,
+    40,     // 14: 2강과 동급
+    400,    // 15: 8강과 동급
+    1000    // 16: 11강과 동급
 ];
 
 // DOM Elements
@@ -100,6 +111,21 @@ const milestone100 = document.getElementById('milestone-100');
 const inventoryModal = document.getElementById('inventory-modal');
 const btnExitInventory = document.getElementById('btn-exit-inventory');
 const inventoryList = document.getElementById('inventory-list');
+
+// Fuse DOM
+const btnOpenFuse = document.getElementById('btn-open-fuse');
+const fuseModal = document.getElementById('fuse-modal');
+const btnExitFuse = document.getElementById('btn-exit-fuse');
+const btnFuseInsert = document.getElementById('btn-fuse-insert');
+const fuseStatusText = document.getElementById('fuse-status-text');
+const fuseTimerText = document.getElementById('fuse-timer-text');
+
+const fuseSelectModal = document.getElementById('fuse-select-modal');
+const btnExitFuseSelect = document.getElementById('btn-exit-fuse-select');
+const btnFuseStart = document.getElementById('btn-fuse-start');
+const fuseInventoryList = document.getElementById('fuse-inventory-list');
+const fuseSelectedCount = document.getElementById('fuse-selected-count');
+let fuseSelectedIndices = [];
 
 const shopModal = document.getElementById('shop-modal');
 const btnExitShop = document.getElementById('btn-exit-shop');
@@ -189,12 +215,17 @@ function updateUI() {
     moneyCountEl.textContent = gameState.money.toLocaleString() + '원';
     
     swordNameEl.textContent = swordNames[gameState.level];
-    swordLevelEl.textContent = `+${gameState.level}`;
     
-    if (gameState.level >= 13) {
-        enhanceCostEl.textContent = '(최고 레벨 달성)';
+    if (gameState.level >= 14) {
+        swordLevelEl.textContent = `[특수 검]`;
+        enhanceCostEl.textContent = '(강화 불가)';
     } else {
-        enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
+        swordLevelEl.textContent = `+${gameState.level}`;
+        if (gameState.level >= 13) {
+            enhanceCostEl.textContent = '(최고 레벨 달성)';
+        } else {
+            enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
+        }
     }
     
     // Total damage = level damage + any training bonuses
@@ -251,6 +282,10 @@ function getPlayerDamage() {
 
 // Actions
 btnEnhance.addEventListener('click', () => {
+    if (gameState.level >= 14) {
+        logEvent('특수 검은 강화할 수 없습니다.', 'info');
+        return;
+    }
     if (gameState.level >= 13) {
         logEvent('봉인된 검... 이미 최고의 경지에 도달했습니다.', 'info');
         return;
@@ -380,6 +415,150 @@ function renderInventory() {
         inventoryList.appendChild(div);
     });
 }
+
+// =======================
+// Fuse Logic
+// =======================
+btnOpenFuse.addEventListener('click', () => {
+    updateFuseUI();
+    fuseModal.classList.remove('hidden');
+});
+
+btnExitFuse.addEventListener('click', () => {
+    fuseModal.classList.add('hidden');
+});
+
+btnFuseInsert.addEventListener('click', () => {
+    if (gameState.fuse.active) {
+        logEvent('이미 융합이 진행 중입니다!', 'fail');
+        return;
+    }
+    openFuseSelect();
+});
+
+btnExitFuseSelect.addEventListener('click', () => {
+    fuseSelectModal.classList.add('hidden');
+});
+
+function updateFuseUI() {
+    if (gameState.fuse.active) {
+        btnFuseInsert.disabled = true;
+        btnFuseInsert.style.opacity = '0.5';
+        fuseStatusText.textContent = '융합 진행 중... ⚙️⚡';
+        fuseStatusText.style.color = '#fbbf24';
+    } else {
+        btnFuseInsert.disabled = false;
+        btnFuseInsert.style.opacity = '1';
+        fuseStatusText.textContent = '대기 중...';
+        fuseStatusText.style.color = '#38bdf8';
+        fuseTimerText.textContent = '';
+    }
+}
+
+function openFuseSelect() {
+    fuseSelectedIndices = [];
+    fuseSelectModal.classList.remove('hidden');
+    renderFuseInventory();
+}
+
+function renderFuseInventory() {
+    fuseInventoryList.innerHTML = '';
+    fuseSelectedCount.textContent = fuseSelectedIndices.length;
+    btnFuseStart.disabled = fuseSelectedIndices.length !== 2;
+    
+    let validItemsFound = false;
+    
+    gameState.inventory.forEach((lvl, index) => {
+        if (lvl < 1 || lvl > 6) return; // 1~6강만 퓨즈 가능
+        validItemsFound = true;
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item fuse-item-selectable';
+        if (fuseSelectedIndices.includes(index)) {
+            div.classList.add('fuse-item-selected');
+        }
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        div.appendChild(nameSpan);
+        
+        div.addEventListener('click', () => {
+            const selIdx = fuseSelectedIndices.indexOf(index);
+            if (selIdx > -1) {
+                fuseSelectedIndices.splice(selIdx, 1);
+            } else {
+                if (fuseSelectedIndices.length >= 2) {
+                    logEvent('제물은 2개까지만 선택할 수 있습니다.', 'info');
+                    return;
+                }
+                fuseSelectedIndices.push(index);
+            }
+            renderFuseInventory();
+        });
+        
+        fuseInventoryList.appendChild(div);
+    });
+    
+    if (!validItemsFound) {
+        fuseInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">인벤토리에 1~6강 검이 없습니다.</p>';
+    }
+}
+
+btnFuseStart.addEventListener('click', () => {
+    if (fuseSelectedIndices.length !== 2) return;
+    
+    // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
+    fuseSelectedIndices.sort((a,b) => b - a);
+    fuseSelectedIndices.forEach(idx => {
+        gameState.inventory.splice(idx, 1);
+    });
+    
+    // 확률 계산
+    const roll = Math.random() * 100;
+    let resultLvl = 14; // 기본 평범한 검 (90%)
+    if (roll > 90 && roll <= 97) resultLvl = 15; // 공허 (7%)
+    if (roll > 97) resultLvl = 16; // 블랙홀 (3%)
+    
+    // 5분 타이머 (300,000 ms)
+    gameState.fuse.active = true;
+    gameState.fuse.endTime = Date.now() + 5 * 60 * 1000;
+    gameState.fuse.resultLevel = resultLvl;
+    
+    saveGame();
+    
+    fuseSelectModal.classList.add('hidden');
+    updateFuseUI();
+    logEvent('🔥 퓨즈머신 가동 시작! 5분 뒤에 완료됩니다.', 'success');
+});
+
+// 타이머 루프
+setInterval(() => {
+    if (!gameState.fuse.active) return;
+    
+    const now = Date.now();
+    const remain = gameState.fuse.endTime - now;
+    
+    if (remain <= 0) {
+        // 융합 완료
+        gameState.fuse.active = false;
+        gameState.inventory.push(gameState.fuse.resultLevel);
+        const resultName = swordNames[gameState.fuse.resultLevel];
+        logEvent(`⚙️ 퓨즈머신 완료! 인벤토리에 [${resultName}] 이(가) 추가되었습니다!`, 'success');
+        updateFuseUI();
+        saveGame();
+    } else {
+        // 남은 시간 렌더링
+        if (!fuseModal.classList.contains('hidden')) {
+            const totalSec = Math.ceil(remain / 1000);
+            const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+            const s = (totalSec % 60).toString().padStart(2, '0');
+            fuseTimerText.textContent = `남은 시간: ${m}:${s}`;
+        }
+    }
+}, 1000);
 
 // Battle Logic
 btnBattle.addEventListener('click', () => {

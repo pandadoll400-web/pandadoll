@@ -39,7 +39,8 @@
                     <div id="sword-guard"></div>
                     <div id="sword-hilt"></div>
                 </div>
-                <div style="margin-top: 15px;">
+                <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                    <button id="btn-open-fuse" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: #eab308; color: black; font-weight:bold;">⚙️ 퓨즈머신으로 가기</button>
                     <button id="btn-stash" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: var(--secondary); color: white;">🎒 인벤토리에 보관</button>
                 </div>
             </section>
@@ -234,6 +235,58 @@
                     <!-- Inventory items go here -->
                 </div>
                 <button id="btn-exit-inventory" class="action-btn" style="width:100%;">닫기</button>
+            </div>
+        </div>
+
+        <!-- ====== 퓨즈머신(Fuse Machine) 메인 Modal ====== -->
+        <div id="fuse-modal" class="modal hidden">
+            <div class="modal-content fuse-content" style="max-width: 500px;">
+                <h2 style="color: #fbbf24;">⚙️ 퓨즈머신 ⚙️</h2>
+                <div class="fuse-image-container" style="margin: 15px 0; border: 2px solid #fbbf24; border-radius: 10px; overflow: hidden; background: #0f172a;">
+                    <!-- 유저가 넣은 이미지가 여기에 표시됩니다 -->
+                    <img src="fuse_machine.png" alt="퓨즈머신" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(퓨즈머신 이미지 없음 - 폴더에 fuse_machine.png를 넣어주세요)'; this.style.padding='40px'; this.style.color='#94a3b8';">
+                </div>
+                
+                <div id="fuse-status-box" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h3 id="fuse-status-text" style="margin:0; color: #38bdf8;">대기 중...</h3>
+                    <p id="fuse-timer-text" style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;"></p>
+                </div>
+
+                <button id="btn-fuse-insert" class="action-btn danger-btn" style="width:100%; margin-bottom: 20px;">🔥 퓨즈에 넣기 (1~6강 2개 필요)</button>
+                
+                <!-- 확률표 -->
+                <div class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; text-align: left; font-size: 0.9rem;">
+                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
+                    </div>
+                </div>
+
+                <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
+            </div>
+        </div>
+
+        <!-- ====== 퓨즈머신 선택 Modal ====== -->
+        <div id="fuse-select-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>⚔️ 퓨즈머신 제물 선택</h2>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 1~6강 사이의 검 2개를 선택하세요.</p>
+                <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">선택한 검은 영구적으로 파괴됩니다!</p>
+                
+                <div id="fuse-inventory-list" style="margin: 15px 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+                    <!-- Selectable inventory items go here -->
+                </div>
+                
+                <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#fbbf24;">0</span> / 2</p>
+                
+                <button id="btn-fuse-start" class="action-btn danger-btn" style="width:100%; margin-top: 10px;" disabled>융합 시작! (5분 소요)</button>
+                <button id="btn-exit-fuse-select" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
             </div>
         </div>
     </div>
