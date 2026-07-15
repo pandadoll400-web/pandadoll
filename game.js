@@ -1,3 +1,4 @@
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1239,3 +1240,6 @@ function endBattle(won, msg) {
 
 // Initial Setup
 updateUI();
+} catch (e) {
+    alert("상세 에러:\n" + e.message + "\n" + e.stack);
+}
