@@ -1326,14 +1326,6 @@ if (gameState.fuse && gameState.fuse.active) {
     gameState.fuse.endTime = Date.now() - 1000; // Auto complete pending fuse
 }
 
-const splashScreen = document.getElementById('splash-screen');
-if (splashScreen) {
-    setTimeout(() => {
-        splashScreen.classList.add('fade-out');
-        setTimeout(() => splashScreen.remove(), 500);
-    }, 3000);
-}
-
 // 10강 검 보상 (최초 1회)
 if (!localStorage.getItem('compensation_sword_10')) {
     gameState.inventory.push(10);
