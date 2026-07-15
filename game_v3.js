@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -251,13 +251,6 @@ let battleState = {
     p2Level: 0
 };
 
-const skinColors = {
-    'default': 'rgba(239, 68, 68, 0.8)', // Red
-    'flame': 'rgba(249, 115, 22, 0.8)',  // Orange
-    'poison': 'rgba(34, 197, 94, 0.8)',  // Green
-    'lightning': 'rgba(6, 182, 212, 0.8)',// Cyan
-    'dark': 'rgba(168, 85, 247, 0.8)'    // Purple
-};
 
 // Utilities
 function logEvent(msg, type = 'info') {
