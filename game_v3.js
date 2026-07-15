@@ -1330,13 +1330,13 @@ if (splashScreen) {
     }, 3000);
 }
 
-// 10000원 보상 (최초 1회)
-if (!localStorage.getItem('compensation_10000')) {
-    gameState.money += 10000;
-    localStorage.setItem('compensation_10000', 'true');
+// 45000원 보상 (최초 1회)
+if (!localStorage.getItem('compensation_45000')) {
+    gameState.money += 45000;
+    localStorage.setItem('compensation_45000', 'true');
     saveGame();
     setTimeout(() => {
-        logEvent('🎁 출시 지연 보상으로 10,000원이 지급되었습니다!', 'success');
+        logEvent('🎁 통 큰 보상으로 45,000원이 지급되었습니다!', 'success');
     }, 3500);
 }
 
