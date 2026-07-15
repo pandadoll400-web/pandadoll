@@ -257,7 +257,7 @@
         <div id="fuse-select-modal" class="modal hidden">
             <div class="modal-content">
                 <h2>⚔️ 퓨즈머신 제물 선택</h2>
-                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 1~6강 사이의 검 2개를 선택하세요.</p>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 같은 등급(1~6강 또는 7~12강)의 검 2개를 선택하세요.</p>
                 <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">선택한 검은 영구적으로 파괴됩니다!</p>
                 
                 <div id="fuse-inventory-list" style="margin: 15px 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
@@ -267,17 +267,9 @@
                 <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#fbbf24;">0</span> / 2</p>
 
                 <!-- 확률표 (돌리기 버튼 바로 전) -->
-                <div class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표</h4>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
-                    </div>
+                <div id="fuse-prob-container" class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
+                    <!-- JS will populate this based on selection -->
+                    <p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">검을 선택하면 확률표가 표시됩니다.</p>
                 </div>
                 
                 <button id="btn-fuse-start" class="action-btn danger-btn" style="width:100%; margin-top: 10px;" disabled>융합 시작! (5분 소요)</button>

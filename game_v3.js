@@ -67,7 +67,8 @@ const swordNames = [
     "봉인된 검",           // 13
     "평범한 검",           // 14 (퓨즈)
     "공허의 검",           // 15 (퓨즈)
-    "블랙홀 검"            // 16 (퓨즈)
+    "블랙홀 검",           // 16 (퓨즈)
+    "종말의 검"            // 17 (퓨즈)
 ];
 
 // Enhance Costs (0 to 13)
@@ -87,14 +88,16 @@ const enhanceCosts = [
     100000, // 12->13
     Infinity, // 14
     Infinity, // 15
-    Infinity  // 16
+    Infinity, // 16
+    Infinity  // 17
 ];
 
 const levelDamage = [
     10, 20, 40, 70, 110, 160, 220, 300, 400, 550, 750, 1000, 1500, 2000,
     40,     // 14: 2강과 동급
     400,    // 15: 8강과 동급
-    1000    // 16: 11강과 동급
+    1000,   // 16: 11강과 동급
+    3000    // 17: 신규 종말의 검
 ];
 
 const gradeColors = {
@@ -657,10 +660,10 @@ function renderFuseInventory() {
         const selBtn = document.createElement('button');
         selBtn.className = 'action-btn shop-btn';
         
-        const isValid = (lvl >= 1 && lvl <= 6);
+        const isValid = (lvl >= 1 && lvl <= 12);
         
         if (!isValid) {
-            selBtn.textContent = '불가 (1~6강만)';
+            selBtn.textContent = '불가 (1~12강만)';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
             selBtn.style.opacity = '0.5';
@@ -685,6 +688,18 @@ function renderFuseInventory() {
                         logEvent('제물은 2개까지만 선택할 수 있습니다.', 'info');
                         return;
                     }
+                    
+                    if (fuseSelectedIndices.length === 1) {
+                        const firstIdx = fuseSelectedIndices[0];
+                        const firstLvl = gameState.inventory[firstIdx];
+                        const currentTier = (firstLvl >= 1 && firstLvl <= 6) ? 1 : 2;
+                        const thisTier = (lvl >= 1 && lvl <= 6) ? 1 : 2;
+                        if (currentTier !== thisTier) {
+                            logEvent('1~6강과 7~12강은 섞어서 융합할 수 없습니다.', 'fail');
+                            return;
+                        }
+                    }
+                    
                     fuseSelectedIndices.push(index);
                 }
                 renderFuseInventory();
@@ -695,10 +710,60 @@ function renderFuseInventory() {
         div.appendChild(selBtn);
         fuseInventoryList.appendChild(div);
     });
+    
+    updateFuseProbTable();
+}
+
+function updateFuseProbTable() {
+    const container = document.getElementById('fuse-prob-container');
+    if (!container) return;
+    
+    if (fuseSelectedIndices.length > 0) {
+        const firstIdx = fuseSelectedIndices[0];
+        const firstLvl = gameState.inventory[firstIdx];
+        const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
+        
+        if (isHighTier) {
+            container.innerHTML = `
+                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (7~12강)</h4>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">70%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">15%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">10%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                    <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">5%</span>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (1~6강)</h4>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
+                </div>
+            `;
+        }
+    } else {
+        container.innerHTML = `<p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">검을 선택하면 확률표가 표시됩니다.</p>`;
+    }
 }
 
 btnFuseStart.addEventListener('click', () => {
     if (fuseSelectedIndices.length !== 2) return;
+    
+    // Check tier
+    const lvl1 = gameState.inventory[fuseSelectedIndices[0]];
+    const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
     
     // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
     fuseSelectedIndices.sort((a,b) => b - a);
@@ -708,9 +773,16 @@ btnFuseStart.addEventListener('click', () => {
     
     // 확률 계산
     const roll = Math.random() * 100;
-    let resultLvl = 14; // 기본 평범한 검 (90%)
-    if (roll > 90 && roll <= 97) resultLvl = 15; // 공허 (7%)
-    if (roll > 97) resultLvl = 16; // 블랙홀 (3%)
+    let resultLvl = 14; // 기본 평범한 검 (90% or 70%)
+    
+    if (isHighTier) {
+        if (roll > 70 && roll <= 85) resultLvl = 15; // 15% 공허
+        else if (roll > 85 && roll <= 95) resultLvl = 16; // 10% 블랙홀
+        else if (roll > 95) resultLvl = 17; // 5% 종말
+    } else {
+        if (roll > 90 && roll <= 97) resultLvl = 15; // 7% 공허
+        else if (roll > 97) resultLvl = 16; // 3% 블랙홀
+    }
     
     // 5분 타이머 (300,000 ms)
     gameState.fuse.active = true;
