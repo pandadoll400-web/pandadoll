@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검 강화하기 (Sword Enhancement)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Top Stats Bar -->
+        <header id="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">플레이어 HP</span>
+                <span class="stat-value hp-value">3000 / 3000</span>
+            </div>
+            <div class="stat-item clickable" id="btn-trophy-road">
+                <span class="stat-label">🏆 트로피</span>
+                <span class="stat-value" id="trophy-count">0</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-area">
+            <!-- Sword Display -->
+            <section id="sword-display" class="level-0">
+                <h1 id="sword-name">초보자에 칼</h1>
+                <div class="sword-stats">
+                    <p>데미지: <span id="sword-damage">10</span></p>
+                    <p>강화 단계: <span id="sword-level">+0</span></p>
+                </div>
+                <div class="sword-visual">
+                    <div id="sword-blade"></div>
+                    <div id="sword-guard"></div>
+                    <div id="sword-hilt"></div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section id="actions">
+                <button id="btn-enhance" class="action-btn primary-btn">
+                    <span class="btn-icon">🔨</span> 강화하기
+                </button>
+                <button id="btn-train" class="action-btn">
+                    <span class="btn-icon">🎯</span> 훈련장 가기
+                </button>
+                <button id="btn-battle" class="action-btn danger-btn">
+                    <span class="btn-icon">⚔️</span> 전투하기
+                </button>
+                <button id="btn-shop" class="action-btn special-btn" style="grid-column: 1 / -1;">
+                    <span class="btn-icon">🛒</span> 상점 가기
+                </button>
+            </section>
+
+            <!-- Special Skill Area -->
+            <section id="skill-area">
+                <button id="btn-skill" class="action-btn special-btn hidden">
+                    <span class="btn-icon">✨</span> 검기 스킬 사용!
+                </button>
+                <button id="btn-skill-double" class="action-btn double-btn hidden">
+                    <span class="btn-icon">💥</span> 이중베기 사용!
+                </button>
+            </section>
+
+            <!-- Event Log -->
+            <section id="event-log-container">
+                <h3>📜 이벤트 로그</h3>
+                <div id="event-log"></div>
+            </section>
+        </main>
+
+        <!-- Battle Modal -->
+        <div id="battle-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>⚔️ 전투 중 ⚔️</h2>
+                <p id="slice-instruction" class="blinking-text">마우스를 드래그하여 적을 베어 공격하세요!</p>
+                <div class="battle-arena" style="position: relative;">
+                    <!-- Slicing Canvas -->
+                    <canvas id="slice-canvas"></canvas>
+                    
+                    <div class="fighter player">
+                        <h3>나 (HP: <span id="battle-player-hp">3000</span>)</h3>
+                        <div class="health-bar"><div id="player-hp-fill" class="hp-fill"></div></div>
+                        <p id="battle-player-status">대기 중...</p>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="fighter enemy">
+                        <h3 id="enemy-name">무명 기사 (HP: <span id="battle-enemy-hp">???</span>)</h3>
+                        <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill"></div></div>
+                        <div id="enemy-visual-container">
+                            <div id="enemy-character">🧛‍♂️</div>
+                        </div>
+                        <p id="battle-enemy-status">대기 중...</p>
+                    </div>
+                </div>
+                <div class="battle-actions">
+                    <button id="btn-attack" class="action-btn primary-btn hidden">공격하기!</button>
+                    <button id="btn-flee" class="action-btn">도망치기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Modal -->
+        <div id="training-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>🎯 훈련장 🎯</h2>
+                <p class="blinking-text">마우스로 로봇을 마구 베어 데미지를 올리세요! (+0.5)</p>
+                <div class="training-arena" style="position: relative; width: 100%; height: 300px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
+                    <canvas id="train-slice-canvas"></canvas>
+                    <div id="robot-dummy">🤖</div>
+                </div>
+                <button id="btn-exit-train" class="action-btn">훈련 종료</button>
+            </div>
+        </div>
+
+        <!-- Trophy Road Modal -->
+        <div id="trophy-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>🏆 트로피 진척도</h2>
+                <div id="trophy-road-container">
+                    <div class="trophy-milestone" id="milestone-100">
+                        <span class="milestone-req">100점</span>
+                        <span class="milestone-reward">💥 이중베기 스킬 해금!</span>
+                    </div>
+                    <!-- Future milestones can go here -->
+                </div>
+                <button id="btn-exit-trophy" class="action-btn">닫기</button>
+            </div>
+        </div>
+
+        <!-- Shop Modal -->
+        <div id="shop-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>🛒 이펙트 상점</h2>
+                <p>보유 트로피: <span id="shop-trophy-count" style="color:var(--accent-gold); font-weight:bold;">0</span></p>
+                <div id="shop-items-container" style="margin: 20px 0; display: flex; flex-direction: column; gap: 10px;">
+                    
+                    <div class="shop-item">
+                        <span class="item-name" style="color: white;">기본 베기</span>
+                        <button class="action-btn shop-btn" data-skin="default" data-price="0">장착 중</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <span class="item-name" style="color: #f97316;">🔥 불꽃 베기</span>
+                        <button class="action-btn shop-btn" data-skin="flame" data-price="50">50 🏆</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <span class="item-name" style="color: #22c55e;">🐍 맹독 베기</span>
+                        <button class="action-btn shop-btn" data-skin="poison" data-price="100">100 🏆</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <span class="item-name" style="color: #06b6d4;">⚡ 번개 베기</span>
+                        <button class="action-btn shop-btn" data-skin="lightning" data-price="200">200 🏆</button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <span class="item-name" style="color: #a855f7;">🌌 암흑 베기</span>
+                        <button class="action-btn shop-btn" data-skin="dark" data-price="500">500 🏆</button>
+                    </div>
+
+                </div>
+                <button id="btn-exit-shop" class="action-btn" style="width:100%;">닫기</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
