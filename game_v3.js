@@ -1334,13 +1334,13 @@ if (splashScreen) {
     }, 3000);
 }
 
-// 7강 검 보상 (최초 1회)
-if (!localStorage.getItem('compensation_sword_7')) {
-    gameState.inventory.push(7);
-    localStorage.setItem('compensation_sword_7', 'true');
+// 13강 검 보상 (최초 1회)
+if (!localStorage.getItem('compensation_sword_13')) {
+    gameState.inventory.push(13);
+    localStorage.setItem('compensation_sword_13', 'true');
     saveGame();
     setTimeout(() => {
-        logEvent('🎁 특별 이벤트! 7강 검(초월의 검)이 인벤토리에 지급되었습니다!', 'success');
+        logEvent('🎁 특별 이벤트! 13강 검(봉인된 검)이 인벤토리에 지급되었습니다!', 'success');
     }, 3500);
 }
 
