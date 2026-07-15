@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검 강화하기 (Sword Enhancement)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
     <div id="app-container">
@@ -285,6 +285,12 @@
             </div>
         </div>
     </div>
+    <script>
+        window.onerror = function(msg, url, line, col, error) {
+            alert("스크립트 에러 발생!\n메시지: " + msg + "\n줄 번호: " + line);
+            return false;
+        };
+    </script>
     <script src="game.js"></script>
 </body>
 </html>
