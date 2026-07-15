@@ -125,7 +125,6 @@ const btnExitFuseSelect = document.getElementById('btn-exit-fuse-select');
 const btnFuseStart = document.getElementById('btn-fuse-start');
 const fuseInventoryList = document.getElementById('fuse-inventory-list');
 const fuseSelectedCount = document.getElementById('fuse-selected-count');
-const fuseProbTable = document.getElementById('fuse-prob-table');
 let fuseSelectedIndices = [];
 
 const shopModal = document.getElementById('shop-modal');
@@ -447,14 +446,12 @@ function updateFuseUI() {
         btnFuseInsert.style.opacity = '0.5';
         fuseStatusText.textContent = '융합 진행 중... ⚙️⚡';
         fuseStatusText.style.color = '#fbbf24';
-        fuseProbTable.classList.remove('hidden');
     } else {
         btnFuseInsert.disabled = false;
         btnFuseInsert.style.opacity = '1';
         fuseStatusText.textContent = '대기 중...';
         fuseStatusText.style.color = '#38bdf8';
         fuseTimerText.textContent = '';
-        fuseProbTable.classList.add('hidden');
     }
 }
 
