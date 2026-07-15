@@ -409,9 +409,22 @@ function renderShop() {
         buyBtn.className = 'action-btn shop-btn';
         
         if (gameState.ownedSkins.includes(effect.id)) {
-            buyBtn.textContent = '보유중';
-            buyBtn.disabled = true;
-            buyBtn.style.background = '#475569';
+            if (gameState.currentSkin === effect.id) {
+                buyBtn.textContent = '장착 중';
+                buyBtn.disabled = true;
+                buyBtn.style.background = '#475569';
+            } else {
+                buyBtn.textContent = '장착하기';
+                buyBtn.style.background = 'var(--secondary)';
+                buyBtn.style.color = 'white';
+                buyBtn.addEventListener('click', () => {
+                    gameState.currentSkin = effect.id;
+                    logEvent(`[${effect.name}] 이펙트를 장착했습니다!`, 'info');
+                    saveGame();
+                    renderShop();
+                    updateUI();
+                });
+            }
         } else {
             buyBtn.innerHTML = `${effect.price} 🏆`;
             buyBtn.style.background = 'var(--accent-gold)';
