@@ -863,22 +863,47 @@ btnModeBoss.addEventListener('click', () => {
 });
 
 btnModePvp.addEventListener('click', () => {
-    modeSelectModal.classList.add('hidden');
-    pvpSetupModal.classList.remove('hidden');
+    let playerName = localStorage.getItem('playerName');
+    if (!playerName) {
+        playerName = prompt('PVP 매칭에 사용할 닉네임을 입력해주세요!');
+        if (!playerName || playerName.trim() === '') return;
+        localStorage.setItem('playerName', playerName.trim());
+    }
+
+    const originalHtml = btnModePvp.innerHTML;
+    btnModePvp.innerHTML = '<div class="mode-name" style="font-size: 1.5rem; font-weight: bold; color:#fbbf24;">매칭 중...</div>';
+    btnModePvp.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+        btnModePvp.innerHTML = originalHtml;
+        btnModePvp.style.pointerEvents = 'auto';
+        modeSelectModal.classList.add('hidden');
+
+        // 30% chance to find no players
+        if (Math.random() < 0.3) {
+            alert('접속중인 플레이어가 없습니다.');
+            return;
+        }
+
+        // Match found (Simulated)
+        const botNames = ['검신', '초보자', '고인물', '타락한기사', '전설의용사', '빛의기사', '주왕'];
+        const opponentName = botNames[Math.floor(Math.random() * botNames.length)];
+        
+        let oppLevel = gameState.level + Math.floor(Math.random() * 5) - 2;
+        if (oppLevel < 0) oppLevel = 0;
+        if (oppLevel > 17) oppLevel = 17;
+
+        battleState.p1Name = localStorage.getItem('playerName');
+        battleState.p2Name = opponentName;
+        battleState.p2Level = oppLevel;
+
+        startBattle('pvp_sim');
+    }, 2000);
 });
 
-btnExitPvpSetup.addEventListener('click', () => {
-    pvpSetupModal.classList.add('hidden');
-});
-
-btnStartPvp.addEventListener('click', () => {
-    battleState.p1Name = pvpP1NameEl.value || '플레이어 1';
-    battleState.p2Name = pvpP2NameEl.value || '플레이어 2';
-    battleState.p2Level = parseInt(pvpP2LevelEl.value) || 0;
-    
-    pvpSetupModal.classList.add('hidden');
-    startBattle('pvp');
-});
+// 기존 pvpSetup 로직 삭제
+// btnExitPvpSetup.addEventListener('click', ...);
+// btnStartPvp.addEventListener('click', ...);
 
 btnFlee.addEventListener('click', () => {
     endBattle(false, '도망쳤습니다...');
@@ -983,12 +1008,23 @@ function startBattle(mode) {
         
         pvpTurnIndicator.classList.remove('hidden');
         pvpTurnIndicator.textContent = `▶ ${battleState.p1Name}의 턴!`;
+    } else if (mode === 'pvp_sim') {
+        battleTitle.textContent = '⚔️ 온라인 PVP ⚔️';
+        battleModeBadge.innerHTML = '<span style="background:var(--accent-gold);color:black;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVP</span>';
+        
+        battleState.enemyMaxHp = Math.floor(100 + Math.pow(1.5, battleState.p2Level) * 20);
+        battleState.enemyDamage = Math.floor(10 + Math.pow(1.4, battleState.p2Level) * 2);
+        
+        enemyCharacterEl.textContent = '👤';
+        enemyNameEl.textContent = `${battleState.p2Name} (+${battleState.p2Level}강)`;
+        
+        pvpTurnIndicator.classList.add('hidden'); // Simulated PVE style
     }
     
     battleState.enemyHp = battleState.enemyMaxHp;
     
     battlePlayerStatus.textContent = '전투 준비 완료!';
-    battleEnemyStatus.textContent = mode === 'pvp' ? '전투 준비 완료!' : '상대가 노려보고 있습니다.';
+    battleEnemyStatus.textContent = (mode === 'pvp' || mode === 'pvp_sim') ? '전투 준비 완료!' : '상대가 노려보고 있습니다.';
     
     updateBattleUI();
     battleModal.classList.remove('hidden');
@@ -1024,6 +1060,12 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 거액 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'pvp_sim') {
+            earnedTrophies = Math.floor(Math.random() * 20) + 10;
+            earnedMoney = Math.floor(Math.random() * 3000) + 1000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `PVP 승리! 트로피 ${earnedTrophies}점과 상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'pvp') {
             msg = `PVP 모드 승리! 플레이어의 승리입니다.`;
         }
