@@ -4,6 +4,7 @@ let gameState = {
     hp: 3000,
     maxHp: 3000,
     trophies: 0,
+    money: 0,
     hasHiddenSkill: false,
     hasDoubleSkill: false,
     currentSkin: 'default',
@@ -43,21 +44,21 @@ const swordNames = [
     "봉인된 검"            // 13
 ];
 
-// Probabilities (0 to 1) for upgrading TO the next level
-const probabilities = [
-    1.0,   // 0->1
-    0.9,   // 1->2
-    0.8,   // 2->3
-    0.7,   // 3->4
-    0.6,   // 4->5
-    0.5,   // 5->6
-    0.4,   // 6->7
-    0.3,   // 7->8
-    0.2,   // 8->9
-    0.1,   // 9->10
-    0.05,  // 10->11
-    0.01,  // 11->12
-    0.005  // 12->13
+// Enhance Costs (0 to 13)
+const enhanceCosts = [
+    100,    // 0->1
+    300,    // 1->2
+    800,    // 2->3
+    1500,   // 3->4
+    3000,   // 4->5
+    6000,   // 5->6
+    10000,  // 6->7
+    18000,  // 7->8
+    30000,  // 8->9
+    45000,  // 9->10
+    65000,  // 10->11
+    85000,  // 11->12
+    100000  // 12->13
 ];
 
 const levelDamage = [
@@ -67,10 +68,12 @@ const levelDamage = [
 // DOM Elements
 const hpValueEl = document.querySelector('.hp-value');
 const trophyCountEl = document.getElementById('trophy-count');
+const moneyCountEl = document.getElementById('money-count');
 const swordDisplay = document.getElementById('sword-display');
 const swordNameEl = document.getElementById('sword-name');
 const swordDamageEl = document.getElementById('sword-damage');
 const swordLevelEl = document.getElementById('sword-level');
+const enhanceCostEl = document.getElementById('enhance-cost');
 const eventLogEl = document.getElementById('event-log');
 const skillArea = document.getElementById('skill-area');
 
@@ -147,9 +150,16 @@ function logEvent(msg, type = 'info') {
 function updateUI() {
     hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
     trophyCountEl.textContent = gameState.trophies;
+    moneyCountEl.textContent = gameState.money.toLocaleString() + '원';
     
     swordNameEl.textContent = swordNames[gameState.level];
     swordLevelEl.textContent = `+${gameState.level}`;
+    
+    if (gameState.level >= 13) {
+        enhanceCostEl.textContent = '(최고 레벨 달성)';
+    } else {
+        enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
+    }
     
     // Total damage = level damage + any training bonuses
     const currentBase = levelDamage[gameState.level];
@@ -210,20 +220,22 @@ btnEnhance.addEventListener('click', () => {
         return;
     }
     
+    const cost = enhanceCosts[gameState.level];
+    
+    if (gameState.money < cost) {
+        logEvent(`❌ 돈이 부족합니다. (필요: ${cost.toLocaleString()}원)`, 'fail');
+        return;
+    }
+    
+    // Pay and 100% Enhance
+    gameState.money -= cost;
+    
     swordDisplay.classList.add('shake');
     setTimeout(() => swordDisplay.classList.remove('shake'), 500);
 
-    const prob = probabilities[gameState.level];
-    const roll = Math.random();
+    gameState.level++;
+    logEvent(`✨ 강화 성공! [${swordNames[gameState.level]}] (으)로 진화했습니다!`, 'success');
     
-    if (roll <= prob) {
-        // Success
-        gameState.level++;
-        logEvent(`✨ 강화 성공! [${swordNames[gameState.level]}] (으)로 진화했습니다!`, 'success');
-    } else {
-        // Fail
-        logEvent(`❌ 강화 실패... 변동이 없습니다.`, 'fail');
-    }
     updateUI();
 });
 
@@ -382,10 +394,27 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
         battleState.enemyHp = 0;
         updateBattleUI();
         
-        // Win
-        const earnedTrophies = Math.floor(Math.random() * 7) + 27; // 27 ~ 33
-        gameState.trophies += earnedTrophies;
-        endBattle(true, `승리했습니다! 트로피 ${earnedTrophies}점을 획득했습니다.`);
+        let earnedTrophies = 0;
+        let earnedMoney = 0;
+        let msg = '';
+        
+        if (battleState.mode === 'pve') {
+            earnedTrophies = Math.floor(Math.random() * 7) + 27; // 27 ~ 33
+            earnedMoney = Math.floor(Math.random() * 1500) + 500; // 500 ~ 2000
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `승리했습니다! 트로피 ${earnedTrophies}점과 ${earnedMoney.toLocaleString()}원을 획득했습니다.`;
+        } else if (battleState.mode === 'boss') {
+            earnedTrophies = Math.floor(Math.random() * 50) + 100; // 100 ~ 150
+            earnedMoney = 30000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 거액 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'pvp') {
+            msg = `PVP 모드 승리! 플레이어의 승리입니다.`;
+        }
+        
+        endBattle(true, msg);
         if (isWinCallback) isWinCallback();
         return;
     }

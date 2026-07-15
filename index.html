@@ -19,6 +19,10 @@
                 <span class="stat-label">🏆 트로피</span>
                 <span class="stat-value" id="trophy-count">0</span>
             </div>
+            <div class="stat-item">
+                <span class="stat-label">💰 소지 금액</span>
+                <span class="stat-value" id="money-count">0원</span>
+            </div>
         </header>
 
         <!-- Main Content Area -->
@@ -40,7 +44,7 @@
             <!-- Action Buttons -->
             <section id="actions">
                 <button id="btn-enhance" class="action-btn primary-btn">
-                    <span class="btn-icon">🔨</span> 강화하기
+                    <span class="btn-icon">🔨</span> 강화하기 <br><span id="enhance-cost" style="font-size: 0.9rem; font-weight:normal;">(비용: 100원)</span>
                 </button>
                 <button id="btn-train" class="action-btn">
                     <span class="btn-icon">🎯</span> 훈련장 가기
@@ -56,10 +60,10 @@
             <!-- Special Skill Area -->
             <section id="skill-area">
                 <button id="btn-skill" class="action-btn special-btn hidden">
-                    <span class="btn-icon">✨</span> 검기 스킬 사용!
+                    <span class="btn-icon">✨</span> 검기 스킬 사용! [E]
                 </button>
                 <button id="btn-skill-double" class="action-btn double-btn hidden">
-                    <span class="btn-icon">💥</span> 이중베기 사용!
+                    <span class="btn-icon">💥</span> 이중베기 사용! [R]
                 </button>
             </section>
 
@@ -70,30 +74,80 @@
             </section>
         </main>
 
+        <!-- ====== 전투 모드 선택 Modal ====== -->
+        <div id="mode-select-modal" class="modal hidden">
+            <div class="modal-content mode-select-content">
+                <h2>⚔️ 전투 모드 선택</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">원하는 전투 모드를 선택하세요!</p>
+                <div class="mode-buttons">
+                    <button id="btn-mode-pve" class="mode-btn pve-btn">
+                        <div class="mode-icon">🤖</div>
+                        <div class="mode-name">PVE 모드</div>
+                        <div class="mode-desc">AI와 1대1 결투<br>트로피 획득 가능</div>
+                    </button>
+                    <button id="btn-mode-pvp" class="mode-btn pvp-btn">
+                        <div class="mode-icon">👥</div>
+                        <div class="mode-name">PVP 모드</div>
+                        <div class="mode-desc">유저끼리 대결<br>같은 기기에서 교대 공격</div>
+                    </button>
+                    <button id="btn-mode-boss" class="mode-btn boss-btn">
+                        <div class="mode-icon">👹</div>
+                        <div class="mode-name">보스전 모드</div>
+                        <div class="mode-desc">HP 30,000의 거대 보스<br>막대한 트로피 획득!</div>
+                    </button>
+                </div>
+                <button id="btn-exit-mode-select" class="action-btn" style="width:100%; margin-top: 15px;">취소</button>
+            </div>
+        </div>
+
+        <!-- ====== PVP 플레이어2 이름 입력 Modal ====== -->
+        <div id="pvp-setup-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>👥 PVP 모드 설정</h2>
+                <div style="margin: 20px 0;">
+                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">플레이어 1 이름</label>
+                    <input id="pvp-p1-name" type="text" placeholder="플레이어 1" class="pvp-input" value="플레이어 1"/>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label style="display:block; margin-bottom: 8px; color: var(--text-secondary);">플레이어 2 강화 단계 (0~13)</label>
+                    <input id="pvp-p2-level" type="number" min="0" max="13" placeholder="0" class="pvp-input" value="0"/>
+                    <label style="display:block; margin-top: 12px; margin-bottom: 8px; color: var(--text-secondary);">플레이어 2 이름</label>
+                    <input id="pvp-p2-name" type="text" placeholder="플레이어 2" class="pvp-input" value="플레이어 2"/>
+                </div>
+                <button id="btn-start-pvp" class="action-btn danger-btn" style="width:100%;">⚔️ PVP 시작!</button>
+                <button id="btn-exit-pvp-setup" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
+            </div>
+        </div>
+
         <!-- Battle Modal -->
         <div id="battle-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>⚔️ 전투 중 ⚔️</h2>
+                <h2 id="battle-title">⚔️ 전투 중 ⚔️</h2>
+                <div id="battle-mode-badge"></div>
                 <p id="slice-instruction" class="blinking-text">마우스를 드래그하여 적을 베어 공격하세요!</p>
                 <div class="battle-arena" style="position: relative;">
                     <!-- Slicing Canvas -->
                     <canvas id="slice-canvas"></canvas>
                     
                     <div class="fighter player">
-                        <h3>나 (HP: <span id="battle-player-hp">3000</span>)</h3>
+                        <h3 id="battle-player-name">나 (HP: <span id="battle-player-hp">3000</span>)</h3>
                         <div class="health-bar"><div id="player-hp-fill" class="hp-fill"></div></div>
                         <p id="battle-player-status">대기 중...</p>
                     </div>
                     <div class="vs">VS</div>
                     <div class="fighter enemy">
                         <h3 id="enemy-name">무명 기사 (HP: <span id="battle-enemy-hp">???</span>)</h3>
-                        <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill"></div></div>
+                        <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill enemy-hp-bar"></div></div>
                         <div id="enemy-visual-container">
                             <div id="enemy-character">🧛‍♂️</div>
                         </div>
                         <p id="battle-enemy-status">대기 중...</p>
                     </div>
                 </div>
+
+                <!-- PVP Turn Indicator -->
+                <div id="pvp-turn-indicator" class="hidden" style="text-align:center; font-size:1.1rem; margin: 8px 0; font-weight:bold; color: #fbbf24;"></div>
+
                 <div class="battle-actions">
                     <button id="btn-attack" class="action-btn primary-btn hidden">공격하기!</button>
                     <button id="btn-flee" class="action-btn">도망치기</button>
@@ -123,7 +177,6 @@
                         <span class="milestone-req">100점</span>
                         <span class="milestone-reward">💥 이중베기 스킬 해금!</span>
                     </div>
-                    <!-- Future milestones can go here -->
                 </div>
                 <button id="btn-exit-trophy" class="action-btn">닫기</button>
             </div>
