@@ -189,35 +189,14 @@
         <!-- Shop Modal -->
         <div id="shop-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>🛒 이펙트 상점</h2>
-                <p>보유 트로피: <span id="shop-trophy-count" style="color:var(--accent-gold); font-weight:bold;">0</span></p>
-                <div id="shop-items-container" style="margin: 20px 0; display: flex; flex-direction: column; gap: 10px;">
-                    
-                    <div class="shop-item">
-                        <span class="item-name" style="color: white;">기본 베기</span>
-                        <button class="action-btn shop-btn" data-skin="default" data-price="0">장착 중</button>
-                    </div>
-                    
-                    <div class="shop-item">
-                        <span class="item-name" style="color: #f97316;">🔥 불꽃 베기</span>
-                        <button class="action-btn shop-btn" data-skin="flame" data-price="50">50 🏆</button>
-                    </div>
-                    
-                    <div class="shop-item">
-                        <span class="item-name" style="color: #22c55e;">🐍 맹독 베기</span>
-                        <button class="action-btn shop-btn" data-skin="poison" data-price="100">100 🏆</button>
-                    </div>
-                    
-                    <div class="shop-item">
-                        <span class="item-name" style="color: #06b6d4;">⚡ 번개 베기</span>
-                        <button class="action-btn shop-btn" data-skin="lightning" data-price="200">200 🏆</button>
-                    </div>
-                    
-                    <div class="shop-item">
-                        <span class="item-name" style="color: #a855f7;">🌌 암흑 베기</span>
-                        <button class="action-btn shop-btn" data-skin="dark" data-price="500">500 🏆</button>
-                    </div>
-
+                <h2>🛒 비밀 상점</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <p style="color:var(--accent-gold); margin: 0;">트로피: <span id="shop-trophy-count">0</span>점</p>
+                    <p id="shop-timer" style="color:var(--text-secondary); margin: 0; font-size: 0.9rem;">다음 갱신: 00:00</p>
+                </div>
+                
+                <div id="shop-items-container" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
+                    <!-- 상점 아이템 동적 렌더링 -->
                 </div>
                 <button id="btn-exit-shop" class="action-btn" style="width:100%;">닫기</button>
             </div>
@@ -227,10 +206,28 @@
         <div id="inventory-modal" class="modal hidden">
             <div class="modal-content">
                 <h2>🎒 인벤토리</h2>
-                <p style="color:var(--text-secondary); margin-bottom:10px;">보관된 검을 선택하여 꺼낼 수 있습니다.</p>
-                <div id="inventory-list" style="margin: 20px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
-                    <!-- Inventory items go here -->
+                
+                <div class="inv-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button id="tab-sword" class="action-btn" style="flex:1; background: var(--primary);">⚔️ 검</button>
+                    <button id="tab-effect" class="action-btn" style="flex:1; background: #334155;">✨ 이펙트</button>
                 </div>
+                
+                <!-- 검 인벤토리 -->
+                <div id="inventory-swords-section">
+                    <p style="color:var(--text-secondary); margin-bottom:10px;">보관된 검을 선택하여 꺼낼 수 있습니다.</p>
+                    <div id="inventory-list" style="margin: 10px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
+                        <!-- Inventory items go here -->
+                    </div>
+                </div>
+                
+                <!-- 이펙트 인벤토리 -->
+                <div id="inventory-effects-section" class="hidden">
+                    <p style="color:var(--text-secondary); margin-bottom:10px;">보유한 스킨/이펙트를 장착하세요.</p>
+                    <div id="effect-inventory-list" style="margin: 10px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
+                        <!-- Effect items go here -->
+                    </div>
+                </div>
+
                 <button id="btn-exit-inventory" class="action-btn" style="width:100%;">닫기</button>
             </div>
         </div>

@@ -10,7 +10,9 @@ let gameState = {
     hasHiddenSkill: false,
     hasDoubleSkill: false,
     currentSkin: 'default',
-    ownedSkins: ['default']
+    ownedSkins: ['default'],
+    shopNextReroll: 0,
+    currentShopItems: []
 };
 
 function saveGame() {
@@ -25,6 +27,8 @@ function loadGame() {
             gameState = { ...gameState, ...parsed };
             if (!gameState.inventory) gameState.inventory = [];
             if (!gameState.fuse) gameState.fuse = { active: false, endTime: 0, resultLevel: null };
+            if (!gameState.shopNextReroll) gameState.shopNextReroll = 0;
+            if (!gameState.currentShopItems) gameState.currentShopItems = [];
         } catch(e) {
             console.error("Save file corrupted");
         }
@@ -82,6 +86,42 @@ const levelDamage = [
     1000    // 16: 11강과 동급
 ];
 
+const gradeColors = {
+    '희귀': '#3b82f6',
+    '영웅': '#a855f7',
+    '전설': '#eab308',
+    '신화': '#ef4444',
+    '비밀': '#10b981'
+};
+
+const allEffectsPool = [
+    // 희귀
+    { id: 'ice', name: '서리한의 한기', grade: '희귀', color: 'rgba(59, 130, 246, 0.8)', price: 100 },
+    { id: 'wind', name: '칼날 바람', grade: '희귀', color: 'rgba(16, 185, 129, 0.8)', price: 100 },
+    { id: 'earth', name: '대지의 울림', grade: '희귀', color: 'rgba(217, 119, 6, 0.8)', price: 100 },
+    // 영웅
+    { id: 'poison', name: '맹독의 늪', grade: '영웅', color: 'rgba(34, 197, 94, 0.8)', price: 300 },
+    { id: 'blood', name: '핏빛 베기', grade: '영웅', color: 'rgba(220, 38, 38, 0.8)', price: 300 },
+    { id: 'shadow', name: '그림자 일격', grade: '영웅', color: 'rgba(71, 85, 105, 0.8)', price: 300 },
+    // 전설
+    { id: 'light', name: '천상의 빛', grade: '전설', color: 'rgba(250, 204, 21, 0.8)', price: 1000 },
+    { id: 'lightning', name: '뇌전의 분노', grade: '전설', color: 'rgba(14, 165, 233, 0.8)', price: 1000 },
+    // 신화
+    { id: 'dragon', name: '드래곤 브레스', grade: '신화', color: 'rgba(249, 115, 22, 0.9)', price: 3000 },
+    { id: 'void', name: '공허의 틈새', grade: '신화', color: 'rgba(147, 51, 234, 0.9)', price: 3000 },
+    // 비밀
+    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 10000 }
+];
+
+// Fallback old colors for backwards compatibility
+const skinColors = {
+    'default': 'rgba(239, 68, 68, 0.8)',
+    'flame': 'rgba(249, 115, 22, 0.8)',
+    'poison': 'rgba(34, 197, 94, 0.8)',
+    'lightning': 'rgba(6, 182, 212, 0.8)',
+    'dark': 'rgba(168, 85, 247, 0.8)'
+};
+
 // DOM Elements
 const hpValueEl = document.querySelector('.hp-value');
 const trophyCountEl = document.getElementById('trophy-count');
@@ -130,7 +170,14 @@ let fuseSelectedIndices = [];
 const shopModal = document.getElementById('shop-modal');
 const btnExitShop = document.getElementById('btn-exit-shop');
 const shopTrophyCount = document.getElementById('shop-trophy-count');
-const shopBtns = document.querySelectorAll('.shop-btn');
+const shopItemsContainer = document.getElementById('shop-items-container');
+const shopTimerEl = document.getElementById('shop-timer');
+
+const tabSword = document.getElementById('tab-sword');
+const tabEffect = document.getElementById('tab-effect');
+const invSwordsSection = document.getElementById('inventory-swords-section');
+const invEffectsSection = document.getElementById('inventory-effects-section');
+const effectInventoryList = document.getElementById('effect-inventory-list');
 
 const trainingModal = document.getElementById('training-modal');
 const btnExitTrain = document.getElementById('btn-exit-train');
@@ -259,17 +306,6 @@ function updateUI() {
     
     // Update shop UI
     shopTrophyCount.textContent = gameState.trophies;
-    shopBtns.forEach(btn => {
-        const skin = btn.dataset.skin;
-        if (gameState.currentSkin === skin) {
-            btn.textContent = '장착 중';
-            btn.classList.add('equipped');
-        } else if (gameState.ownedSkins.includes(skin)) {
-            btn.textContent = '장착하기';
-            btn.classList.remove('equipped');
-        }
-    });
-    
     saveGame();
 }
 
@@ -329,38 +365,90 @@ btnExitTrophy.addEventListener('click', () => {
 });
 
 // Shop Logic
+function rerollShop() {
+    gameState.currentShopItems = [];
+    const numItems = 4;
+    
+    for (let i = 0; i < numItems; i++) {
+        const roll = Math.random() * 100;
+        let selectedGrade = '희귀';
+        
+        if (roll > 50 && roll <= 80) selectedGrade = '영웅';
+        else if (roll > 80 && roll <= 95) selectedGrade = '전설';
+        else if (roll > 95 && roll <= 99.9) selectedGrade = '신화';
+        else if (roll > 99.9) selectedGrade = '비밀';
+        
+        const pool = allEffectsPool.filter(e => e.grade === selectedGrade);
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        gameState.currentShopItems.push(randomItem.id);
+    }
+    
+    gameState.shopNextReroll = Date.now() + 5 * 60 * 1000;
+    saveGame();
+    renderShop();
+}
+
+function renderShop() {
+    shopItemsContainer.innerHTML = '';
+    
+    gameState.currentShopItems.forEach(id => {
+        const effect = allEffectsPool.find(e => e.id === id);
+        if (!effect) return;
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.style.borderLeft = `4px solid ${gradeColors[effect.grade]}`;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = gradeColors[effect.grade];
+        nameSpan.style.textShadow = effect.grade === '비밀' ? '0 0 5px #fff' : 'none';
+        nameSpan.innerHTML = `[${effect.grade}] ${effect.name}`;
+        
+        const buyBtn = document.createElement('button');
+        buyBtn.className = 'action-btn shop-btn';
+        
+        if (gameState.ownedSkins.includes(effect.id)) {
+            buyBtn.textContent = '보유중';
+            buyBtn.disabled = true;
+            buyBtn.style.background = '#475569';
+        } else {
+            buyBtn.innerHTML = `${effect.price} 🏆`;
+            buyBtn.style.background = 'var(--accent-gold)';
+            buyBtn.style.color = 'black';
+            
+            buyBtn.addEventListener('click', () => {
+                if (gameState.trophies >= effect.price) {
+                    gameState.trophies -= effect.price;
+                    gameState.ownedSkins.push(effect.id);
+                    logEvent(`[${effect.name}] 이펙트를 구매했습니다! 인벤토리를 확인하세요.`, 'success');
+                    saveGame();
+                    renderShop();
+                    updateUI();
+                } else {
+                    logEvent('트로피가 부족합니다!', 'fail');
+                }
+            });
+        }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(buyBtn);
+        shopItemsContainer.appendChild(div);
+    });
+}
+
 btnShop.addEventListener('click', () => {
     updateUI();
+    if (!gameState.shopNextReroll || Date.now() > gameState.shopNextReroll || gameState.currentShopItems.length === 0) {
+        rerollShop();
+    } else {
+        renderShop();
+    }
     shopModal.classList.remove('hidden');
 });
 
 btnExitShop.addEventListener('click', () => {
     shopModal.classList.add('hidden');
-});
-
-shopBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const skin = e.target.dataset.skin;
-        const price = parseInt(e.target.dataset.price);
-        
-        if (gameState.ownedSkins.includes(skin)) {
-            // Equip
-            gameState.currentSkin = skin;
-            logEvent(`스킨 장착 완료!`, 'info');
-            updateUI();
-        } else {
-            // Buy
-            if (gameState.trophies >= price) {
-                gameState.trophies -= price;
-                gameState.ownedSkins.push(skin);
-                gameState.currentSkin = skin;
-                logEvent(`새로운 이펙트 스킨 구매 및 장착 완료!`, 'success');
-                updateUI();
-            } else {
-                logEvent('트로피가 부족합니다!', 'fail');
-            }
-        }
-    });
 });
 
 // Inventory Logic
@@ -371,8 +459,24 @@ btnStash.addEventListener('click', () => {
     updateUI();
 });
 
+// Inventory Tabs
+tabSword.addEventListener('click', () => {
+    tabSword.style.background = 'var(--primary)';
+    tabEffect.style.background = '#334155';
+    invSwordsSection.classList.remove('hidden');
+    invEffectsSection.classList.add('hidden');
+});
+
+tabEffect.addEventListener('click', () => {
+    tabEffect.style.background = 'var(--primary)';
+    tabSword.style.background = '#334155';
+    invEffectsSection.classList.remove('hidden');
+    invSwordsSection.classList.add('hidden');
+});
+
 btnInventory.addEventListener('click', () => {
     renderInventory();
+    renderEffectInventory();
     inventoryModal.classList.remove('hidden');
 });
 
@@ -380,10 +484,61 @@ btnExitInventory.addEventListener('click', () => {
     inventoryModal.classList.add('hidden');
 });
 
+function renderEffectInventory() {
+    effectInventoryList.innerHTML = '';
+    
+    // Add default effect
+    if (!gameState.ownedSkins.includes('default')) {
+        gameState.ownedSkins.unshift('default');
+    }
+    
+    gameState.ownedSkins.forEach(id => {
+        let name = '기본 베기';
+        let colorStr = 'white';
+        let gradeStr = '기본';
+        
+        const eff = allEffectsPool.find(e => e.id === id);
+        if (eff) {
+            name = eff.name;
+            colorStr = gradeColors[eff.grade];
+            gradeStr = eff.grade;
+        }
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.style.borderLeft = `4px solid ${colorStr}`;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = colorStr;
+        nameSpan.textContent = `[${gradeStr}] ${name}`;
+        
+        const equipBtn = document.createElement('button');
+        equipBtn.className = 'action-btn shop-btn';
+        
+        if (gameState.currentSkin === id) {
+            equipBtn.textContent = '장착 중';
+            equipBtn.classList.add('equipped');
+        } else {
+            equipBtn.textContent = '장착하기';
+            equipBtn.addEventListener('click', () => {
+                gameState.currentSkin = id;
+                logEvent(`[${name}] 이펙트를 장착했습니다!`, 'success');
+                saveGame();
+                renderEffectInventory();
+            });
+        }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(equipBtn);
+        effectInventoryList.appendChild(div);
+    });
+}
+
 function renderInventory() {
     inventoryList.innerHTML = '';
     if (gameState.inventory.length === 0) {
-        inventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">인벤토리가 비어 있습니다.</p>';
+        inventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">보관된 검이 없습니다.</p>';
         return;
     }
     
@@ -544,11 +699,32 @@ btnFuseStart.addEventListener('click', () => {
     logEvent('🔥 퓨즈머신 가동 시작! 5분 뒤에 완료됩니다.', 'success');
 });
 
-// 타이머 루프
 setInterval(() => {
+    const now = Date.now();
+    
+    // Shop Reroll Timer
+    if (gameState.shopNextReroll) {
+        const shopRemain = gameState.shopNextReroll - now;
+        if (shopRemain <= 0) {
+            if (!shopModal.classList.contains('hidden')) {
+                rerollShop();
+            } else {
+                gameState.currentShopItems = []; // Force reroll next time opened
+                gameState.shopNextReroll = 0;
+            }
+        } else {
+            if (!shopModal.classList.contains('hidden')) {
+                const totalSec = Math.ceil(shopRemain / 1000);
+                const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+                const s = (totalSec % 60).toString().padStart(2, '0');
+                shopTimerEl.textContent = `다음 갱신: ${m}:${s}`;
+            }
+        }
+    }
+    
+    // Fuse Timer
     if (!gameState.fuse.active) return;
     
-    const now = Date.now();
     const remain = gameState.fuse.endTime - now;
     
     if (remain <= 0) {
@@ -872,7 +1048,9 @@ function drawSlice(e) {
         sliceCtx.lineTo(slicePath[i].x, slicePath[i].y);
     }
     
-    const currentColor = skinColors[gameState.currentSkin] || skinColors['default'];
+    const eff = allEffectsPool.find(e => e.id === gameState.currentSkin);
+    const currentColor = eff ? eff.color : (skinColors[gameState.currentSkin] || skinColors['default']);
+    
     sliceCtx.strokeStyle = currentColor;
     sliceCtx.lineWidth = 4;
     sliceCtx.lineCap = 'round';
@@ -963,7 +1141,9 @@ function drawTrainSlice(e) {
         trainSliceCtx.lineTo(trainSlicePath[i].x, trainSlicePath[i].y);
     }
     
-    const currentColor = skinColors[gameState.currentSkin] || skinColors['default'];
+    const eff = allEffectsPool.find(e => e.id === gameState.currentSkin);
+    const currentColor = eff ? eff.color : (skinColors[gameState.currentSkin] || skinColors['default']);
+    
     trainSliceCtx.strokeStyle = currentColor;
     trainSliceCtx.lineWidth = 4;
     trainSliceCtx.lineCap = 'round';
