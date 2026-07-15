@@ -125,6 +125,7 @@ const btnExitFuseSelect = document.getElementById('btn-exit-fuse-select');
 const btnFuseStart = document.getElementById('btn-fuse-start');
 const fuseInventoryList = document.getElementById('fuse-inventory-list');
 const fuseSelectedCount = document.getElementById('fuse-selected-count');
+const fuseProbTable = document.getElementById('fuse-prob-table');
 let fuseSelectedIndices = [];
 
 const shopModal = document.getElementById('shop-modal');
@@ -446,12 +447,14 @@ function updateFuseUI() {
         btnFuseInsert.style.opacity = '0.5';
         fuseStatusText.textContent = '융합 진행 중... ⚙️⚡';
         fuseStatusText.style.color = '#fbbf24';
+        fuseProbTable.classList.remove('hidden');
     } else {
         btnFuseInsert.disabled = false;
         btnFuseInsert.style.opacity = '1';
         fuseStatusText.textContent = '대기 중...';
         fuseStatusText.style.color = '#38bdf8';
         fuseTimerText.textContent = '';
+        fuseProbTable.classList.add('hidden');
     }
 }
 
@@ -473,19 +476,27 @@ function renderFuseInventory() {
         validItemsFound = true;
         
         const div = document.createElement('div');
-        div.className = 'shop-item fuse-item-selectable';
-        if (fuseSelectedIndices.includes(index)) {
-            div.classList.add('fuse-item-selected');
-        }
+        div.className = 'shop-item';
         
         const nameSpan = document.createElement('span');
         nameSpan.className = 'item-name';
         nameSpan.style.color = 'white';
         nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
         
-        div.appendChild(nameSpan);
+        const selBtn = document.createElement('button');
+        selBtn.className = 'action-btn shop-btn';
         
-        div.addEventListener('click', () => {
+        const isSelected = fuseSelectedIndices.includes(index);
+        if (isSelected) {
+            div.classList.add('fuse-item-selected');
+            selBtn.textContent = '선택 취소';
+            selBtn.style.background = 'var(--danger)';
+        } else {
+            selBtn.textContent = '선택하기';
+            selBtn.style.background = 'var(--secondary)';
+        }
+        
+        selBtn.addEventListener('click', () => {
             const selIdx = fuseSelectedIndices.indexOf(index);
             if (selIdx > -1) {
                 fuseSelectedIndices.splice(selIdx, 1);
@@ -499,6 +510,8 @@ function renderFuseInventory() {
             renderFuseInventory();
         });
         
+        div.appendChild(nameSpan);
+        div.appendChild(selBtn);
         fuseInventoryList.appendChild(div);
     });
     
