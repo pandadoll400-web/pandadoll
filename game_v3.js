@@ -1637,7 +1637,15 @@ function showFireworks() {
 }
 
 
-
+if (!localStorage.getItem('giveaway_fuse_luck_5m_v5')) {
+    triggerLuckEvent(5);
+    saveGame();
+    localStorage.setItem('giveaway_fuse_luck_5m_v5', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 운영자의 깜짝 선물! 퓨즈 럭 5분이 발동되었습니다!', 'success');
+    }, 1000);
+}
 
 updateUI();
 } catch (e) {
