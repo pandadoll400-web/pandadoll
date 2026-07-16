@@ -950,7 +950,7 @@ btnFuseStart.addEventListener('click', () => {
         }
     }
     
-    // 타이머 없음 (즉시 완료)
+    // 3분 소요 타이머 적용
     gameState.fuse.active = true;
     gameState.fuse.endTime = Date.now() + 180000; // 3분 소요
     gameState.fuse.resultLevel = resultLvl;
