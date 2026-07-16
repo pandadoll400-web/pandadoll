@@ -1465,8 +1465,8 @@ loadGame();
 // 웰컴 토스트 로직
 const welcomeToast = document.getElementById('welcome-toast');
 if (welcomeToast) {
-    if (!localStorage.getItem('seen_toast_10_swords')) {
-        localStorage.setItem('seen_toast_10_swords', 'true');
+    if (!localStorage.getItem('seen_toast_more')) {
+        localStorage.setItem('seen_toast_more', 'true');
         welcomeToast.style.opacity = '1';
         setTimeout(() => {
             welcomeToast.style.opacity = '0';
@@ -1585,6 +1585,17 @@ if (!localStorage.getItem('giveaway_2_level11_swords')) {
         showFireworks();
         logEvent('🎁 긴급 보상! 11강 검 2개가 추가로 지급되었습니다!', 'success');
     }, 2000); // 10강 지급 이벤트 1초 뒤에 띄움
+}
+
+// 10강 검 2개 + 11강 검 2개 지급 (최초 1회)
+if (!localStorage.getItem('giveaway_mixed_swords_4')) {
+    gameState.inventory.push(10, 10, 11, 11);
+    localStorage.setItem('giveaway_mixed_swords_4', 'true');
+    saveGame();
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 보너스 보상! 10강 검 2개, 11강 검 2개가 지급되었습니다!', 'success');
+    }, 3000); 
 }
 
 // 럭 이벤트 발동 (최초 1회)
