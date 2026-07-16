@@ -270,10 +270,15 @@ const luckEventUi = document.getElementById('luck-event-ui');
 const luckTimerText = document.getElementById('luck-timer-text');
 
 window.triggerLuckEvent = function(minutes) {
-    gameState.luckEventEndTime = Date.now() + (minutes * 60 * 1000);
+    const addMs = minutes * 60 * 1000;
+    if (gameState.luckEventEndTime > Date.now()) {
+        gameState.luckEventEndTime += addMs;
+    } else {
+        gameState.luckEventEndTime = Date.now() + addMs;
+    }
     saveGame();
     luckEventUi.classList.remove('hidden');
-    logEvent(`🍀 특별 이벤트! ${minutes}분 동안 퓨즈머신 성공 확률이 대폭 증가합니다!`, 'success');
+    logEvent(`🍀 럭 이벤트 시간이 ${minutes}분 추가되었습니다!`, 'success');
 };
 
 // Slicing Canvas
@@ -1598,7 +1603,11 @@ if (!localStorage.getItem('giveaway_mixed_swords_4')) {
     }, 3000); 
 }
 
-// 럭 이벤트 발동 (최초 1회)
+// 럭 이벤트 3분 추가 발동 (최초 1회)
+if (!localStorage.getItem('luck_event_triggered_3m')) {
+    triggerLuckEvent(3);
+    localStorage.setItem('luck_event_triggered_3m', 'true');
+}
 if (!localStorage.getItem('luck_event_triggered_1')) {
     triggerLuckEvent(10);
     localStorage.setItem('luck_event_triggered_1', 'true');
