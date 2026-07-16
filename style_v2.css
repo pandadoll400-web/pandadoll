@@ -681,6 +681,9 @@ h1, h2, h3, .stat-value, .btn-icon {
 }
 
 /* 18: 67단검 (Twin Daggers) */
+.level-18 .sword-visual {
+    height: 180px; /* Increase height so huge blades don't cut off */
+}
 .level-18 #sword-name {
     color: #ff007f;
     text-shadow: 0 0 10px #ff007f, 0 0 20px #f43f5e;
@@ -692,21 +695,21 @@ h1, h2, h3, .stat-value, .btn-icon {
     background: transparent;
     box-shadow: none;
     width: 100%;
-    height: 80px;
+    height: 120px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 30px; /* Match gap with hilt */
+    gap: 30px;
 }
 /* Left Dagger (Number 6) */
 .level-18 #sword-blade::before {
     content: '6';
-    font-size: 60px;
+    font-size: 90px;
     font-family: 'Impact', sans-serif;
     font-weight: 900;
     color: #60a5fa;
     text-shadow: 0 0 8px #3b82f6, 2px 2px 0px #1e3a8a;
-    transform: scaleY(1.3) rotate(-15deg) translateY(4px);
+    transform: scaleY(1.3) rotate(-15deg) translateY(6px);
     transform-origin: bottom center;
     line-height: 1;
     animation: bladeGlowBlue 1.5s infinite alternate;
@@ -714,13 +717,14 @@ h1, h2, h3, .stat-value, .btn-icon {
 /* Right Dagger (Number 7) */
 .level-18 #sword-blade::after {
     content: '7';
-    font-size: 60px;
+    font-size: 90px;
     font-family: 'Impact', sans-serif;
     font-weight: 900;
     color: #f472b6;
     text-shadow: 0 0 8px #ec4899, 2px 2px 0px #831843;
-    transform: scaleY(1.3) rotate(15deg) translateY(4px);
-    transform-origin: bottom center;
+    /* 7's stem is on the left side of the font box */
+    transform: scaleY(1.3) rotate(15deg) translateY(6px);
+    transform-origin: bottom left;
     line-height: 1;
     animation: bladeGlowPink 1.5s infinite alternate;
 }
@@ -738,15 +742,15 @@ h1, h2, h3, .stat-value, .btn-icon {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 30px; /* Match gap with blade */
+    gap: 30px; 
     margin-top: 0;
     z-index: 1;
 }
 /* Left handle (for 6) */
 .level-18 #sword-hilt::before {
     content: '';
-    width: 16px;
-    height: 45px;
+    width: 20px;
+    height: 50px;
     background: linear-gradient(135deg, #000, #1e3a8a, #3b82f6, #000);
     background-size: 200% 200%;
     border: 2px solid #60a5fa;
@@ -759,15 +763,16 @@ h1, h2, h3, .stat-value, .btn-icon {
 /* Right handle (for 7) */
 .level-18 #sword-hilt::after {
     content: '';
-    width: 16px;
-    height: 45px;
+    width: 20px;
+    height: 50px;
     background: linear-gradient(135deg, #000, #831843, #ec4899, #000);
     background-size: 200% 200%;
     border: 2px solid #f472b6;
     border-radius: 2px 2px 8px 8px;
     box-shadow: inset 0 0 10px #000, 0 0 15px #ec4899, 0 0 5px #fff;
     transform: rotate(15deg);
-    transform-origin: top center;
+    /* Match the 7 blade's origin so they hinge at the exact same spot */
+    transform-origin: top left;
     animation: hiltGlowPink 1.5s infinite alternate;
 }
 
