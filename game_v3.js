@@ -1520,6 +1520,7 @@ if (!localStorage.getItem('compensation_sword_10')) {
 }
 
 updateUI();
+activateLuckEvent(10);
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
 }
