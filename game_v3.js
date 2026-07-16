@@ -784,7 +784,7 @@ function updateFuseProbTable() {
         const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
         
         if (isHighTier) {
-            if (luckEventEndTime > 0) {
+            if (gameState.luckEventEndTime > 0) {
                 container.innerHTML = `
                     <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (7~12강) 🍀</h4>
                     <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
@@ -818,7 +818,7 @@ function updateFuseProbTable() {
                 `;
             }
         } else {
-            if (luckEventEndTime > 0) {
+            if (gameState.luckEventEndTime > 0) {
                 container.innerHTML = `
                     <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (1~6강) 🍀</h4>
                     <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
