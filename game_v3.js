@@ -1609,16 +1609,6 @@ if (gameState.fuse && gameState.fuse.active) {
     gameState.fuse.endTime = Date.now() - 1000; // Auto complete pending fuse
 }
 
-// 10강 검 보상 (최초 1회)
-if (!localStorage.getItem('compensation_sword_10')) {
-    gameState.inventory.push(10);
-    localStorage.setItem('compensation_sword_10', 'true');
-    saveGame();
-    setTimeout(() => {
-        logEvent('🎁 특별 이벤트! 10강 검(최종의검)이 인벤토리에 지급되었습니다!', 'success');
-    }, 3500);
-}
-
 function showFireworks() {
     const fwContainer = document.createElement('div');
     fwContainer.style.position = 'fixed';
@@ -1656,115 +1646,6 @@ function showFireworks() {
     }, 2000); 
 }
 
-// 모든 유저 10강 칼 4개 지급 이벤트 (최초 1회)
-if (!localStorage.getItem('giveaway_4_level10_swords')) {
-    gameState.inventory.push(10, 10, 10, 10);
-    localStorage.setItem('giveaway_4_level10_swords', 'true');
-    saveGame();
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎉 서버 폭주 기념! 모든 유저에게 10강 검 4개가 지급되었습니다!', 'success');
-    }, 1000);
-}
-
-// 11강 검 2개 추가 지급 이벤트 (최초 1회)
-if (!localStorage.getItem('giveaway_2_level11_swords')) {
-    gameState.inventory.push(11, 11);
-    localStorage.setItem('giveaway_2_level11_swords', 'true');
-    saveGame();
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 긴급 보상! 11강 검 2개가 추가로 지급되었습니다!', 'success');
-    }, 2000); // 10강 지급 이벤트 1초 뒤에 띄움
-}
-
-// 10강 검 2개 + 11강 검 2개 지급 (최초 1회)
-if (!localStorage.getItem('giveaway_mixed_swords_4')) {
-    gameState.inventory.push(10, 10, 11, 11);
-    localStorage.setItem('giveaway_mixed_swords_4', 'true');
-    saveGame();
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 보너스 보상! 10강 검 2개, 11강 검 2개가 지급되었습니다!', 'success');
-    }, 3000); 
-}
-
-// 10강 검 2개 추가 지급 (최초 1회)
-if (!localStorage.getItem('giveaway_2_level10_swords')) {
-    gameState.inventory.push(10, 10);
-    localStorage.setItem('giveaway_2_level10_swords', 'true');
-    saveGame();
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 운영자의 선물! 10강 검 2개가 지급되었습니다!', 'success');
-    }, 4000); 
-}
-
-// 6강, 7강 지급 (최초 1회)
-if (!localStorage.getItem('giveaway_6_7_swords')) {
-    gameState.inventory.push(6, 7);
-    localStorage.setItem('giveaway_6_7_swords', 'true');
-    saveGame();
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 깜짝 선물! 6강 검, 7강 검이 지급되었습니다!', 'success');
-    }, 5000); 
-}
-
-// 럭 이벤트 3분 추가 발동 (최초 1회)
-if (!localStorage.getItem('luck_event_triggered_3m')) {
-    triggerLuckEvent(3);
-    localStorage.setItem('luck_event_triggered_3m', 'true');
-}
-if (!localStorage.getItem('luck_event_triggered_1')) {
-    triggerLuckEvent(10);
-    localStorage.setItem('luck_event_triggered_1', 'true');
-}
-
-if (!localStorage.getItem('giveaway_11_swords_x2_luck_2m_v3')) {
-    gameState.inventory.push(11, 11);
-    triggerLuckEvent(2);
-    saveGame();
-    localStorage.setItem('giveaway_11_swords_x2_luck_2m_v3', 'true');
-}
-
-if (!localStorage.getItem('luck_event_triggered_3m_v2')) {
-    triggerLuckEvent(3);
-    saveGame();
-    localStorage.setItem('luck_event_triggered_3m_v2', 'true');
-}
-if (!localStorage.getItem('giveaway_money_50000')) {
-    gameState.money += 50000;
-    saveGame();
-    localStorage.setItem('giveaway_money_50000', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('💸 깜짝 이벤트! 50,000 골드가 지급되었습니다!', 'success');
-    }, 1000);
-}
-
-if (!localStorage.getItem('giveaway_swords_13_6_7')) {
-    gameState.inventory.push(13, 6, 7);
-    saveGame();
-    localStorage.setItem('giveaway_swords_13_6_7', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 선물! 13강 검, 6강 검, 7강 검이 지급되었습니다!', 'success');
-    }, 1000);
-}
-
-if (!localStorage.getItem('luck_event_triggered_10m_v2')) {
-    triggerLuckEvent(10);
-    saveGame();
-    localStorage.setItem('luck_event_triggered_10m_v2', 'true');
-}
-
-if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
-    triggerLuckEvent(15);
-    saveGame();
-    localStorage.setItem('luck_event_triggered_15m_v3', 'true');
-}
-
 // "해적 업데이트 좋은데요!!" 텍스트 표시 로직
 const overlay67 = document.createElement('div');
 overlay67.textContent = '해적 업데이트 좋은데요!!';
@@ -1775,64 +1656,6 @@ setTimeout(() => {
     setTimeout(() => overlay67.remove(), 1000);
 }, 2000);
 
-if (!localStorage.getItem('giveaway_swords_6_7_v4')) {
-    gameState.inventory.push(6, 7);
-    saveGame();
-    localStorage.setItem('giveaway_swords_6_7_v4', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 선물! 6강 검과 7강 검이 지급되었습니다!', 'success');
-    }, 1000);
-}
-
-if (!localStorage.getItem('luck_event_triggered_20m_v4')) {
-    triggerLuckEvent(20);
-    saveGame();
-    localStorage.setItem('luck_event_triggered_20m_v4', 'true');
-}
-
-if (!localStorage.getItem('giveaway_11_swords_x4')) {
-    gameState.inventory.push(11, 11, 11, 11);
-    saveGame();
-    localStorage.setItem('giveaway_11_swords_x4', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 보상! 11강 검 4개가 지급되었습니다!', 'success');
-    }, 1500);
-}
-
-if (!localStorage.getItem('giveaway_trophy_luck_10m')) {
-    triggerTrophyLuckEvent(10);
-    saveGame();
-    localStorage.setItem('giveaway_trophy_luck_10m', 'true');
-}
-
-if (!localStorage.getItem('giveaway_both_luck_10m')) {
-    triggerLuckEvent(10);
-    triggerTrophyLuckEvent(10);
-    saveGame();
-    localStorage.setItem('giveaway_both_luck_10m', 'true');
-}
-
-if (!localStorage.getItem('giveaway_10_swords_x6')) {
-    gameState.inventory.push(10, 10, 10, 10, 10, 10);
-    saveGame();
-    localStorage.setItem('giveaway_10_swords_x6', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 보상! 10강 검 6개가 지급되었습니다!', 'success');
-    }, 1500);
-}
-
-if (!localStorage.getItem('giveaway_11_swords_x2')) {
-    gameState.inventory.push(11, 11);
-    saveGame();
-    localStorage.setItem('giveaway_11_swords_x2', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 해적 업데이트 기념! 11강 검 2개가 지급되었습니다!', 'success');
-    }, 1500);
-}
 
 updateUI();
 } catch (e) {
