@@ -337,9 +337,7 @@ function logEvent(msg, type = 'info') {
 }
 
 function updateUI() {
-    if (gameState.money > 500000) {
-        gameState.money = 500000;
-    }
+    // Removed money limit
     hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
     trophyCountEl.textContent = gameState.trophies;
     moneyCountEl.textContent = gameState.money.toLocaleString() + '원';
@@ -676,7 +674,7 @@ function renderInventory() {
         sellBtn.addEventListener('click', () => {
             gameState.inventory.splice(index, 1);
             gameState.money += sellPrice;
-            if (gameState.money > 500000) gameState.money = 500000;
+            // Removed money limit
             saveGame();
             logEvent(`[${swordNames[lvl]}] (을)를 판매하여 ${sellPrice.toLocaleString()}원을 얻었습니다!`, 'success');
             renderInventory();
