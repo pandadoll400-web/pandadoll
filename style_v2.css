@@ -692,7 +692,7 @@ h1, h2, h3, .stat-value, .btn-icon {
     position: relative;
     background: transparent;
     box-shadow: none;
-    width: 120px;
+    width: 160px;
     height: 70px;
     display: flex;
     justify-content: center;
@@ -701,7 +701,7 @@ h1, h2, h3, .stat-value, .btn-icon {
 .level-18 #sword-blade::before {
     content: '6';
     position: absolute;
-    left: 28px;
+    left: 45px;
     bottom: -8px;
     font-size: 60px;
     font-family: 'Impact', sans-serif;
@@ -716,7 +716,7 @@ h1, h2, h3, .stat-value, .btn-icon {
 .level-18 #sword-blade::after {
     content: '7';
     position: absolute;
-    right: 28px;
+    right: 45px;
     bottom: -8px;
     font-size: 60px;
     font-family: 'Impact', sans-serif;
@@ -736,7 +736,7 @@ h1, h2, h3, .stat-value, .btn-icon {
 .level-18 #sword-hilt {
     background: transparent;
     box-shadow: none;
-    width: 120px;
+    width: 160px;
     height: 35px;
     position: relative;
     border-radius: 0;
@@ -746,7 +746,7 @@ h1, h2, h3, .stat-value, .btn-icon {
 .level-18 #sword-hilt::before {
     content: '';
     position: absolute;
-    left: 34px;
+    left: 50px;
     top: 0px;
     width: 14px;
     height: 35px;
@@ -761,7 +761,7 @@ h1, h2, h3, .stat-value, .btn-icon {
 .level-18 #sword-hilt::after {
     content: '';
     position: absolute;
-    right: 34px;
+    right: 50px;
     top: 0px;
     width: 14px;
     height: 35px;
