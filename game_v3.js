@@ -162,8 +162,9 @@ const allEffectsPool = [
     // 신화
     { id: 'dragon', name: '드래곤 브레스', grade: '신화', color: 'rgba(249, 115, 22, 0.9)', price: 250000 },
     { id: 'void', name: '공허의 틈새', grade: '신화', color: 'rgba(147, 51, 234, 0.9)', price: 250000 },
-    // 비밀
-    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 400000 }
+    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 400000 },
+    // 한정
+    { id: 'absolute', name: '절대자의 권능', grade: '한정', color: 'rgba(255, 0, 128, 1)', price: 100000 }
 ];
 
 // Fallback old colors for backwards compatibility
@@ -473,7 +474,12 @@ function renderShop() {
     shopItemsContainer.innerHTML = '';
     
     // 무조건 상점에 한정판 이펙트 추가
-    gameState.currentShopItems.forEach(id => {
+    let shopItemsToRender = [...gameState.currentShopItems];
+    if (!shopItemsToRender.includes('absolute')) {
+        shopItemsToRender.push('absolute');
+    }
+    
+    shopItemsToRender.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
         if (!effect) return;
         
