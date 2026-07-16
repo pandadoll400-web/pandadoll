@@ -279,6 +279,7 @@ const sliceCtx = sliceCanvas.getContext('2d');
 let isSlicing = false;
 let slicePath = [];
 let canAttack = true;
+let pveEnemyAttackInterval = null;
 
 // Battle State
 let battleState = {
@@ -1005,10 +1006,6 @@ btnModePvp.addEventListener('click', () => {
     }, 2000);
 });
 
-// 기존 pvpSetup 로직 삭제
-// btnExitPvpSetup.addEventListener('click', ...);
-// btnStartPvp.addEventListener('click', ...);
-
 btnFlee.addEventListener('click', () => {
     endBattle(false, '도망쳤습니다...');
 });
@@ -1082,8 +1079,10 @@ function startBattle(mode) {
         battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
         pvpTurnIndicator.classList.add('hidden');
         
-        battleState.enemyMaxHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
-        battleState.enemyDamage = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
+        let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
+        let calcDmg = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
+        battleState.enemyMaxHp = Math.min(6000, calcHp);
+        battleState.enemyDamage = Math.min(4000, calcDmg);
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
         enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
@@ -1133,6 +1132,27 @@ function startBattle(mode) {
     updateBattleUI();
     battleModal.classList.remove('hidden');
     logEvent(`⚔️ ${mode.toUpperCase()} 전투를 시작합니다!`, 'battle');
+    
+    if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
+    if (mode === 'pve' || mode === 'boss' || mode === 'pvp_sim') {
+        pveEnemyAttackInterval = setInterval(() => {
+            if (!battleState.active) {
+                clearInterval(pveEnemyAttackInterval);
+                return;
+            }
+            const enemyDmg = battleState.enemyDamage;
+            battleState.playerHp -= enemyDmg;
+            battlePlayerStatus.textContent = `적의 공격! ${enemyDmg} 데미지!`;
+            if (battleState.playerHp <= 0) {
+                battleState.playerHp = 0;
+                updateBattleUI();
+                endBattle(false, '패배했습니다...');
+                clearInterval(pveEnemyAttackInterval);
+                return;
+            }
+            updateBattleUI();
+        }, 1000);
+    }
 }
 
 function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
@@ -1147,6 +1167,7 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
     if (battleState.enemyHp <= 0) {
         battleState.enemyHp = 0;
         updateBattleUI();
+        if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
         
         let earnedTrophies = 0;
         let earnedMoney = 0;
@@ -1189,32 +1210,18 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             pvpTurnIndicator.textContent = `▶ ${currentName}의 턴!`;
             canAttack = true; // allow slicing again immediately for PVP
         } else {
-            // PVE / Boss Enemy Turn
-            setTimeout(() => {
-                if (!battleState.active) return;
-                
-                const enemyDmg = battleState.enemyDamage;
-                battleState.playerHp -= enemyDmg;
-                
-                battlePlayerStatus.textContent = `적의 공격! ${enemyDmg} 데미지!`;
-                
-                if (battleState.playerHp <= 0) {
-                    battleState.playerHp = 0;
-                    updateBattleUI();
-                    endBattle(false, '패배했습니다...');
-                    return;
-                }
-                
-                updateBattleUI();
-                canAttack = true;
-            }, 1000);
+            // PVE/Boss/pvp_sim: Real-time swiping (훈련장처럼 연속 베기 허용)
+            canAttack = true;
         }
     }
 }
 
 function processTurn(skillType) {
-    if (!battleState.active || !canAttack) return;
-    canAttack = false; // Prevent spamming
+    if (!battleState.active) return;
+    if (battleState.mode === 'pvp') {
+        if (!canAttack) return;
+        canAttack = false;
+    }
     
     let dmg = getPlayerDamage();
     
@@ -1272,14 +1279,16 @@ function getCanvasPos(evt) {
 }
 
 function startSlice(e) {
-    if (!battleState.active || !canAttack) return;
+    if (!battleState.active) return;
+    if (battleState.mode === 'pvp' && !canAttack) return;
     isSlicing = true;
     slicePath = [getCanvasPos(e)];
     sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
 }
 
 function drawSlice(e) {
-    if (!isSlicing || !battleState.active || !canAttack) return;
+    if (!isSlicing || !battleState.active) return;
+    if (battleState.mode === 'pvp' && !canAttack) return;
     
     const pos = getCanvasPos(e);
     slicePath.push(pos);
@@ -1308,7 +1317,7 @@ function drawSlice(e) {
         const end = pos;
         const dist = Math.hypot(end.x - start.x, end.y - start.y);
         
-        if (dist > 50 && canAttack) {
+        if (dist > 50) {
             // Immediate Hit Animation
             enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
             setTimeout(() => {
@@ -1456,6 +1465,8 @@ function updateBattleUI() {
 
 function endBattle(won, msg) {
     battleState.active = false;
+    isSlicing = false;
+    if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
     logEvent(msg, won ? 'success' : 'fail');
     
     setTimeout(() => {
