@@ -163,9 +163,7 @@ const allEffectsPool = [
     { id: 'dragon', name: '드래곤 브레스', grade: '신화', color: 'rgba(249, 115, 22, 0.9)', price: 3000 },
     { id: 'void', name: '공허의 틈새', grade: '신화', color: 'rgba(147, 51, 234, 0.9)', price: 3000 },
     // 비밀
-    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 10000 },
-    // 한정 (이벤트용, 상점 미등장)
-    { id: 'absolute', name: '절대자의 권능', grade: '한정', color: 'rgba(255, 0, 128, 1)', price: 999999 }
+    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 10000 }
 ];
 
 // Fallback old colors for backwards compatibility
@@ -477,12 +475,7 @@ function renderShop() {
     shopItemsContainer.innerHTML = '';
     
     // 무조건 상점에 한정판 이펙트 추가
-    let shopItemsToRender = [...gameState.currentShopItems];
-    if (!shopItemsToRender.includes('absolute')) {
-        shopItemsToRender.push('absolute');
-    }
-    
-    shopItemsToRender.forEach(id => {
+    gameState.currentShopItems.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
         if (!effect) return;
         
@@ -519,16 +512,13 @@ function renderShop() {
                 });
             }
         } else {
-            // 한정판은 트로피로만, 나머지는 그냥 트로피로?
-            // Wait, previous code just used effect.price and displayed 🏆
-            // The absolute effect has price: 999999, but user wants it for 10000 trophies.
-            let itemPrice = effect.id === 'absolute' ? 10000 : effect.price;
+            let itemPrice = effect.price;
             buyBtn.innerHTML = `${itemPrice} 🏆`;
             buyBtn.style.background = 'var(--accent-gold)';
             buyBtn.style.color = 'black';
             
             buyBtn.addEventListener('click', () => {
-                let currentItemPrice = effect.id === 'absolute' ? 10000 : effect.price;
+                let currentItemPrice = effect.price;
                 if (gameState.trophies >= currentItemPrice) {
                     gameState.trophies -= currentItemPrice;
                     gameState.ownedSkins.push(effect.id);
@@ -962,7 +952,7 @@ btnFuseStart.addEventListener('click', () => {
     
     // 타이머 없음 (즉시 완료)
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now();
+    gameState.fuse.endTime = Date.now() + 180000; // 3분 소요
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
@@ -1646,15 +1636,7 @@ function showFireworks() {
     }, 2000); 
 }
 
-// "해적 업데이트 좋은데요!!" 텍스트 표시 로직
-const overlay67 = document.createElement('div');
-overlay67.textContent = '해적 업데이트 좋은데요!!';
-overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 3.5rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
-document.body.appendChild(overlay67);
-setTimeout(() => {
-    overlay67.style.opacity = '0';
-    setTimeout(() => overlay67.remove(), 1000);
-}, 2000);
+
 
 
 updateUI();
