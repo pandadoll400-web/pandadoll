@@ -1790,6 +1790,16 @@ if (!localStorage.getItem('giveaway_both_luck_10m')) {
     localStorage.setItem('giveaway_both_luck_10m', 'true');
 }
 
+if (!localStorage.getItem('giveaway_10_swords_x6')) {
+    gameState.inventory.push(10, 10, 10, 10, 10, 10);
+    saveGame();
+    localStorage.setItem('giveaway_10_swords_x6', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 보상! 10강 검 6개가 지급되었습니다!', 'success');
+    }, 1500);
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
