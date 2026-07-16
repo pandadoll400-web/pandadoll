@@ -1689,16 +1689,6 @@ if (!localStorage.getItem('giveaway_swords_13_6_7')) {
     }, 1000);
 }
 
-// "67!!!" 텍스트 3초 표시 로직 (잘 보이게 흰색 텍스트 + 파란색 테두리)
-const overlay67 = document.createElement('div');
-overlay67.textContent = '67!!!';
-overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 8rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #1e3a8a; text-shadow: 0 0 30px #3b82f6, 0 0 50px #60a5fa; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
-document.body.appendChild(overlay67);
-setTimeout(() => {
-    overlay67.style.opacity = '0';
-    setTimeout(() => overlay67.remove(), 1000);
-}, 2000);
-
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
