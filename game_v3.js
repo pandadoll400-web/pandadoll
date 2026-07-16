@@ -14,7 +14,8 @@ let gameState = {
     ownedSkins: ['default'],
     shopNextReroll: 0,
     currentShopItems: [],
-    luckEventEndTime: 0
+    luckEventEndTime: 0,
+    trophyLuckEndTime: 0
 };
 
 function saveGame() {
@@ -282,6 +283,22 @@ window.triggerLuckEvent = function(minutes) {
     saveGame();
     luckEventUi.classList.remove('hidden');
     logEvent(`🍀 럭 이벤트 시간이 ${minutes}분 추가되었습니다!`, 'success');
+};
+
+// Trophy Luck Event DOM
+const trophyLuckEventUi = document.getElementById('trophy-luck-event-ui');
+const trophyLuckTimerText = document.getElementById('trophy-luck-timer-text');
+
+window.triggerTrophyLuckEvent = function(minutes) {
+    const addMs = minutes * 60 * 1000;
+    if (gameState.trophyLuckEndTime > Date.now()) {
+        gameState.trophyLuckEndTime += addMs;
+    } else {
+        gameState.trophyLuckEndTime = Date.now() + addMs;
+    }
+    saveGame();
+    if (trophyLuckEventUi) trophyLuckEventUi.classList.remove('hidden');
+    logEvent(`🏆 트로피 2배 버프 시간이 ${minutes}분 추가되었습니다!`, 'success');
 };
 
 // Slicing Canvas
@@ -971,6 +988,23 @@ setInterval(() => {
         }
     }
     
+    // Trophy Luck Event Timer
+    if (gameState.trophyLuckEndTime > 0) {
+        const remainTrophy = gameState.trophyLuckEndTime - now;
+        if (remainTrophy <= 0) {
+            gameState.trophyLuckEndTime = 0;
+            saveGame();
+            if (trophyLuckEventUi) trophyLuckEventUi.classList.add('hidden');
+            logEvent('❌ 트로피 2배 이벤트가 종료되었습니다.', 'info');
+        } else {
+            if (trophyLuckEventUi && trophyLuckEventUi.classList.contains('hidden')) trophyLuckEventUi.classList.remove('hidden');
+            const totalSecTrophy = Math.ceil(remainTrophy / 1000);
+            const mt = Math.floor(totalSecTrophy / 60).toString().padStart(2, '0');
+            const st = (totalSecTrophy % 60).toString().padStart(2, '0');
+            if (trophyLuckTimerText) trophyLuckTimerText.textContent = `${mt}:${st}`;
+        }
+    }
+    
     // Fuse Timer
     if (!gameState.fuse.active) return;
     
@@ -1222,18 +1256,21 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
         
         if (battleState.mode === 'pve') {
             earnedTrophies = Math.floor(Math.random() * 7) + 27; // 27 ~ 33
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
             earnedMoney = Math.floor(Math.random() * 1500) + 500; // 500 ~ 2000
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `승리했습니다! 트로피 ${earnedTrophies}점과 ${earnedMoney.toLocaleString()}원을 획득했습니다.`;
         } else if (battleState.mode === 'boss') {
             earnedTrophies = Math.floor(Math.random() * 50) + 100; // 100 ~ 150
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
             earnedMoney = 30000;
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 거액 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'pvp_sim') {
             earnedTrophies = Math.floor(Math.random() * 20) + 10;
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
             earnedMoney = Math.floor(Math.random() * 3000) + 1000;
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
@@ -1738,6 +1775,12 @@ if (!localStorage.getItem('giveaway_11_swords_x4')) {
         showFireworks();
         logEvent('🎁 특별 보상! 11강 검 4개가 지급되었습니다!', 'success');
     }, 1500);
+}
+
+if (!localStorage.getItem('giveaway_trophy_luck_10m')) {
+    triggerTrophyLuckEvent(10);
+    saveGame();
+    localStorage.setItem('giveaway_trophy_luck_10m', 'true');
 }
 
 updateUI();
