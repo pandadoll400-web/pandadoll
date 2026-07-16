@@ -1079,9 +1079,9 @@ function startBattle(mode) {
         battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
         pvpTurnIndicator.classList.add('hidden');
         
-        let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
+        let calcHp = 10000; // 고정 체력 10000
         let calcDmg = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
-        battleState.enemyMaxHp = Math.min(10000, calcHp);
+        battleState.enemyMaxHp = calcHp;
         battleState.enemyDamage = Math.min(4000, calcDmg);
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
@@ -1093,11 +1093,11 @@ function startBattle(mode) {
         battleModeBadge.innerHTML = '<span style="background:var(--danger);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">BOSS</span>';
         pvpTurnIndicator.classList.add('hidden');
         
-        battleState.enemyMaxHp = 30000;
+        battleState.enemyMaxHp = 100000;
         battleState.enemyDamage = 200 + Math.floor(Math.random() * 100);
         
         enemyCharacterEl.textContent = '🐉';
-        enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
+        enemyNameEl.textContent = `절대 보스 (HP: 100000)`;
         
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
