@@ -1081,7 +1081,7 @@ function startBattle(mode) {
         
         let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
         let calcDmg = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
-        battleState.enemyMaxHp = Math.min(6000, calcHp);
+        battleState.enemyMaxHp = Math.min(10000, calcHp);
         battleState.enemyDamage = Math.min(4000, calcDmg);
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
@@ -1317,7 +1317,7 @@ function drawSlice(e) {
         const end = pos;
         const dist = Math.hypot(end.x - start.x, end.y - start.y);
         
-        if (dist > 50) {
+        if (dist > 30) {
             // Immediate Hit Animation
             enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
             setTimeout(() => {
