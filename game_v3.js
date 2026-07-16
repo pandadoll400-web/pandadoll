@@ -1455,7 +1455,7 @@ function drawTrainSlice(e) {
         const dist = Math.hypot(end.x - start.x, end.y - start.y);
         
         if (dist > 30) {
-            gameState.baseDamage += 0.5;
+            gameState.baseDamage = Math.min(5010, gameState.baseDamage + 0.5);
             
             // Dummy animation
             robotDummy.style.transform = `translate(-50%, -50%) rotate(${Math.random()*20 - 10}deg) scale(1.1)`;
@@ -1663,16 +1663,6 @@ if (!localStorage.getItem('giveaway_11_swords_x2_luck_2m_v3')) {
     saveGame();
     localStorage.setItem('giveaway_11_swords_x2_luck_2m_v3', 'true');
 }
-
-// "MORE???" 텍스트 3초 표시 로직
-const moreOverlay = document.createElement('div');
-moreOverlay.textContent = 'MORE???';
-moreOverlay.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ff007f; font-size: 6rem; font-weight: bold; font-family: 'Impact', sans-serif; text-shadow: 0 0 20px #f43f5e, 0 0 40px #ff007f; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
-document.body.appendChild(moreOverlay);
-setTimeout(() => {
-    moreOverlay.style.opacity = '0';
-    setTimeout(() => moreOverlay.remove(), 1000); // 1초간 페이드아웃 후 제거
-}, 2000); // 2초 대기 후 페이드아웃 시작 (총 3초)
 
 updateUI();
 } catch (e) {
