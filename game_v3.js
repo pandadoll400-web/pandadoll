@@ -1464,6 +1464,9 @@ if (welcomeToast) {
     welcomeToast.style.opacity = '1';
     setTimeout(() => {
         welcomeToast.style.opacity = '0';
+        setTimeout(() => {
+            welcomeToast.remove();
+        }, 500); // 0.5초(트랜지션 시간) 후에 완전히 삭제
     }, 3000);
 }
 
