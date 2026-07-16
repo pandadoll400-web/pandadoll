@@ -1576,6 +1576,17 @@ if (!localStorage.getItem('giveaway_4_level10_swords')) {
     }, 1000);
 }
 
+// 11강 검 2개 추가 지급 이벤트 (최초 1회)
+if (!localStorage.getItem('giveaway_2_level11_swords')) {
+    gameState.inventory.push(11, 11);
+    localStorage.setItem('giveaway_2_level11_swords', 'true');
+    saveGame();
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 긴급 보상! 11강 검 2개가 추가로 지급되었습니다!', 'success');
+    }, 2000); // 10강 지급 이벤트 1초 뒤에 띄움
+}
+
 // 럭 이벤트 발동 (최초 1회)
 if (!localStorage.getItem('luck_event_triggered_1')) {
     triggerLuckEvent(10);
