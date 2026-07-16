@@ -916,9 +916,9 @@ btnFuseStart.addEventListener('click', () => {
         }
     }
     
-    // 3분 타이머 (180,000 ms)
+    // 타이머 없음 (즉시 완료)
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now() + 180000;
+    gameState.fuse.endTime = Date.now();
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
@@ -1701,9 +1701,9 @@ if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
     localStorage.setItem('luck_event_triggered_15m_v3', 'true');
 }
 
-// "67!!" 텍스트 표시 로직
+// "fuse timer?!" 텍스트 표시 로직
 const overlay67 = document.createElement('div');
-overlay67.textContent = '67!!';
+overlay67.textContent = 'fuse timer?!';
 overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 4.5rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
 document.body.appendChild(overlay67);
 setTimeout(() => {
