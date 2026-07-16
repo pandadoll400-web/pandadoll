@@ -732,20 +732,21 @@ h1, h2, h3, .stat-value, .btn-icon {
     transform-origin: bottom center;
 }
 
-/* Hide default guard and pommel for 18 */
-.level-18 .sword-guard, .level-18 .sword-pommel {
+/* Hide default guard for 18 */
+.level-18 #sword-guard {
     display: none;
 }
 /* Twin handles for 18 */
-.level-18 .sword-handle {
+.level-18 #sword-hilt {
     background: transparent;
     box-shadow: none;
     width: 120px;
     height: 60px;
     position: relative;
+    border-radius: 0;
 }
 /* Left handle (for 6) */
-.level-18 .sword-handle::before {
+.level-18 #sword-hilt::before {
     content: '';
     position: absolute;
     left: 20px;
@@ -759,7 +760,7 @@ h1, h2, h3, .stat-value, .btn-icon {
     transform: rotate(-20deg);
 }
 /* Right handle (for 7) */
-.level-18 .sword-handle::after {
+.level-18 #sword-hilt::after {
     content: '';
     position: absolute;
     right: 20px;
