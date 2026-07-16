@@ -1761,10 +1761,10 @@ if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
     localStorage.setItem('luck_event_triggered_15m_v3', 'true');
 }
 
-// "fuse timer?!" 텍스트 표시 로직
+// "해적 업데이트 좋은데요!!" 텍스트 표시 로직
 const overlay67 = document.createElement('div');
-overlay67.textContent = 'fuse timer?!';
-overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 4.5rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
+overlay67.textContent = '해적 업데이트 좋은데요!!';
+overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 3.5rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
 document.body.appendChild(overlay67);
 setTimeout(() => {
     overlay67.style.opacity = '0';
@@ -1817,6 +1817,16 @@ if (!localStorage.getItem('giveaway_10_swords_x6')) {
     setTimeout(() => {
         showFireworks();
         logEvent('🎁 특별 보상! 10강 검 6개가 지급되었습니다!', 'success');
+    }, 1500);
+}
+
+if (!localStorage.getItem('giveaway_11_swords_x2')) {
+    gameState.inventory.push(11, 11);
+    saveGame();
+    localStorage.setItem('giveaway_11_swords_x2', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 해적 업데이트 기념! 11강 검 2개가 지급되었습니다!', 'success');
     }, 1500);
 }
 
