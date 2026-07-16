@@ -12,6 +12,7 @@ let gameState = {
     hasDoubleSkill: false,
     currentSkin: 'default',
     ownedSkins: ['default'],
+    skinLevels: {},
     shopNextReroll: 0,
     currentShopItems: [],
     luckEventEndTime: 0,
@@ -42,6 +43,7 @@ function loadGame() {
             if (!gameState.fuse) gameState.fuse = { active: false, endTime: 0, resultLevel: null };
             if (!gameState.shopNextReroll) gameState.shopNextReroll = 0;
             if (!gameState.currentShopItems) gameState.currentShopItems = [];
+            if (!gameState.skinLevels) gameState.skinLevels = {};
             if (gameState.luckEventEndTime === undefined) gameState.luckEventEndTime = 0;
         } catch(e) {
             console.error("Save file corrupted");
@@ -60,24 +62,34 @@ function loadGame() {
     recalculateMaxHp();
 }
 
-function recalculateMaxHp() {
-    let baseHp = 5000;
+function getEffectBonus() {
     let bonusHp = 0;
-    
-    // allEffectsPool 이 선언된 후에 호출되어야 하지만 함수 호이스팅 때문에 괜찮음
+    let bonusDamage = 0;
     if (typeof allEffectsPool !== 'undefined') {
         const currentEffect = allEffectsPool.find(e => e.id === gameState.currentSkin);
         if (currentEffect) {
-            if (currentEffect.grade === '희귀') bonusHp = 500;
-            else if (currentEffect.grade === '영웅') bonusHp = 1500;
-            else if (currentEffect.grade === '전설') bonusHp = 3000;
-            else if (currentEffect.grade === '신화') bonusHp = 5000;
-            else if (currentEffect.grade === '비밀') bonusHp = 10000;
-            else if (currentEffect.grade === '한정') bonusHp = 13000;
+            if (currentEffect.grade === '희귀') { bonusHp = 500; bonusDamage = 50; }
+            else if (currentEffect.grade === '영웅') { bonusHp = 1500; bonusDamage = 150; }
+            else if (currentEffect.grade === '전설') { bonusHp = 3000; bonusDamage = 300; }
+            else if (currentEffect.grade === '신화') { bonusHp = 5000; bonusDamage = 500; }
+            else if (currentEffect.grade === '비밀') { bonusHp = 10000; bonusDamage = 1000; }
+            else if (currentEffect.grade === '한정') { bonusHp = 13000; bonusDamage = 1300; }
+            
+            let lvl = gameState.skinLevels[currentEffect.id] || 0;
+            const multiplier = 1 + (lvl * 0.2);
+            
+            bonusHp = Math.floor(bonusHp * multiplier);
+            bonusDamage = Math.floor(bonusDamage * multiplier);
         }
     }
+    return { hp: bonusHp, dmg: bonusDamage };
+}
+
+function recalculateMaxHp() {
+    let baseHp = 5000;
+    const bonus = getEffectBonus();
     
-    gameState.maxHp = baseHp + bonusHp;
+    gameState.maxHp = baseHp + bonus.hp;
     gameState.hp = gameState.maxHp; // 장착 시 체력 꽉 채워주기
 }
 
@@ -392,10 +404,9 @@ function updateUI() {
 }
 
 function getPlayerDamage() {
-    // Training adds to baseDamage (starts at 10). Level adds its own base.
-    // Let's say total damage = levelDamage[level] + (gameState.baseDamage - 10)
     const trainingBonus = gameState.baseDamage - 10;
-    return levelDamage[gameState.level] + trainingBonus;
+    const effectBonus = getEffectBonus().dmg;
+    return levelDamage[gameState.level] + trainingBonus + effectBonus;
 }
 
 // Actions
@@ -604,17 +615,63 @@ function renderEffectInventory() {
             gradeStr = eff.grade;
         }
         
+        const lvl = gameState.skinLevels[id] || 0;
+        const lvlStr = lvl > 0 ? `[+${lvl}] ` : '';
+        
         const div = document.createElement('div');
         div.className = 'shop-item';
         div.style.borderLeft = `4px solid ${colorStr}`;
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.flexWrap = 'wrap';
         
         const nameSpan = document.createElement('span');
         nameSpan.className = 'item-name';
         nameSpan.style.color = colorStr;
-        nameSpan.textContent = `[${gradeStr}] ${name}`;
+        nameSpan.style.flex = '1';
+        nameSpan.textContent = `${lvlStr}[${gradeStr}] ${name}`;
+        
+        const btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.gap = '5px';
+        
+        if (eff && lvl < 5) {
+            const upgradeCost = Math.floor(eff.price * (lvl + 1) * 0.5);
+            const upgradeBtn = document.createElement('button');
+            upgradeBtn.className = 'action-btn danger-btn';
+            upgradeBtn.style.padding = '5px 10px';
+            upgradeBtn.style.fontSize = '0.8rem';
+            upgradeBtn.textContent = `강화 (${upgradeCost.toLocaleString()}원)`;
+            upgradeBtn.addEventListener('click', () => {
+                if (gameState.money >= upgradeCost) {
+                    gameState.money -= upgradeCost;
+                    gameState.skinLevels[id] = lvl + 1;
+                    logEvent(`[${name}] 이펙트를 +${lvl + 1}강으로 강화했습니다!`, 'success');
+                    if (gameState.currentSkin === id) {
+                        recalculateMaxHp();
+                    }
+                    saveGame();
+                    renderEffectInventory();
+                    updateUI();
+                } else {
+                    logEvent('돈이 부족합니다!', 'fail');
+                }
+            });
+            btnContainer.appendChild(upgradeBtn);
+        } else if (eff && lvl >= 5) {
+            const maxBtn = document.createElement('button');
+            maxBtn.className = 'action-btn';
+            maxBtn.style.padding = '5px 10px';
+            maxBtn.style.fontSize = '0.8rem';
+            maxBtn.style.background = '#475569';
+            maxBtn.disabled = true;
+            maxBtn.textContent = 'MAX';
+            btnContainer.appendChild(maxBtn);
+        }
         
         const equipBtn = document.createElement('button');
         equipBtn.className = 'action-btn shop-btn';
+        equipBtn.style.padding = '5px 15px';
         
         if (gameState.currentSkin === id) {
             equipBtn.textContent = '장착 중';
@@ -627,11 +684,13 @@ function renderEffectInventory() {
                 logEvent(`[${name}] 이펙트를 장착했습니다!`, 'success');
                 saveGame();
                 renderEffectInventory();
+                updateUI();
             });
         }
+        btnContainer.appendChild(equipBtn);
         
         div.appendChild(nameSpan);
-        div.appendChild(equipBtn);
+        div.appendChild(btnContainer);
         effectInventoryList.appendChild(div);
     });
 }
