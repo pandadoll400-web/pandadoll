@@ -1465,13 +1465,18 @@ loadGame();
 // 웰컴 토스트 로직
 const welcomeToast = document.getElementById('welcome-toast');
 if (welcomeToast) {
-    welcomeToast.style.opacity = '1';
-    setTimeout(() => {
-        welcomeToast.style.opacity = '0';
+    if (!localStorage.getItem('seen_toast_10_swords')) {
+        localStorage.setItem('seen_toast_10_swords', 'true');
+        welcomeToast.style.opacity = '1';
         setTimeout(() => {
-            welcomeToast.remove();
-        }, 500); // 0.5초(트랜지션 시간) 후에 완전히 삭제
-    }, 3000);
+            welcomeToast.style.opacity = '0';
+            setTimeout(() => {
+                welcomeToast.remove();
+            }, 500); 
+        }, 3000);
+    } else {
+        welcomeToast.remove();
+    }
 }
 
 updateUI();
@@ -1521,6 +1526,54 @@ if (!localStorage.getItem('compensation_sword_10')) {
     setTimeout(() => {
         logEvent('🎁 특별 이벤트! 10강 검(최종의검)이 인벤토리에 지급되었습니다!', 'success');
     }, 3500);
+}
+
+function showFireworks() {
+    const fwContainer = document.createElement('div');
+    fwContainer.style.position = 'fixed';
+    fwContainer.style.top = '0';
+    fwContainer.style.left = '0';
+    fwContainer.style.width = '100vw';
+    fwContainer.style.height = '100vh';
+    fwContainer.style.pointerEvents = 'none';
+    fwContainer.style.zIndex = '9998'; 
+    document.body.appendChild(fwContainer);
+
+    for (let i = 0; i < 40; i++) {
+        const fw = document.createElement('div');
+        const emojis = ['🎆', '🎇', '✨', '🎉'];
+        fw.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        fw.style.position = 'absolute';
+        fw.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+        fw.style.left = Math.random() * 100 + 'vw';
+        fw.style.top = Math.random() * 100 + 'vh';
+        fw.style.opacity = '0';
+        fw.style.transition = 'all 1s ease-out';
+        fw.style.transform = `translateY(50px) scale(0.5)`;
+        fwContainer.appendChild(fw);
+
+        setTimeout(() => {
+            fw.style.opacity = '1';
+            fw.style.transform = `translateY(${Math.random() * -100 - 50}px) scale(1.5)`;
+        }, Math.random() * 500);
+    }
+
+    setTimeout(() => {
+        fwContainer.style.opacity = '0';
+        fwContainer.style.transition = 'opacity 1s';
+        setTimeout(() => fwContainer.remove(), 1000);
+    }, 2000); 
+}
+
+// 모든 유저 10강 칼 4개 지급 이벤트 (최초 1회)
+if (!localStorage.getItem('giveaway_4_level10_swords')) {
+    gameState.inventory.push(10, 10, 10, 10);
+    localStorage.setItem('giveaway_4_level10_swords', 'true');
+    saveGame();
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎉 서버 폭주 기념! 모든 유저에게 10강 검 4개가 지급되었습니다!', 'success');
+    }, 1000);
 }
 
 // 럭 이벤트 발동 (최초 1회)
