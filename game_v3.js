@@ -96,11 +96,12 @@ const swordNames = [
     "???의검",             // 11
     "비밀의 검",           // 12
     "봉인된 검",           // 13
-    "진실의검",           // 14 (퓨즈)
-    "공허의 검",           // 15 (퓨즈)
-    "블랙홀 검",           // 16 (퓨즈)
-    "종말의 검",           // 17 (퓨즈)
-    "67단검"              // 18 (히든)
+    "진실의검",           // 14
+    "평범한 검",           // 15 (퓨즈)
+    "공허의 검",           // 16 (퓨즈)
+    "블랙홀 검",           // 17 (퓨즈)
+    "종말의 검",           // 18 (퓨즈)
+    "67단검"              // 19 (히든)
 ];
 
 // Enhance Costs (0 to 13)
@@ -118,20 +119,23 @@ const enhanceCosts = [
     65000,  // 10->11
     85000,  // 11->12
     100000, // 12->13
+    150000, // 13->14 (진실의검)
     Infinity, // 14
     Infinity, // 15
     Infinity, // 16
     Infinity, // 17
-    Infinity  // 18
+    Infinity, // 18
+    Infinity  // 19
 ];
 
 const levelDamage = [
     10, 20, 40, 70, 110, 160, 220, 300, 400, 550, 750, 1000, 1500, 2000,
-    40,     // 14: 2강과 동급
-    400,    // 15: 8강과 동급
-    1000,   // 16: 11강과 동급
-    3000,   // 17: 신규 종말의 검
-    750     // 18: 67단검 (11강과 동급)
+    3000,   // 14: 진실의검
+    40,     // 15: 평범한 검 (2강급)
+    400,    // 16: 공허의 검 (8강급)
+    1000,   // 17: 블랙홀 검 (11강급)
+    3000,   // 18: 종말의 검
+    750     // 19: 67단검 (11강급)
 ];
 
 const gradeColors = {
@@ -344,12 +348,12 @@ function updateUI() {
     
     swordNameEl.textContent = swordNames[gameState.level];
     
-    if (gameState.level >= 14) {
+    if (gameState.level >= 15) {
         swordLevelEl.textContent = `[특수 검]`;
-        enhanceCostEl.textContent = '(강화 불가)';
+        swordLevelEl.style.color = '#ef4444';
     } else {
-        swordLevelEl.textContent = `+${gameState.level}`;
-        if (gameState.level >= 13) {
+        swordLevelEl.textContent = `[+${gameState.level}]`;
+        if (gameState.level >= 14) {
             enhanceCostEl.textContent = '(최고 레벨 달성)';
         } else {
             enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
@@ -399,12 +403,12 @@ function getPlayerDamage() {
 
 // Actions
 btnEnhance.addEventListener('click', () => {
-    if (gameState.level >= 14) {
+    if (gameState.level >= 15) {
         logEvent('특수 검은 강화할 수 없습니다.', 'info');
         return;
     }
-    if (gameState.level >= 13) {
-        logEvent('봉인된 검... 이미 최고의 경지에 도달했습니다.', 'info');
+    if (gameState.level >= 14) {
+        logEvent('진실의검... 더 이상 강화할 수 없습니다.', 'info');
         return;
     }
     
