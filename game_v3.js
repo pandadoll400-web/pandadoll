@@ -820,10 +820,10 @@ function renderFuseInventory() {
         const selBtn = document.createElement('button');
         selBtn.className = 'action-btn shop-btn';
         
-        const isValid = (lvl >= 1 && lvl <= 12);
+        const isValid = (lvl >= 1 && lvl <= 14);
         
         if (!isValid) {
-            selBtn.textContent = '불가 (1~12강만)';
+            selBtn.textContent = '불가 (1~14강만)';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
             selBtn.style.opacity = '0.5';
