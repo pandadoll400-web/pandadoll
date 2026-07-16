@@ -335,6 +335,9 @@ function logEvent(msg, type = 'info') {
 }
 
 function updateUI() {
+    if (gameState.money > 500000) {
+        gameState.money = 500000;
+    }
     hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
     trophyCountEl.textContent = gameState.trophies;
     moneyCountEl.textContent = gameState.money.toLocaleString() + '원';
@@ -670,8 +673,25 @@ function renderInventory() {
             updateUI();
         });
         
+        const sellPrice = lvl * 2000;
+        const sellBtn = document.createElement('button');
+        sellBtn.className = 'action-btn danger-btn';
+        sellBtn.style.marginLeft = '5px';
+        sellBtn.textContent = `판매 (${sellPrice.toLocaleString()}원)`;
+        
+        sellBtn.addEventListener('click', () => {
+            gameState.inventory.splice(index, 1);
+            gameState.money += sellPrice;
+            if (gameState.money > 500000) gameState.money = 500000;
+            saveGame();
+            logEvent(`[${swordNames[lvl]}] (을)를 판매하여 ${sellPrice.toLocaleString()}원을 얻었습니다!`, 'success');
+            renderInventory();
+            updateUI();
+        });
+        
         div.appendChild(nameSpan);
         div.appendChild(equipBtn);
+        div.appendChild(sellBtn);
         inventoryList.appendChild(div);
     });
 }
