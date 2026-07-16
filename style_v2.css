@@ -614,9 +614,41 @@ h1, h2, h3, .stat-value, .btn-icon {
 }
 
 /* 특수 검 (14, 15, 16) 스타일 */
-/* 14: 평범한 검 */
-.level-14 #sword-name { color: #d1d5db; text-shadow: 0 0 5px #fff; }
-.level-14 #sword-blade { background: #9ca3af; box-shadow: 0 0 10px #fff; width: 20px; height: 100px; }
+/* 14: 진실의검 */
+.level-14 #sword-name {
+    color: #ffffff;
+    text-shadow: 0 0 10px #fbbf24, 0 0 20px #f59e0b, 0 0 30px #ffffff;
+    letter-spacing: 5px;
+    animation: truthNameGlow 1.5s infinite alternate;
+}
+.level-14 #sword-blade {
+    background: linear-gradient(to top, #fde68a, #ffffff, #fef3c7);
+    box-shadow: 0 0 20px #fbbf24, 0 0 40px #ffffff, 0 0 60px #f59e0b;
+    width: 28px;
+    height: 140px;
+    border-radius: 5px 5px 0 0;
+    animation: truthBladePulse 2s infinite alternate;
+}
+.level-14 #sword-guard {
+    background: #d97706;
+    box-shadow: 0 0 15px #f59e0b;
+    width: 80px;
+    height: 15px;
+    border-radius: 8px;
+}
+.level-14 #sword-hilt {
+    background: linear-gradient(to right, #92400e, #b45309, #92400e);
+    width: 16px;
+    height: 35px;
+}
+@keyframes truthNameGlow {
+    from { text-shadow: 0 0 10px #fbbf24, 0 0 20px #ffffff; transform: scale(1); }
+    to { text-shadow: 0 0 20px #f59e0b, 0 0 40px #ffffff, 0 0 60px #fde68a; transform: scale(1.05); }
+}
+@keyframes truthBladePulse {
+    from { box-shadow: 0 0 20px #fbbf24, 0 0 40px #ffffff; transform: scaleY(1); }
+    to { box-shadow: 0 0 30px #f59e0b, 0 0 60px #ffffff, 0 0 90px #fde68a; transform: scaleY(1.05); }
+}
 
 /* 15: 공허의 검 */
 .level-15 #sword-name {
