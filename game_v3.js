@@ -983,28 +983,28 @@ btnFuseStart.addEventListener('click', () => {
     
     // 확률 계산
     const roll = Math.random() * 100;
-    let resultLvl = 14; // 기본 평범한 검 (90% or 70%)
+    let resultLvl = 15; // 기본 평범한 검 (90% or 70%)
     
     if (is67Combo) {
-        resultLvl = 18; // 히든 쌍단검 100%
+        resultLvl = 19; // 히든 쌍단검 100%
     } else if (isHighTier) {
         if (gameState.luckEventEndTime > 0) {
             // 2배 럭
-            if (roll > 40 && roll <= 70) resultLvl = 15; // 30% 공허
-            else if (roll > 70 && roll <= 90) resultLvl = 16; // 20% 블랙홀
-            else if (roll > 90) resultLvl = 17; // 10% 종말
+            if (roll > 40 && roll <= 70) resultLvl = 16; // 30% 공허
+            else if (roll > 70 && roll <= 90) resultLvl = 17; // 20% 블랙홀
+            else if (roll > 90) resultLvl = 18; // 10% 종말
         } else {
-            if (roll > 70 && roll <= 85) resultLvl = 15; // 15% 공허
-            else if (roll > 85 && roll <= 95) resultLvl = 16; // 10% 블랙홀
-            else if (roll > 95) resultLvl = 17; // 5% 종말
+            if (roll > 70 && roll <= 85) resultLvl = 16; // 15% 공허
+            else if (roll > 85 && roll <= 95) resultLvl = 17; // 10% 블랙홀
+            else if (roll > 95) resultLvl = 18; // 5% 종말
         }
     } else {
         if (gameState.luckEventEndTime > 0) {
-            if (roll > 80 && roll <= 94) resultLvl = 15; // 14% 공허
-            else if (roll > 94) resultLvl = 16; // 6% 블랙홀
+            if (roll > 80 && roll <= 94) resultLvl = 16; // 14% 공허
+            else if (roll > 94) resultLvl = 17; // 6% 블랙홀
         } else {
-            if (roll > 90 && roll <= 97) resultLvl = 15; // 7% 공허
-            else if (roll > 97) resultLvl = 16; // 3% 블랙홀
+            if (roll > 90 && roll <= 97) resultLvl = 16; // 7% 공허
+            else if (roll > 97) resultLvl = 17; // 3% 블랙홀
         }
     }
     
@@ -1712,6 +1712,18 @@ if (!localStorage.getItem('giveaway_swords_6_7_v5')) {
         showFireworks();
         logEvent('🎁 특별 선물! 6강 검과 7강 검이 지급되었습니다!', 'success');
     }, 1500);
+}
+
+// 14강 버그 회수 로직
+if (!localStorage.getItem('recall_14_swords_bug')) {
+    const originalLength = gameState.inventory.length;
+    gameState.inventory = gameState.inventory.filter(lvl => lvl !== 14);
+    const recalledCount = originalLength - gameState.inventory.length;
+    if (recalledCount > 0) {
+        logEvent(`⚠️ 퓨즈 머신 버그로 잘못 생성된 14강 검 ${recalledCount}개가 시스템에 의해 회수되었습니다.`, 'fail');
+        saveGame();
+    }
+    localStorage.setItem('recall_14_swords_bug', 'true');
 }
 
 updateUI();
