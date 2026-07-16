@@ -1664,6 +1664,12 @@ if (!localStorage.getItem('giveaway_11_swords_x2_luck_2m_v3')) {
     localStorage.setItem('giveaway_11_swords_x2_luck_2m_v3', 'true');
 }
 
+if (!localStorage.getItem('luck_event_triggered_3m_v2')) {
+    triggerLuckEvent(3);
+    saveGame();
+    localStorage.setItem('luck_event_triggered_3m_v2', 'true');
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
