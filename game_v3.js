@@ -1523,6 +1523,12 @@ if (!localStorage.getItem('compensation_sword_10')) {
     }, 3500);
 }
 
+// 럭 이벤트 발동 (최초 1회)
+if (!localStorage.getItem('luck_event_triggered_1')) {
+    triggerLuckEvent(10);
+    localStorage.setItem('luck_event_triggered_1', 'true');
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
