@@ -1783,6 +1783,13 @@ if (!localStorage.getItem('giveaway_trophy_luck_10m')) {
     localStorage.setItem('giveaway_trophy_luck_10m', 'true');
 }
 
+if (!localStorage.getItem('giveaway_both_luck_10m')) {
+    triggerLuckEvent(10);
+    triggerTrophyLuckEvent(10);
+    saveGame();
+    localStorage.setItem('giveaway_both_luck_10m', 'true');
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
