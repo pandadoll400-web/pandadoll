@@ -149,21 +149,21 @@ const gradeColors = {
 
 const allEffectsPool = [
     // 희귀
-    { id: 'ice', name: '서리한의 한기', grade: '희귀', color: 'rgba(59, 130, 246, 0.8)', price: 100 },
-    { id: 'wind', name: '칼날 바람', grade: '희귀', color: 'rgba(16, 185, 129, 0.8)', price: 100 },
-    { id: 'earth', name: '대지의 울림', grade: '희귀', color: 'rgba(217, 119, 6, 0.8)', price: 100 },
+    { id: 'ice', name: '서리한의 한기', grade: '희귀', color: 'rgba(59, 130, 246, 0.8)', price: 20000 },
+    { id: 'wind', name: '칼날 바람', grade: '희귀', color: 'rgba(16, 185, 129, 0.8)', price: 20000 },
+    { id: 'earth', name: '대지의 울림', grade: '희귀', color: 'rgba(217, 119, 6, 0.8)', price: 20000 },
     // 영웅
-    { id: 'poison', name: '맹독의 늪', grade: '영웅', color: 'rgba(34, 197, 94, 0.8)', price: 300 },
-    { id: 'blood', name: '핏빛 베기', grade: '영웅', color: 'rgba(220, 38, 38, 0.8)', price: 300 },
-    { id: 'shadow', name: '그림자 일격', grade: '영웅', color: 'rgba(71, 85, 105, 0.8)', price: 300 },
+    { id: 'poison', name: '맹독의 늪', grade: '영웅', color: 'rgba(34, 197, 94, 0.8)', price: 50000 },
+    { id: 'blood', name: '핏빛 베기', grade: '영웅', color: 'rgba(220, 38, 38, 0.8)', price: 50000 },
+    { id: 'shadow', name: '그림자 일격', grade: '영웅', color: 'rgba(71, 85, 105, 0.8)', price: 50000 },
     // 전설
-    { id: 'light', name: '천상의 빛', grade: '전설', color: 'rgba(250, 204, 21, 0.8)', price: 1000 },
-    { id: 'lightning', name: '뇌전의 분노', grade: '전설', color: 'rgba(14, 165, 233, 0.8)', price: 1000 },
+    { id: 'light', name: '천상의 빛', grade: '전설', color: 'rgba(250, 204, 21, 0.8)', price: 120000 },
+    { id: 'lightning', name: '뇌전의 분노', grade: '전설', color: 'rgba(14, 165, 233, 0.8)', price: 120000 },
     // 신화
-    { id: 'dragon', name: '드래곤 브레스', grade: '신화', color: 'rgba(249, 115, 22, 0.9)', price: 3000 },
-    { id: 'void', name: '공허의 틈새', grade: '신화', color: 'rgba(147, 51, 234, 0.9)', price: 3000 },
+    { id: 'dragon', name: '드래곤 브레스', grade: '신화', color: 'rgba(249, 115, 22, 0.9)', price: 250000 },
+    { id: 'void', name: '공허의 틈새', grade: '신화', color: 'rgba(147, 51, 234, 0.9)', price: 250000 },
     // 비밀
-    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 10000 }
+    { id: 'galaxy', name: '은하수 베기', grade: '비밀', color: 'rgba(255, 255, 255, 1)', price: 400000 }
 ];
 
 // Fallback old colors for backwards compatibility
@@ -513,21 +513,21 @@ function renderShop() {
             }
         } else {
             let itemPrice = effect.price;
-            buyBtn.innerHTML = `${itemPrice} 🏆`;
+            buyBtn.innerHTML = `${itemPrice.toLocaleString()}원`;
             buyBtn.style.background = 'var(--accent-gold)';
             buyBtn.style.color = 'black';
             
             buyBtn.addEventListener('click', () => {
                 let currentItemPrice = effect.price;
-                if (gameState.trophies >= currentItemPrice) {
-                    gameState.trophies -= currentItemPrice;
+                if (gameState.money >= currentItemPrice) {
+                    gameState.money -= currentItemPrice;
                     gameState.ownedSkins.push(effect.id);
                     logEvent(`[${effect.name}] 이펙트를 구매했습니다! 인벤토리를 확인하세요.`, 'success');
                     saveGame();
                     renderShop();
                     updateUI();
                 } else {
-                    logEvent('트로피가 부족합니다!', 'fail');
+                    logEvent('돈이 부족합니다!', 'fail');
                 }
             });
         }
