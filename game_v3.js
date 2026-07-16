@@ -889,7 +889,7 @@ btnFuseStart.addEventListener('click', () => {
     
     // 3분 타이머 (180,000 ms)
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now() + 3 * 60 * 1000;
+    gameState.fuse.endTime = Date.now();
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
