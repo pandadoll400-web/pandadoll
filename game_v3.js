@@ -1669,6 +1669,15 @@ if (!localStorage.getItem('luck_event_triggered_3m_v2')) {
     saveGame();
     localStorage.setItem('luck_event_triggered_3m_v2', 'true');
 }
+if (!localStorage.getItem('giveaway_money_50000')) {
+    gameState.money += 50000;
+    saveGame();
+    localStorage.setItem('giveaway_money_50000', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('💸 깜짝 이벤트! 50,000 골드가 지급되었습니다!', 'success');
+    }, 1000);
+}
 
 updateUI();
 } catch (e) {
