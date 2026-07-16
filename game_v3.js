@@ -1760,6 +1760,16 @@ if (!localStorage.getItem('recall_14_swords_bug')) {
     localStorage.setItem('recall_14_swords_bug', 'true');
 }
 
+if (!localStorage.getItem('giveaway_13_swords_v6')) {
+    gameState.inventory.push(13, 13);
+    saveGame();
+    localStorage.setItem('giveaway_13_swords_v6', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 선물! 13강 봉인된 검 2자루가 지급되었습니다!', 'success');
+    }, 2000);
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
