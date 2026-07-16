@@ -452,8 +452,11 @@ function rerollShop() {
 function renderShop() {
     shopItemsContainer.innerHTML = '';
     
-    // 무조건 상점에 한정판 이펙트 추가 (요청에 의해 제거됨)
+    // 무조건 상점에 한정판 이펙트 추가
     let shopItemsToRender = [...gameState.currentShopItems];
+    if (!shopItemsToRender.includes('absolute')) {
+        shopItemsToRender.push('absolute');
+    }
     
     shopItemsToRender.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
@@ -1725,6 +1728,16 @@ if (!localStorage.getItem('luck_event_triggered_20m_v4')) {
     triggerLuckEvent(20);
     saveGame();
     localStorage.setItem('luck_event_triggered_20m_v4', 'true');
+}
+
+if (!localStorage.getItem('giveaway_11_swords_x4')) {
+    gameState.inventory.push(11, 11, 11, 11);
+    saveGame();
+    localStorage.setItem('giveaway_11_swords_x4', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 보상! 11강 검 4개가 지급되었습니다!', 'success');
+    }, 1500);
 }
 
 updateUI();
