@@ -1694,6 +1694,13 @@ if (!localStorage.getItem('luck_event_triggered_10m_v2')) {
     saveGame();
     localStorage.setItem('luck_event_triggered_10m_v2', 'true');
 }
+
+if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
+    triggerLuckEvent(15);
+    saveGame();
+    localStorage.setItem('luck_event_triggered_15m_v3', 'true');
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
