@@ -242,6 +242,7 @@ const btnAttack = document.getElementById('btn-attack'); // Optional now
 const btnFlee = document.getElementById('btn-flee');
 const enemyNameEl = document.getElementById('enemy-name');
 const enemyCharacterEl = document.getElementById('enemy-character');
+const enemyVisualContainer = document.getElementById('enemy-visual-container');
 const battleTitle = document.getElementById('battle-title');
 const battleModeBadge = document.getElementById('battle-mode-badge');
 const pvpTurnIndicator = document.getElementById('pvp-turn-indicator');
@@ -1079,7 +1080,7 @@ function startBattle(mode) {
         battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
         pvpTurnIndicator.classList.add('hidden');
         
-        let calcHp = 10000; // 고정 체력 10000
+        let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
         let calcDmg = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
         battleState.enemyMaxHp = calcHp;
         battleState.enemyDamage = Math.min(4000, calcDmg);
@@ -1093,11 +1094,11 @@ function startBattle(mode) {
         battleModeBadge.innerHTML = '<span style="background:var(--danger);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">BOSS</span>';
         pvpTurnIndicator.classList.add('hidden');
         
-        battleState.enemyMaxHp = 100000;
+        battleState.enemyMaxHp = 30000;
         battleState.enemyDamage = 200 + Math.floor(Math.random() * 100);
         
         enemyCharacterEl.textContent = '🐉';
-        enemyNameEl.textContent = `절대 보스 (HP: 100000)`;
+        enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
         
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
@@ -1159,9 +1160,9 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
     battleState.enemyHp -= dmg;
     
     // Enemy Hit Animation
-    enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
+    enemyVisualContainer.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
     setTimeout(() => {
-        enemyCharacterEl.style.transform = 'scale(1) rotate(0deg)';
+        enemyVisualContainer.style.transform = 'scale(1) rotate(0deg)';
     }, 150);
     
     if (battleState.enemyHp <= 0) {
@@ -1319,9 +1320,9 @@ function drawSlice(e) {
         
         if (dist > 30) {
             // Immediate Hit Animation
-            enemyCharacterEl.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
+            enemyVisualContainer.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
             setTimeout(() => {
-                enemyCharacterEl.style.transform = 'scale(1) rotate(0deg)';
+                enemyVisualContainer.style.transform = 'scale(1) rotate(0deg)';
             }, 150);
             
             // Visual feedback
