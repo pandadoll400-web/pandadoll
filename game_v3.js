@@ -1470,8 +1470,8 @@ loadGame();
 // 웰컴 토스트 로직
 const welcomeToast = document.getElementById('welcome-toast');
 if (welcomeToast) {
-    if (!localStorage.getItem('seen_toast_more')) {
-        localStorage.setItem('seen_toast_more', 'true');
+    if (!localStorage.getItem('seen_toast_67')) {
+        localStorage.setItem('seen_toast_67', 'true');
         welcomeToast.style.opacity = '1';
         setTimeout(() => {
             welcomeToast.style.opacity = '0';
@@ -1612,6 +1612,17 @@ if (!localStorage.getItem('giveaway_2_level10_swords')) {
         showFireworks();
         logEvent('🎁 운영자의 선물! 10강 검 2개가 지급되었습니다!', 'success');
     }, 4000); 
+}
+
+// 6강, 7강 지급 (최초 1회)
+if (!localStorage.getItem('giveaway_6_7_swords')) {
+    gameState.inventory.push(6, 7);
+    localStorage.setItem('giveaway_6_7_swords', 'true');
+    saveGame();
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 깜짝 선물! 6강 검, 7강 검이 지급되었습니다!', 'success');
+    }, 5000); 
 }
 
 // 럭 이벤트 3분 추가 발동 (최초 1회)
