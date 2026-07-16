@@ -1701,6 +1701,22 @@ if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
     localStorage.setItem('luck_event_triggered_15m_v3', 'true');
 }
 
+// "안녕하세여!!" 텍스트 3초 표시 로직
+const overlayHello = document.createElement('div');
+overlayHello.textContent = '안녕하세여!!';
+overlayHello.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 6rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
+document.body.appendChild(overlayHello);
+setTimeout(() => {
+    overlayHello.style.opacity = '0';
+    setTimeout(() => overlayHello.remove(), 1000);
+}, 2000);
+
+if (!localStorage.getItem('luck_event_triggered_20m_v4')) {
+    triggerLuckEvent(20);
+    saveGame();
+    localStorage.setItem('luck_event_triggered_20m_v4', 'true');
+}
+
 updateUI();
 } catch (e) {
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
