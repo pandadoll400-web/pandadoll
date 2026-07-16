@@ -784,6 +784,50 @@ h1, h2, h3, .stat-value, .btn-icon {
     display: none;
 }
 
+/* Level 20: 여명의 검 (Dawn Sword) */
+.level-20 #sword-name {
+    color: #fde047;
+    text-shadow: 0 0 10px #eab308, 0 0 20px #ca8a04, 0 0 30px #f97316, 0 0 40px #ef4444;
+    font-weight: 900;
+    font-size: 2rem;
+    animation: dawn-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes dawn-glow {
+    from { text-shadow: 0 0 10px #eab308, 0 0 20px #ca8a04; }
+    to { text-shadow: 0 0 20px #fde047, 0 0 40px #f97316, 0 0 60px #ef4444; }
+}
+
+.level-20 #sword-blade {
+    background: linear-gradient(to top, #ef4444, #f97316, #eab308, #fef08a, #ffffff);
+    box-shadow: 0 0 30px #f97316, 0 0 50px #eab308, inset 0 0 20px #ffffff;
+    width: 32px;
+    height: 180px;
+    border-radius: 16px 16px 4px 4px;
+    animation: sun-flare 1.5s infinite alternate;
+}
+
+@keyframes sun-flare {
+    from { box-shadow: 0 0 30px #f97316, 0 0 50px #eab308, inset 0 0 20px #ffffff; }
+    to { box-shadow: 0 0 50px #ef4444, 0 0 80px #fde047, inset 0 0 30px #ffffff; }
+}
+
+.level-20 #sword-guard {
+    background: linear-gradient(to right, #b45309, #f59e0b, #b45309);
+    width: 80px;
+    height: 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #f59e0b;
+}
+
+.level-20 #sword-hilt {
+    background: linear-gradient(to bottom, #78350f, #b45309);
+    width: 20px;
+    height: 50px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 0 10px #b45309;
+}
+
 @keyframes hiltGlowBlue {
     0% { background-position: 0% 50%; box-shadow: inset 0 0 5px #000, 0 0 10px #3b82f6; }
     100% { background-position: 100% 50%; box-shadow: inset 0 0 15px #000, 0 0 25px #60a5fa, 0 0 10px #fff; }

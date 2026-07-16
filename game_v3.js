@@ -113,7 +113,8 @@ const swordNames = [
     "공허의 검",           // 16 (퓨즈)
     "블랙홀 검",           // 17 (퓨즈)
     "종말의 검",           // 18 (퓨즈)
-    "67단검"              // 19 (히든)
+    "67단검",              // 19 (히든)
+    "여명의 검"             // 20
 ];
 
 // Enhance Costs (0 to 13)
@@ -137,7 +138,8 @@ const enhanceCosts = [
     Infinity, // 16
     Infinity, // 17
     Infinity, // 18
-    Infinity  // 19
+    Infinity, // 19
+    Infinity  // 20
 ];
 
 const levelDamage = [
@@ -147,7 +149,8 @@ const levelDamage = [
     400,    // 16: 공허의 검 (8강급)
     1000,   // 17: 블랙홀 검 (11강급)
     3000,   // 18: 종말의 검
-    750     // 19: 67단검 (11강급)
+    750,    // 19: 67단검 (11강급)
+    5000    // 20: 여명의 검
 ];
 
 const gradeColors = {
@@ -883,9 +886,33 @@ function updateFuseProbTable() {
         const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
         
         let is67Combo = false;
+        let is1314Combo = false;
         if (fuseSelectedIndices.length === 2) {
             const secondLvl = gameState.inventory[fuseSelectedIndices[1]];
             is67Combo = (firstLvl === 6 && secondLvl === 7) || (firstLvl === 7 && secondLvl === 6);
+            is1314Combo = (firstLvl >= 13 && secondLvl >= 13);
+        }
+        
+        if (is1314Combo) {
+            container.innerHTML = `
+                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">✨ 13~14강 특별 융합 ✨</h4>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">65%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">18%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">9%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
+                    <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">6%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                    <span style="color: #fde047; text-shadow: 0 0 10px #f97316;">☀️ 여명의 검</span> <span style="color: #fde047; font-weight: bold;">2%</span>
+                </div>
+            `;
+            return;
         }
         
         if (is67Combo) {
@@ -974,6 +1001,7 @@ btnFuseStart.addEventListener('click', () => {
     const lvl2 = gameState.inventory[fuseSelectedIndices[1]];
     const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
     const is67Combo = (lvl1 === 6 && lvl2 === 7) || (lvl1 === 7 && lvl2 === 6);
+    const is1314Combo = (lvl1 >= 13 && lvl2 >= 13);
     
     // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
     fuseSelectedIndices.sort((a,b) => b - a);
@@ -985,7 +1013,13 @@ btnFuseStart.addEventListener('click', () => {
     const roll = Math.random() * 100;
     let resultLvl = 15; // 기본 평범한 검 (90% or 70%)
     
-    if (is67Combo) {
+    if (is1314Combo) {
+        if (roll <= 65) resultLvl = 15;
+        else if (roll <= 83) resultLvl = 16;
+        else if (roll <= 92) resultLvl = 17;
+        else if (roll <= 98) resultLvl = 18;
+        else resultLvl = 20;
+    } else if (is67Combo) {
         resultLvl = 19; // 히든 쌍단검 100%
     } else if (isHighTier) {
         if (gameState.luckEventEndTime > 0) {
