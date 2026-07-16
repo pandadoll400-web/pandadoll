@@ -442,7 +442,13 @@ function rerollShop() {
 function renderShop() {
     shopItemsContainer.innerHTML = '';
     
-    gameState.currentShopItems.forEach(id => {
+    // 무조건 상점에 한정판 이펙트 추가 (이미 안 샀다면)
+    let shopItemsToRender = [...gameState.currentShopItems];
+    if (!shopItemsToRender.includes('absolute')) {
+        shopItemsToRender.push('absolute');
+    }
+    
+    shopItemsToRender.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
         if (!effect) return;
         
@@ -453,7 +459,8 @@ function renderShop() {
         const nameSpan = document.createElement('span');
         nameSpan.className = 'item-name';
         nameSpan.style.color = gradeColors[effect.grade];
-        nameSpan.style.textShadow = effect.grade === '비밀' ? '0 0 5px #fff' : 'none';
+        if (effect.grade === '비밀') nameSpan.style.textShadow = '0 0 5px #fff';
+        if (effect.grade === '한정') nameSpan.style.textShadow = '0 0 10px #ff007f';
         nameSpan.innerHTML = `[${effect.grade}] ${effect.name}`;
         
         const buyBtn = document.createElement('button');
@@ -478,13 +485,18 @@ function renderShop() {
                 });
             }
         } else {
-            buyBtn.innerHTML = `${effect.price} 🏆`;
+            // 한정판은 트로피로만, 나머지는 그냥 트로피로?
+            // Wait, previous code just used effect.price and displayed 🏆
+            // The absolute effect has price: 999999, but user wants it for 10000 trophies.
+            let itemPrice = effect.id === 'absolute' ? 10000 : effect.price;
+            buyBtn.innerHTML = `${itemPrice} 🏆`;
             buyBtn.style.background = 'var(--accent-gold)';
             buyBtn.style.color = 'black';
             
             buyBtn.addEventListener('click', () => {
-                if (gameState.trophies >= effect.price) {
-                    gameState.trophies -= effect.price;
+                let currentItemPrice = effect.id === 'absolute' ? 10000 : effect.price;
+                if (gameState.trophies >= currentItemPrice) {
+                    gameState.trophies -= currentItemPrice;
                     gameState.ownedSkins.push(effect.id);
                     logEvent(`[${effect.name}] 이펙트를 구매했습니다! 인벤토리를 확인하세요.`, 'success');
                     saveGame();
@@ -1445,6 +1457,16 @@ function endTrainSlice(e) {
 
 // Initial Setup
 loadGame();
+
+// 웰컴 토스트 로직
+const welcomeToast = document.getElementById('welcome-toast');
+if (welcomeToast) {
+    welcomeToast.style.opacity = '1';
+    setTimeout(() => {
+        welcomeToast.style.opacity = '0';
+    }, 3000);
+}
+
 updateUI();
 
 function updateBattleUI() {
