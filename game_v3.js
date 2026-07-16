@@ -70,7 +70,7 @@ function recalculateMaxHp() {
             else if (currentEffect.grade === '전설') bonusHp = 3000;
             else if (currentEffect.grade === '신화') bonusHp = 5000;
             else if (currentEffect.grade === '비밀') bonusHp = 10000;
-            else if (currentEffect.grade === '한정') bonusHp = 99999;
+            else if (currentEffect.grade === '한정') bonusHp = 13000;
         }
     }
     
