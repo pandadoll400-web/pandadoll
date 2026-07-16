@@ -2,8 +2,8 @@ try {
 let gameState = {
     level: 0,
     baseDamage: 10,
-    hp: 3000,
-    maxHp: 3000,
+    hp: 5000,
+    maxHp: 5000,
     trophies: 0,
     money: 0,
     inventory: [],
@@ -48,6 +48,34 @@ function loadGame() {
         gameState.money = 500;
         logEvent('환영합니다! 지원금 500원이 지급되었습니다.', 'success');
     }
+    
+    // 이펙트 체력 보너스 계산 (비정상적으로 저장된 hp가 있을경우 대비)
+    if (gameState.hp === 3000 && gameState.maxHp === 3000) {
+        gameState.hp = 5000;
+        gameState.maxHp = 5000;
+    }
+    recalculateMaxHp();
+}
+
+function recalculateMaxHp() {
+    let baseHp = 5000;
+    let bonusHp = 0;
+    
+    // allEffectsPool 이 선언된 후에 호출되어야 하지만 함수 호이스팅 때문에 괜찮음
+    if (typeof allEffectsPool !== 'undefined') {
+        const currentEffect = allEffectsPool.find(e => e.id === gameState.currentSkin);
+        if (currentEffect) {
+            if (currentEffect.grade === '희귀') bonusHp = 500;
+            else if (currentEffect.grade === '영웅') bonusHp = 1500;
+            else if (currentEffect.grade === '전설') bonusHp = 3000;
+            else if (currentEffect.grade === '신화') bonusHp = 5000;
+            else if (currentEffect.grade === '비밀') bonusHp = 10000;
+            else if (currentEffect.grade === '한정') bonusHp = 99999;
+        }
+    }
+    
+    gameState.maxHp = baseHp + bonusHp;
+    gameState.hp = gameState.maxHp; // 장착 시 체력 꽉 채워주기
 }
 
 const swordNames = [
@@ -440,6 +468,7 @@ function renderShop() {
                 buyBtn.style.color = 'white';
                 buyBtn.addEventListener('click', () => {
                     gameState.currentSkin = effect.id;
+                    recalculateMaxHp();
                     logEvent(`[${effect.name}] 이펙트를 장착했습니다!`, 'info');
                     saveGame();
                     renderShop();
@@ -557,6 +586,7 @@ function renderEffectInventory() {
             equipBtn.textContent = '장착하기';
             equipBtn.addEventListener('click', () => {
                 gameState.currentSkin = id;
+                recalculateMaxHp();
                 logEvent(`[${name}] 이펙트를 장착했습니다!`, 'success');
                 saveGame();
                 renderEffectInventory();
