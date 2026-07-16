@@ -714,7 +714,9 @@ h1, h2, h3, .stat-value, .btn-icon {
     
     /* Handle drawn as background in padding space */
     padding-bottom: 45px;
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6) center calc(100% - 10px) / 16px 55px no-repeat;
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6) no-repeat;
+    background-position: center bottom;
+    background-size: 16px 55px;
     
     transform: scaleY(1.2) rotate(-15deg);
     transform-origin: bottom center;
@@ -732,7 +734,9 @@ h1, h2, h3, .stat-value, .btn-icon {
     
     /* Handle drawn as background in padding space (aligned to left for 7's stem) */
     padding-bottom: 45px;
-    background: linear-gradient(135deg, #831843, #ec4899) left 5px calc(100% - 10px) / 16px 55px no-repeat;
+    background: linear-gradient(135deg, #831843, #ec4899) no-repeat;
+    background-position: 5px bottom; /* X=5px, Y=bottom */
+    background-size: 16px 55px;
     
     transform: scaleY(1.2) rotate(15deg);
     transform-origin: bottom center;
