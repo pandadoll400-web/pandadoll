@@ -692,35 +692,43 @@ h1, h2, h3, .stat-value, .btn-icon {
     position: relative;
     background: transparent;
     box-shadow: none;
-    width: 60px;
-    height: 120px;
+    width: 120px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
 }
-/* Left Dagger (6강 룩 느낌) */
+/* Left Dagger (Number 6) */
 .level-18 #sword-blade::before {
-    content: '';
+    content: '6';
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 20px;
-    height: 120px;
-    background: linear-gradient(to right, #60a5fa, #bfdbfe, #60a5fa);
-    box-shadow: 0 0 20px #3b82f6;
-    clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%);
-    transform: rotate(-15deg);
+    left: 10px;
+    bottom: 20px;
+    font-size: 120px;
+    font-family: 'Impact', sans-serif;
+    font-weight: 900;
+    color: transparent;
+    background: linear-gradient(to top, #3b82f6, #93c5fd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px #60a5fa);
+    transform: scaleY(1.3) rotate(-20deg);
     transform-origin: bottom center;
 }
-/* Right Dagger (7강 룩 느낌) */
+/* Right Dagger (Number 7) */
 .level-18 #sword-blade::after {
-    content: '';
+    content: '7';
     position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 20px;
-    height: 120px;
-    background: linear-gradient(to right, #ec4899, #fbcfe8, #ec4899);
-    box-shadow: 0 0 20px #ec4899;
-    clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%);
-    transform: rotate(15deg);
+    right: 10px;
+    bottom: 20px;
+    font-size: 120px;
+    font-family: 'Impact', sans-serif;
+    font-weight: 900;
+    color: transparent;
+    background: linear-gradient(to top, #ec4899, #fbcfe8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px #f472b6);
+    transform: scaleY(1.3) rotate(20deg);
     transform-origin: bottom center;
 }
 
