@@ -1603,6 +1603,17 @@ if (!localStorage.getItem('giveaway_mixed_swords_4')) {
     }, 3000); 
 }
 
+// 10강 검 2개 추가 지급 (최초 1회)
+if (!localStorage.getItem('giveaway_2_level10_swords')) {
+    gameState.inventory.push(10, 10);
+    localStorage.setItem('giveaway_2_level10_swords', 'true');
+    saveGame();
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 운영자의 선물! 10강 검 2개가 지급되었습니다!', 'success');
+    }, 4000); 
+}
+
 // 럭 이벤트 3분 추가 발동 (최초 1회)
 if (!localStorage.getItem('luck_event_triggered_3m')) {
     triggerLuckEvent(3);
