@@ -473,13 +473,8 @@ function rerollShop() {
 function renderShop() {
     shopItemsContainer.innerHTML = '';
     
-    // 무조건 상점에 한정판 이펙트 추가
-    let shopItemsToRender = [...gameState.currentShopItems];
-    if (!shopItemsToRender.includes('absolute')) {
-        shopItemsToRender.push('absolute');
-    }
-    
-    shopItemsToRender.forEach(id => {
+    // 무조건 상점에 한정판 이펙트 추가 (삭제)
+    gameState.currentShopItems.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
         if (!effect) return;
         
