@@ -1636,7 +1636,6 @@ function showFireworks() {
     }, 2000); 
 }
 
-
 if (!localStorage.getItem('giveaway_fuse_luck_5m_v5')) {
     triggerLuckEvent(5);
     saveGame();
@@ -1645,6 +1644,16 @@ if (!localStorage.getItem('giveaway_fuse_luck_5m_v5')) {
         showFireworks();
         logEvent('🎁 운영자의 깜짝 선물! 퓨즈 럭 5분이 발동되었습니다!', 'success');
     }, 1000);
+}
+
+if (!localStorage.getItem('giveaway_swords_6_7_v5')) {
+    gameState.inventory.push(6, 7);
+    saveGame();
+    localStorage.setItem('giveaway_swords_6_7_v5', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 선물! 6강 검과 7강 검이 지급되었습니다!', 'success');
+    }, 1500);
 }
 
 updateUI();
