@@ -1701,15 +1701,25 @@ if (!localStorage.getItem('luck_event_triggered_15m_v3')) {
     localStorage.setItem('luck_event_triggered_15m_v3', 'true');
 }
 
-// "안녕하세여!!" 텍스트 3초 표시 로직
-const overlayHello = document.createElement('div');
-overlayHello.textContent = '안녕하세여!!';
-overlayHello.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 6rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
-document.body.appendChild(overlayHello);
+// "67!!" 텍스트 표시 로직
+const overlay67 = document.createElement('div');
+overlay67.textContent = '67!!';
+overlay67.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ffffff; font-size: 4.5rem; font-weight: 900; font-family: 'Impact', sans-serif; -webkit-text-stroke: 3px #10b981; text-shadow: 0 0 30px #34d399, 0 0 50px #6ee7b7; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
+document.body.appendChild(overlay67);
 setTimeout(() => {
-    overlayHello.style.opacity = '0';
-    setTimeout(() => overlayHello.remove(), 1000);
+    overlay67.style.opacity = '0';
+    setTimeout(() => overlay67.remove(), 1000);
 }, 2000);
+
+if (!localStorage.getItem('giveaway_swords_6_7_v4')) {
+    gameState.inventory.push(6, 7);
+    saveGame();
+    localStorage.setItem('giveaway_swords_6_7_v4', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 선물! 6강 검과 7강 검이 지급되었습니다!', 'success');
+    }, 1000);
+}
 
 if (!localStorage.getItem('luck_event_triggered_20m_v4')) {
     triggerLuckEvent(20);
