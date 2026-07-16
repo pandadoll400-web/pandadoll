@@ -680,6 +680,50 @@ h1, h2, h3, .stat-value, .btn-icon {
     100% { background-position: 0% 50%; filter: brightness(1) drop-shadow(0 0 20px #ef4444); }
 }
 
+/* 18: 67단검 (Twin Daggers) */
+.level-18 #sword-name {
+    color: #ff007f;
+    text-shadow: 0 0 10px #ff007f, 0 0 20px #f43f5e;
+    letter-spacing: 5px;
+    font-weight: bold;
+    animation: pulse 1s infinite alternate;
+}
+.level-18 #sword-blade {
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+    width: 60px;
+    height: 120px;
+}
+/* Left Dagger (6강 룩 느낌) */
+.level-18 #sword-blade::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 20px;
+    height: 120px;
+    background: linear-gradient(to right, #60a5fa, #bfdbfe, #60a5fa);
+    box-shadow: 0 0 20px #3b82f6;
+    clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%);
+    transform: rotate(-15deg);
+    transform-origin: bottom center;
+}
+/* Right Dagger (7강 룩 느낌) */
+.level-18 #sword-blade::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    height: 120px;
+    background: linear-gradient(to right, #ec4899, #fbcfe8, #ec4899);
+    box-shadow: 0 0 20px #ec4899;
+    clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%);
+    transform: rotate(15deg);
+    transform-origin: bottom center;
+}
+
 /* Splash Screen */
 .splash-screen {
     position: fixed;

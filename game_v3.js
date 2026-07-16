@@ -98,7 +98,8 @@ const swordNames = [
     "평범한 검",           // 14 (퓨즈)
     "공허의 검",           // 15 (퓨즈)
     "블랙홀 검",           // 16 (퓨즈)
-    "종말의 검"            // 17 (퓨즈)
+    "종말의 검",           // 17 (퓨즈)
+    "67단검"              // 18 (히든)
 ];
 
 // Enhance Costs (0 to 13)
@@ -119,7 +120,8 @@ const enhanceCosts = [
     Infinity, // 14
     Infinity, // 15
     Infinity, // 16
-    Infinity  // 17
+    Infinity, // 17
+    Infinity  // 18
 ];
 
 const levelDamage = [
@@ -127,7 +129,8 @@ const levelDamage = [
     40,     // 14: 2강과 동급
     400,    // 15: 8강과 동급
     1000,   // 16: 11강과 동급
-    3000    // 17: 신규 종말의 검
+    3000,   // 17: 신규 종말의 검
+    500     // 18: 67단검
 ];
 
 const gradeColors = {
@@ -759,8 +762,10 @@ function renderFuseInventory() {
                         const firstLvl = gameState.inventory[firstIdx];
                         const currentTier = (firstLvl >= 1 && firstLvl <= 6) ? 1 : 2;
                         const thisTier = (lvl >= 1 && lvl <= 6) ? 1 : 2;
-                        if (currentTier !== thisTier) {
-                            logEvent('1~6강과 7~12강은 섞어서 융합할 수 없습니다.', 'fail');
+                        const is67Combo = (firstLvl === 6 && lvl === 7) || (firstLvl === 7 && lvl === 6);
+                        
+                        if (currentTier !== thisTier && !is67Combo) {
+                            logEvent('1~6강과 7~12강은 섞어서 융합할 수 없습니다. (6강+7강 특수 융합 제외)', 'fail');
                             return;
                         }
                     }
@@ -788,6 +793,22 @@ function updateFuseProbTable() {
         const firstLvl = gameState.inventory[firstIdx];
         const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
         
+        let is67Combo = false;
+        if (fuseSelectedIndices.length === 2) {
+            const secondLvl = gameState.inventory[fuseSelectedIndices[1]];
+            is67Combo = (firstLvl === 6 && secondLvl === 7) || (firstLvl === 7 && secondLvl === 6);
+        }
+        
+        if (is67Combo) {
+            container.innerHTML = `
+                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">⚔️ 히든 융합 조합 ⚔️</h4>
+                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                    <span style="color: #ff007f; text-shadow: 0 0 5px #ff007f;">67쌍단검</span> <span style="color: #ff007f; font-weight: bold;">100%</span>
+                </div>
+            `;
+            return;
+        }
+
         if (isHighTier) {
             if (gameState.luckEventEndTime > 0) {
                 container.innerHTML = `
@@ -861,7 +882,9 @@ btnFuseStart.addEventListener('click', () => {
     
     // Check tier
     const lvl1 = gameState.inventory[fuseSelectedIndices[0]];
+    const lvl2 = gameState.inventory[fuseSelectedIndices[1]];
     const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
+    const is67Combo = (lvl1 === 6 && lvl2 === 7) || (lvl1 === 7 && lvl2 === 6);
     
     // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
     fuseSelectedIndices.sort((a,b) => b - a);
@@ -873,7 +896,9 @@ btnFuseStart.addEventListener('click', () => {
     const roll = Math.random() * 100;
     let resultLvl = 14; // 기본 평범한 검 (90% or 70%)
     
-    if (isHighTier) {
+    if (is67Combo) {
+        resultLvl = 18; // 히든 쌍단검 100%
+    } else if (isHighTier) {
         if (gameState.luckEventEndTime > 0) {
             // 2배 럭
             if (roll > 40 && roll <= 70) resultLvl = 15; // 30% 공허
@@ -885,7 +910,7 @@ btnFuseStart.addEventListener('click', () => {
             else if (roll > 95) resultLvl = 17; // 5% 종말
         }
     } else {
-        if (luckEventEndTime > 0) {
+        if (gameState.luckEventEndTime > 0) {
             if (roll > 80 && roll <= 94) resultLvl = 15; // 14% 공허
             else if (roll > 94) resultLvl = 16; // 6% 블랙홀
         } else {
