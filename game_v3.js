@@ -452,11 +452,8 @@ function rerollShop() {
 function renderShop() {
     shopItemsContainer.innerHTML = '';
     
-    // 무조건 상점에 한정판 이펙트 추가 (이미 안 샀다면)
+    // 무조건 상점에 한정판 이펙트 추가 (요청에 의해 제거됨)
     let shopItemsToRender = [...gameState.currentShopItems];
-    if (!shopItemsToRender.includes('absolute')) {
-        shopItemsToRender.push('absolute');
-    }
     
     shopItemsToRender.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
@@ -921,7 +918,7 @@ btnFuseStart.addEventListener('click', () => {
     
     // 3분 타이머 (180,000 ms)
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now();
+    gameState.fuse.endTime = Date.now() + 180000;
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
@@ -1666,6 +1663,16 @@ if (!localStorage.getItem('giveaway_11_swords_x2_luck_2m_v3')) {
     saveGame();
     localStorage.setItem('giveaway_11_swords_x2_luck_2m_v3', 'true');
 }
+
+// "MORE???" 텍스트 3초 표시 로직
+const moreOverlay = document.createElement('div');
+moreOverlay.textContent = 'MORE???';
+moreOverlay.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index: 9999; color: #ff007f; font-size: 6rem; font-weight: bold; font-family: 'Impact', sans-serif; text-shadow: 0 0 20px #f43f5e, 0 0 40px #ff007f; pointer-events:none; transition: opacity 1s ease-in-out; opacity: 1;";
+document.body.appendChild(moreOverlay);
+setTimeout(() => {
+    moreOverlay.style.opacity = '0';
+    setTimeout(() => moreOverlay.remove(), 1000); // 1초간 페이드아웃 후 제거
+}, 2000); // 2초 대기 후 페이드아웃 시작 (총 3초)
 
 updateUI();
 } catch (e) {
