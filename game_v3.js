@@ -1728,13 +1728,13 @@ function showFireworks() {
     }, 2000); 
 }
 
-if (!localStorage.getItem('giveaway_fuse_luck_5m_v5')) {
-    triggerLuckEvent(5);
+if (!localStorage.getItem('giveaway_fuse_luck_10m_v6')) {
+    triggerLuckEvent(10);
     saveGame();
-    localStorage.setItem('giveaway_fuse_luck_5m_v5', 'true');
+    localStorage.setItem('giveaway_fuse_luck_10m_v6', 'true');
     setTimeout(() => {
         showFireworks();
-        logEvent('🎁 운영자의 깜짝 선물! 퓨즈 럭 5분이 발동되었습니다!', 'success');
+        logEvent('🎁 운영자의 깜짝 선물! 퓨즈 럭 10분이 발동되었습니다!', 'success');
     }, 1000);
 }
 
