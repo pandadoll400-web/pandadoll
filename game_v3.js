@@ -1798,6 +1798,32 @@ if (!localStorage.getItem('removed_24_swords_v1')) {
     localStorage.setItem('removed_24_swords_v1', 'true');
 }
 
+// 퓨즈로 비정상 획득한 16, 17, 18강 일괄 회수 로직 (유저당 1회만 동작)
+if (!localStorage.getItem('removed_fuse_swords_v1')) {
+    // 인벤토리에서 제거
+    for (let i = gameState.inventory.length - 1; i >= 0; i--) {
+        const lvl = gameState.inventory[i];
+        if (lvl === 16 || lvl === 17 || lvl === 18) {
+            gameState.inventory.splice(i, 1);
+        }
+    }
+    // 장착 중인 검이 해당 검이면 0강으로 강등
+    if (gameState.level === 16 || gameState.level === 17 || gameState.level === 18) {
+        gameState.level = 0;
+    }
+    // 퓨즈 진행 중인 결과가 해당 검이면 퓨즈 취소
+    if (gameState.fuse && gameState.fuse.active) {
+        const rLvl = gameState.fuse.resultLevel;
+        if (rLvl === 16 || rLvl === 17 || rLvl === 18) {
+            gameState.fuse.active = false;
+            gameState.fuse.resultLevel = null;
+        }
+    }
+    
+    saveGame();
+    localStorage.setItem('removed_fuse_swords_v1', 'true');
+}
+
 updateUI(); // 변경된 상태 반영
 
 // 웰컴 토스트 로직
