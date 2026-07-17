@@ -116,7 +116,8 @@ const swordNames = [
     "67단검",              // 19 (히든)
     "여명의 검",            // 20
     "해적의 문어다리 검",   // 21 (시즌 검)
-    "해적의 검"             // 22 (시즌 검)
+    "해적의 검",             // 22 (시즌 검)
+    "빛의 검"                // 23 (한정 조합)
 ];
 
 // Enhance Costs (0 to 13)
@@ -143,7 +144,8 @@ const enhanceCosts = [
     Infinity, // 19
     Infinity, // 20
     Infinity, // 21 (시즌 검)
-    Infinity  // 22 (시즌 검)
+    Infinity, // 22 (시즌 검)
+    Infinity  // 23 (한정 조합)
 ];
 
 const levelDamage = [
@@ -156,7 +158,8 @@ const levelDamage = [
     750,    // 19: 67단검 (11강급)
     5000,   // 20: 여명의 검
     4000,   // 21: 해적의 문어다리 검 (시즌 검)
-    3500    // 22: 해적의 검 (시즌 검)
+    3500,   // 22: 해적의 검 (시즌 검)
+    9000    // 23: 빛의 검 (한정 조합)
 ];
 
 const gradeColors = {
@@ -242,18 +245,38 @@ const fuseInventoryList = document.getElementById('fuse-inventory-list');
 const fuseSelectedCount = document.getElementById('fuse-selected-count');
 let fuseSelectedIndices = [];
 
+const shopTabSword = document.getElementById('shop-tab-sword');
+const shopTabEffect = document.getElementById('shop-tab-effect');
+const shopTabSeason = document.getElementById('shop-tab-season');
+const shopTabLimited = document.getElementById('shop-tab-limited');
+const shopSwordsSection = document.getElementById('shop-swords-section');
+const shopEffectsSection = document.getElementById('shop-effects-section');
+const shopSeasonSection = document.getElementById('shop-season-section');
+const shopLimitedSection = document.getElementById('shop-limited-section');
+const btnBuyOctopusSword = document.getElementById('btn-buy-octopus-sword');
+const btnBuyPirateSword = document.getElementById('btn-buy-pirate-sword');
+
+// 한정 조합 DOM
+const btnOpenLightCombine = document.getElementById('btn-open-light-combine');
+const lightCombineModal = document.getElementById('light-combine-modal');
+const btnExitLightCombine = document.getElementById('btn-exit-light-combine');
+const lightSlot1 = document.getElementById('light-slot-1');
+const lightSlot2 = document.getElementById('light-slot-2');
+const btnLightCombineStart = document.getElementById('btn-light-combine-start');
+const lightCombineInventoryModal = document.getElementById('light-combine-inventory-modal');
+const btnExitLightInventory = document.getElementById('btn-exit-light-inventory');
+const lightCombineInventoryList = document.getElementById('light-combine-inventory-list');
+const limitedStockText = document.getElementById('limited-stock-text');
+
+let lightCombineMaterial1 = null; // index
+let lightCombineMaterial2 = null; // index
+let currentSelectingSlot = 0;
+
 const shopModal = document.getElementById('shop-modal');
 const btnExitShop = document.getElementById('btn-exit-shop');
 const shopTrophyCount = document.getElementById('shop-trophy-count');
 const shopItemsContainer = document.getElementById('shop-items-container');
 const shopTimerEl = document.getElementById('shop-timer');
-
-const shopTabEffect = document.getElementById('shop-tab-effect');
-const shopTabSeason = document.getElementById('shop-tab-season');
-const shopEffectsSection = document.getElementById('shop-effects-section');
-const shopSeasonSection = document.getElementById('shop-season-section');
-const btnBuyOctopusSword = document.getElementById('btn-buy-octopus-sword');
-const btnBuyPirateSword = document.getElementById('btn-buy-pirate-sword');
 
 const tabSword = document.getElementById('tab-sword');
 const tabEffect = document.getElementById('tab-effect');
@@ -507,7 +530,6 @@ function rerollShop() {
 function renderShop() {
     shopItemsContainer.innerHTML = '';
     
-    // 무조건 상점에 한정판 이펙트 추가 (삭제)
     gameState.currentShopItems.forEach(id => {
         const effect = allEffectsPool.find(e => e.id === id);
         if (!effect) return;
@@ -1831,6 +1853,199 @@ if (!localStorage.getItem('removed_fuse_swords_v1')) {
     saveGame();
     localStorage.setItem('removed_fuse_swords_v1', 'true');
 }
+
+// Light Sword Combine Logic
+function updateLimitedStockUI() {
+    if(!localStorage.getItem('lightSwordGlobalStock')) {
+        localStorage.setItem('lightSwordGlobalStock', '3'); // Fake global stock
+    }
+    const stock = parseInt(localStorage.getItem('lightSwordGlobalStock'));
+    
+    if (limitedStockText) {
+        if (stock > 0) {
+            limitedStockText.textContent = `남은 수량: ${stock}개`;
+            btnOpenLightCombine.disabled = false;
+            btnOpenLightCombine.style.opacity = '1';
+        } else {
+            limitedStockText.textContent = `매진되었습니다!`;
+            btnOpenLightCombine.disabled = true;
+            btnOpenLightCombine.style.opacity = '0.5';
+            btnOpenLightCombine.textContent = '조합 불가';
+        }
+    }
+}
+
+if(btnOpenLightCombine) {
+    btnOpenLightCombine.addEventListener('click', () => {
+        lightCombineMaterial1 = null;
+        lightCombineMaterial2 = null;
+        updateLightCombineUI();
+        lightCombineModal.classList.remove('hidden');
+    });
+}
+if(btnExitLightCombine) {
+    btnExitLightCombine.addEventListener('click', () => {
+        lightCombineModal.classList.add('hidden');
+    });
+}
+if(btnExitLightInventory) {
+    btnExitLightInventory.addEventListener('click', () => {
+        lightCombineInventoryModal.classList.add('hidden');
+    });
+}
+
+function updateLightCombineUI() {
+    if (lightCombineMaterial1 !== null) {
+        const lvl = gameState.inventory[lightCombineMaterial1];
+        lightSlot1.innerHTML = `<span style="font-size: 1rem; color: #fff;">${swordNames[lvl]}</span>`;
+        lightSlot1.style.borderColor = '#38bdf8';
+    } else {
+        lightSlot1.innerHTML = '+';
+        lightSlot1.style.borderColor = '#fde047';
+    }
+    
+    if (lightCombineMaterial2 !== null) {
+        const lvl = gameState.inventory[lightCombineMaterial2];
+        lightSlot2.innerHTML = `<span style="font-size: 1rem; color: #fff;">${swordNames[lvl]}</span>`;
+        lightSlot2.style.borderColor = '#38bdf8';
+    } else {
+        lightSlot2.innerHTML = '+';
+        lightSlot2.style.borderColor = '#fde047';
+    }
+    
+    // 두 개 모두 선택되었고, 하나는 20강, 하나는 22강이어야 함
+    let isValid = false;
+    if (lightCombineMaterial1 !== null && lightCombineMaterial2 !== null) {
+        const l1 = gameState.inventory[lightCombineMaterial1];
+        const l2 = gameState.inventory[lightCombineMaterial2];
+        if ((l1 === 20 && l2 === 22) || (l1 === 22 && l2 === 20)) {
+            isValid = true;
+        }
+    }
+    
+    btnLightCombineStart.disabled = !isValid;
+    if (isValid) {
+        btnLightCombineStart.style.boxShadow = '0 0 20px #fde047';
+    } else {
+        btnLightCombineStart.style.boxShadow = 'none';
+    }
+}
+
+if (lightSlot1) {
+    lightSlot1.addEventListener('click', () => {
+        currentSelectingSlot = 1;
+        openLightCombineInventory();
+    });
+}
+if (lightSlot2) {
+    lightSlot2.addEventListener('click', () => {
+        currentSelectingSlot = 2;
+        openLightCombineInventory();
+    });
+}
+
+function openLightCombineInventory() {
+    lightCombineInventoryList.innerHTML = '';
+    let found = false;
+    
+    gameState.inventory.forEach((lvl, index) => {
+        if (lvl === 20 || lvl === 22) { // 20: 여명의검, 22: 해적의검
+            // 이미 다른 슬롯에 등록된 인덱스는 제외
+            if ((currentSelectingSlot === 1 && lightCombineMaterial2 === index) ||
+                (currentSelectingSlot === 2 && lightCombineMaterial1 === index)) return;
+                
+            found = true;
+            const div = document.createElement('div');
+            div.className = 'inventory-item';
+            div.innerHTML = `<span style="color:#fff; font-weight:bold;">${swordNames[lvl]}</span>`;
+            
+            const btn = document.createElement('button');
+            btn.className = 'action-btn';
+            btn.textContent = '선택';
+            btn.style.width = '100%';
+            btn.style.marginTop = '10px';
+            btn.onclick = () => {
+                if (currentSelectingSlot === 1) lightCombineMaterial1 = index;
+                if (currentSelectingSlot === 2) lightCombineMaterial2 = index;
+                lightCombineInventoryModal.classList.add('hidden');
+                updateLightCombineUI();
+            };
+            
+            div.appendChild(btn);
+            lightCombineInventoryList.appendChild(div);
+        }
+    });
+    
+    if (!found) {
+        lightCombineInventoryList.innerHTML = '<p style="color:#94a3b8; text-align:center;">재료로 쓸 여명의 검(20강)이나 해적의 검이 인벤토리에 없습니다.</p>';
+    }
+    
+    lightCombineInventoryModal.classList.remove('hidden');
+}
+
+if (btnLightCombineStart) {
+    btnLightCombineStart.addEventListener('click', () => {
+        // 더블체크
+        let stock = parseInt(localStorage.getItem('lightSwordGlobalStock')) || 0;
+        if (stock <= 0) {
+            alert("이미 한정 수량이 모두 소진되었습니다!");
+            lightCombineModal.classList.add('hidden');
+            updateLimitedStockUI();
+            return;
+        }
+        
+        if (lightCombineMaterial1 !== null && lightCombineMaterial2 !== null) {
+            // 인벤토리에서 삭제 (인덱스가 큰 것부터 삭제)
+            const indices = [lightCombineMaterial1, lightCombineMaterial2].sort((a,b) => b-a);
+            gameState.inventory.splice(indices[0], 1);
+            gameState.inventory.splice(indices[1], 1);
+            
+            // 빛의 검 추가
+            gameState.inventory.push(23);
+            
+            // 수량 차감
+            stock--;
+            localStorage.setItem('lightSwordGlobalStock', stock.toString());
+            
+            saveGame();
+            
+            lightCombineModal.classList.add('hidden');
+            updateLimitedStockUI();
+            updateUI();
+            
+            logEvent('✨ 신성한 융합 성공! [빛의 검]이 탄생했습니다!', 'success');
+            
+            // 화면 꽉 차는 이펙트
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100vw'; flash.style.height = '100vh';
+            flash.style.background = '#fff';
+            flash.style.zIndex = '99999';
+            flash.style.transition = 'opacity 1.5s ease-out';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 1500);
+            }, 100);
+        }
+    });
+}
+
+// 페이크 타이머: 약 5~15분 사이에 누군가 하나씩 만들어가서 한정수량이 줄어드는 효과
+setInterval(() => {
+    let stock = parseInt(localStorage.getItem('lightSwordGlobalStock')) || 0;
+    if (stock > 0) {
+        if (Math.random() < 0.05) { // 30초마다 5% 확률
+            stock--;
+            localStorage.setItem('lightSwordGlobalStock', stock.toString());
+            if(!shopLimitedSection.classList.contains('hidden')) {
+                updateLimitedStockUI();
+            }
+            logEvent('💬 다른 유저가 [빛의 검]을 조합했습니다!', 'info');
+        }
+    }
+}, 30000);
 
 updateUI(); // 변경된 상태 반영
 
