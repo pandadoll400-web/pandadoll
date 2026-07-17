@@ -1798,7 +1798,15 @@ if (!localStorage.getItem('removed_24_swords_v1')) {
     localStorage.setItem('removed_24_swords_v1', 'true');
 }
 
-// 퓨즈로 비정상 획득한 16, 17, 18강 일괄 회수 로직 (유저당 1회만 동작)
+// 퓨즈 버그 보상 로직 (유저당 1회만 동작)
+if (!localStorage.getItem('compensation_fuse_bug_v1')) {
+    // 버그 회수 과정에서 정상적인 검까지 삭제된 유저들을 위한 전체 보상 지급
+    // 종말의 검(18) 3개, 블랙홀 검(17) 4개, 공허의 검(16) 5개
+    gameState.inventory.push(18, 18, 18, 17, 17, 17, 17, 16, 16, 16, 16, 16);
+    
+    saveGame();
+    localStorage.setItem('compensation_fuse_bug_v1', 'true');
+}
 if (!localStorage.getItem('removed_fuse_swords_v1')) {
     // 인벤토리에서 제거
     for (let i = gameState.inventory.length - 1; i >= 0; i--) {
