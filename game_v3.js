@@ -1914,11 +1914,7 @@ if(btnExitLightInventory) {
 function updateLightCombineUI() {
     if (lightCombineMaterial1 !== null) {
         const lvl = gameState.inventory[lightCombineMaterial1];
-        lightSlot1.innerHTML = `
-            <div style="transform: scale(0.4); transform-origin: center;">
-                ${renderSwordVisual(lvl)}
-            </div>
-        `;
+        lightSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
         lightSlot1.style.borderColor = '#38bdf8';
     } else {
         lightSlot1.innerHTML = '+';
@@ -1927,11 +1923,7 @@ function updateLightCombineUI() {
     
     if (lightCombineMaterial2 !== null) {
         const lvl = gameState.inventory[lightCombineMaterial2];
-        lightSlot2.innerHTML = `
-            <div style="transform: scale(0.4); transform-origin: center;">
-                ${renderSwordVisual(lvl)}
-            </div>
-        `;
+        lightSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
         lightSlot2.style.borderColor = '#38bdf8';
     } else {
         lightSlot2.innerHTML = '+';
@@ -1974,40 +1966,55 @@ function openLightCombineInventory() {
     let found = false;
     
     gameState.inventory.forEach((lvl, index) => {
-        if (lvl === 20 || lvl === 22) { // 20: 여명의검, 22: 해적의검
-            // 이미 다른 슬롯에 등록된 인덱스는 제외
-            if ((currentSelectingSlot === 1 && lightCombineMaterial2 === index) ||
-                (currentSelectingSlot === 2 && lightCombineMaterial1 === index)) return;
-                
-            found = true;
-            const div = document.createElement('div');
-            div.className = 'inventory-item';
-            div.innerHTML = `
-                <div style="transform: scale(0.6); transform-origin: top center; height: 120px;">
-                    ${renderSwordVisual(lvl)}
-                </div>
-                <p style="margin: 5px 0 0 0; color: #fff; font-weight: bold; font-size: 0.9rem;">${swordNames[lvl]}</p>
-            `;
+        const div = document.createElement('div');
+        div.className = 'shop-item'; // 퓨즈 스타일과 동일하게
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        const selBtn = document.createElement('button');
+        selBtn.className = 'action-btn shop-btn';
+        
+        // 여명의 검(20), 해적의 검(22)만 가능
+        const isValid = (lvl === 20 || lvl === 22);
+        
+        if (!isValid) {
+            selBtn.textContent = '불가 (재료 아님)';
+            selBtn.disabled = true;
+            selBtn.style.background = '#475569';
+            selBtn.style.opacity = '0.5';
+        } else {
+            // 이미 다른 슬롯에 등록된 인덱스인지 확인
+            const isAlreadySelected = (currentSelectingSlot === 1 && lightCombineMaterial2 === index) ||
+                                      (currentSelectingSlot === 2 && lightCombineMaterial1 === index);
             
-            const btn = document.createElement('button');
-            btn.className = 'action-btn';
-            btn.textContent = '선택';
-            btn.style.width = '100%';
-            btn.style.marginTop = '10px';
-            btn.onclick = () => {
-                if (currentSelectingSlot === 1) lightCombineMaterial1 = index;
-                if (currentSelectingSlot === 2) lightCombineMaterial2 = index;
-                lightCombineInventoryModal.classList.add('hidden');
-                updateLightCombineUI();
-            };
-            
-            div.appendChild(btn);
-            lightCombineInventoryList.appendChild(div);
+            if (isAlreadySelected) {
+                selBtn.textContent = '선택됨';
+                selBtn.disabled = true;
+                selBtn.style.background = '#f59e0b';
+                selBtn.style.opacity = '0.8';
+            } else {
+                found = true;
+                selBtn.textContent = '선택하기';
+                selBtn.style.background = 'var(--secondary)';
+                selBtn.onclick = () => {
+                    if (currentSelectingSlot === 1) lightCombineMaterial1 = index;
+                    if (currentSelectingSlot === 2) lightCombineMaterial2 = index;
+                    lightCombineInventoryModal.classList.add('hidden');
+                    updateLightCombineUI();
+                };
+            }
         }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(selBtn);
+        lightCombineInventoryList.appendChild(div);
     });
     
-    if (!found) {
-        lightCombineInventoryList.innerHTML = '<p style="color:#94a3b8; text-align:center;">재료로 쓸 여명의 검(20강)이나 해적의 검이 인벤토리에 없습니다.</p>';
+    if (gameState.inventory.length === 0) {
+        lightCombineInventoryList.innerHTML = '<p style="color:#94a3b8; text-align:center;">보관된 검이 없습니다.</p>';
     }
     
     lightCombineInventoryModal.classList.remove('hidden');
