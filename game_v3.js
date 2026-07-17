@@ -279,6 +279,13 @@ const btnModePvp = document.getElementById('btn-mode-pvp');
 const btnModeBoss = document.getElementById('btn-mode-boss');
 const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
 
+// Boss Select DOM
+const bossSelectModal = document.getElementById('boss-select-modal');
+const btnStartNormalBoss = document.getElementById('btn-start-normal-boss');
+const btnStartKrakenBoss = document.getElementById('btn-start-kraken-boss');
+const btnExitBossSelect = document.getElementById('btn-exit-boss-select');
+
+
 // PVP Setup DOM
 const pvpSetupModal = document.getElementById('pvp-setup-modal');
 const pvpP1NameEl = document.getElementById('pvp-p1-name');
@@ -1374,6 +1381,13 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 거액 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'kraken_boss') {
+            earnedTrophies = 150;
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
+            earnedMoney = 100000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 막대한 보물 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'pvp_sim') {
             earnedTrophies = Math.floor(Math.random() * 20) + 10;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
