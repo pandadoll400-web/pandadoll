@@ -1105,9 +1105,9 @@ btnFuseStart.addEventListener('click', () => {
         }
     }
     
-    // 융합 시간 즉시 완료 (원래 3분 소요)
+    // 3분 소요 타이머 적용
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now(); // 즉시 완료!
+    gameState.fuse.endTime = Date.now() + 180000; // 3분 소요
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
