@@ -115,7 +115,8 @@ const swordNames = [
     "종말의 검",           // 18 (퓨즈)
     "67단검",              // 19 (히든)
     "여명의 검",            // 20
-    "해적의 문어다리 검"    // 21 (시즌 검)
+    "해적의 문어다리 검",   // 21 (시즌 검)
+    "해적의 검"             // 22 (시즌 검)
 ];
 
 // Enhance Costs (0 to 13)
@@ -141,7 +142,8 @@ const enhanceCosts = [
     Infinity, // 18
     Infinity, // 19
     Infinity, // 20
-    Infinity  // 21 (시즌 검)
+    Infinity, // 21 (시즌 검)
+    Infinity  // 22 (시즌 검)
 ];
 
 const levelDamage = [
@@ -153,7 +155,8 @@ const levelDamage = [
     3000,   // 18: 종말의 검
     750,    // 19: 67단검 (11강급)
     5000,   // 20: 여명의 검
-    4000    // 21: 해적의 문어다리 검 (시즌 검)
+    4000,   // 21: 해적의 문어다리 검 (시즌 검)
+    3500    // 22: 해적의 검 (시즌 검)
 ];
 
 const gradeColors = {
@@ -250,6 +253,7 @@ const shopTabSeason = document.getElementById('shop-tab-season');
 const shopEffectsSection = document.getElementById('shop-effects-section');
 const shopSeasonSection = document.getElementById('shop-season-section');
 const btnBuyOctopusSword = document.getElementById('btn-buy-octopus-sword');
+const btnBuyPirateSword = document.getElementById('btn-buy-pirate-sword');
 
 const tabSword = document.getElementById('tab-sword');
 const tabEffect = document.getElementById('tab-effect');
@@ -604,6 +608,21 @@ if (btnBuyOctopusSword) {
             saveGame();
             updateUI();
             logEvent('🐙 해적의 문어다리 검을 구매했습니다!', 'success');
+        } else {
+            alert('골드가 부족합니다!');
+        }
+    });
+}
+
+if (btnBuyPirateSword) {
+    btnBuyPirateSword.addEventListener('click', () => {
+        const price = 350000;
+        if (gameState.money >= price) {
+            gameState.money -= price;
+            gameState.inventory.push(22); // Level 22 is Pirate Sword
+            saveGame();
+            updateUI();
+            logEvent('⚔️ 해적의 검을 구매했습니다!', 'success');
         } else {
             alert('골드가 부족합니다!');
         }
