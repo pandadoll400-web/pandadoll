@@ -830,40 +830,41 @@ h1, h2, h3, .stat-value, .btn-icon {
 
 /* Level 21: 해적의 문어다리 검 (시즌 검) */
 .level-21 #sword-blade {
-    background: linear-gradient(to top right, #581c87, #a855f7);
-    border-top-left-radius: 120px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    width: 30px;
+    background: linear-gradient(to top right, #6b21a8, #c084fc);
+    /* Make it look like a curved tentacle */
+    border-top-left-radius: 100% 60%;
+    border-top-right-radius: 100% 20%;
+    border-bottom-left-radius: 30% 10%;
+    border-bottom-right-radius: 30% 40%;
+    width: 35px;
     height: 120px;
     position: relative;
-    box-shadow: -5px 0 15px rgba(147, 51, 234, 0.6);
-    transform: translateX(10px) rotate(15deg);
+    box-shadow: -3px 0 15px rgba(147, 51, 234, 0.7);
+    transform: rotate(5deg);
     transform-origin: bottom center;
 }
 .level-21 #sword-blade::before {
     content: '';
     position: absolute;
-    top: 10px; left: -5px; bottom: 10px; width: 12px;
-    background: radial-gradient(circle at left, #fbcfe8 45%, transparent 55%);
-    background-size: 100% 22px;
-    opacity: 0.9;
+    top: 5px; left: 0; right: 0; bottom: 15px;
+    /* Suction cups facing front (center) */
+    background: radial-gradient(circle at center, #ec4899 15%, #fbcfe8 25%, transparent 30%);
+    background-size: 100% 20px;
+    opacity: 0.95;
 }
 .level-21 #sword-guard {
     background: #4c1d95;
-    border-radius: 8px;
+    border-radius: 10px 10px 5px 5px;
     height: 15px;
-    width: 65px;
+    width: 70px;
     box-shadow: 0 0 10px #4c1d95;
-    transform: rotate(5deg);
 }
 .level-21 #sword-hilt {
     background: #3b0764;
     position: relative;
-    width: 22px;
+    width: 20px;
     height: 45px;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 10px 10px;
 }
 
 
