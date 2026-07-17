@@ -213,8 +213,19 @@
                     <p id="shop-timer" style="color:var(--text-secondary); margin: 0; font-size: 0.9rem;">다음 갱신: 00:00</p>
                 </div>
                 
-                <div id="shop-items-container" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
-                    <!-- 상점 아이템 동적 렌더링 -->
+                <div class="shop-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button id="shop-tab-effect" class="action-btn" style="flex:1; background: var(--primary);">✨ 이펙트</button>
+                    <button id="shop-tab-season" class="action-btn" style="flex:1; background: #334155;">🗡️ 시즌 검</button>
+                </div>
+                
+                <div id="shop-effects-section">
+                    <div id="shop-items-container" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
+                        <!-- 상점 아이템 동적 렌더링 -->
+                    </div>
+                </div>
+                
+                <div id="shop-season-section" class="hidden">
+                    <p style="text-align:center; padding: 20px; color: var(--text-secondary);">아직 판매 중인 시즌 검이 없습니다.</p>
                 </div>
                 <button id="btn-exit-shop" class="action-btn" style="width:100%;">닫기</button>
             </div>

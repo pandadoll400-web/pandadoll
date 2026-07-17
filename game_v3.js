@@ -242,6 +242,11 @@ const shopTrophyCount = document.getElementById('shop-trophy-count');
 const shopItemsContainer = document.getElementById('shop-items-container');
 const shopTimerEl = document.getElementById('shop-timer');
 
+const shopTabEffect = document.getElementById('shop-tab-effect');
+const shopTabSeason = document.getElementById('shop-tab-season');
+const shopEffectsSection = document.getElementById('shop-effects-section');
+const shopSeasonSection = document.getElementById('shop-season-section');
+
 const tabSword = document.getElementById('tab-sword');
 const tabEffect = document.getElementById('tab-effect');
 const invSwordsSection = document.getElementById('inventory-swords-section');
@@ -570,6 +575,20 @@ btnShop.addEventListener('click', () => {
 
 btnExitShop.addEventListener('click', () => {
     shopModal.classList.add('hidden');
+});
+
+shopTabEffect.addEventListener('click', () => {
+    shopTabEffect.style.background = 'var(--primary)';
+    shopTabSeason.style.background = '#334155';
+    shopEffectsSection.classList.remove('hidden');
+    shopSeasonSection.classList.add('hidden');
+});
+
+shopTabSeason.addEventListener('click', () => {
+    shopTabSeason.style.background = 'var(--primary)';
+    shopTabEffect.style.background = '#334155';
+    shopSeasonSection.classList.remove('hidden');
+    shopEffectsSection.classList.add('hidden');
 });
 
 // Inventory Logic
