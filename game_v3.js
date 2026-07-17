@@ -1287,9 +1287,13 @@ function startBattle(mode) {
         if (mode === 'kraken_boss') {
             arena.style.background = 'linear-gradient(to bottom, #87CEEB, #1E90FF)';
             arena.style.boxShadow = 'inset 0 0 50px rgba(0,0,0,0.5)';
+            arena.style.textShadow = '2px 2px 4px #000, -2px -2px 4px #000, 2px -2px 4px #000, -2px 2px 4px #000';
+            arena.style.color = '#fff';
         } else {
             arena.style.background = '';
             arena.style.boxShadow = '';
+            arena.style.textShadow = '';
+            arena.style.color = '';
         }
     }
     
