@@ -1468,6 +1468,38 @@ function getCanvasPos(evt) {
     };
 }
 
+function createHitEffect(x, y, color) {
+    // Sparks
+    for (let i = 0; i < 6; i++) {
+        const spark = document.createElement('div');
+        spark.style.position = 'fixed';
+        spark.style.left = x + 'px';
+        spark.style.top = y + 'px';
+        spark.style.width = '4px';
+        spark.style.height = '15px';
+        spark.style.background = color || 'white';
+        spark.style.boxShadow = `0 0 5px ${color || 'white'}`;
+        spark.style.borderRadius = '2px';
+        spark.style.pointerEvents = 'none';
+        spark.style.zIndex = '9999';
+        
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 60 + 40;
+        const tx = Math.cos(angle) * speed;
+        const ty = Math.sin(angle) * speed;
+        
+        spark.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        document.body.appendChild(spark);
+        
+        requestAnimationFrame(() => {
+            spark.style.transform = `translate(${tx}px, ${ty}px) scale(0)`;
+            spark.style.opacity = '0';
+        });
+        
+        setTimeout(() => spark.remove(), 300);
+    }
+}
+
 function startSlice(e) {
     if (!battleState.active) return;
     if (battleState.mode === 'pvp' && !canAttack) return;
@@ -1518,6 +1550,9 @@ function drawSlice(e) {
             sliceCtx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
             sliceCtx.lineWidth = 6;
             sliceCtx.stroke();
+            
+            const globalRect = sliceCanvas.getBoundingClientRect();
+            createHitEffect(globalRect.left + pos.x, globalRect.top + pos.y, currentColor);
             
             setTimeout(() => {
                 sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
@@ -1613,6 +1648,9 @@ function drawTrainSlice(e) {
             trainSliceCtx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
             trainSliceCtx.lineWidth = 6;
             trainSliceCtx.stroke();
+            
+            const globalRect = trainSliceCanvas.getBoundingClientRect();
+            createHitEffect(globalRect.left + pos.x, globalRect.top + pos.y, currentColor);
             
             setTimeout(() => {
                 trainSliceCtx.clearRect(0, 0, trainSliceCanvas.width, trainSliceCanvas.height);
