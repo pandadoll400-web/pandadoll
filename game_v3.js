@@ -1158,7 +1158,21 @@ btnModePve.addEventListener('click', () => {
 
 btnModeBoss.addEventListener('click', () => {
     modeSelectModal.classList.add('hidden');
+    bossSelectModal.classList.remove('hidden');
+});
+
+btnExitBossSelect.addEventListener('click', () => {
+    bossSelectModal.classList.add('hidden');
+});
+
+btnStartNormalBoss.addEventListener('click', () => {
+    bossSelectModal.classList.add('hidden');
     startBattle('boss');
+});
+
+btnStartKrakenBoss.addEventListener('click', () => {
+    bossSelectModal.classList.add('hidden');
+    startBattle('kraken_boss');
 });
 
 btnModePvp.addEventListener('click', () => {
@@ -1268,6 +1282,17 @@ function startBattle(mode) {
     
     battlePlayerName.textContent = battleState.p1Name;
     
+    const arena = document.querySelector('.battle-arena');
+    if (arena) {
+        if (mode === 'kraken_boss') {
+            arena.style.background = 'linear-gradient(to bottom, #87CEEB, #1E90FF)';
+            arena.style.boxShadow = 'inset 0 0 50px rgba(0,0,0,0.5)';
+        } else {
+            arena.style.background = '';
+            arena.style.boxShadow = '';
+        }
+    }
+    
     if (mode === 'pve') {
         battleTitle.textContent = '⚔️ PVE 전투 ⚔️';
         battleModeBadge.innerHTML = '<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVE</span>';
@@ -1292,6 +1317,17 @@ function startBattle(mode) {
         
         enemyCharacterEl.textContent = '🐉';
         enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
+        
+    } else if (mode === 'kraken_boss') {
+        battleTitle.textContent = '🚢 대해수 전투 🚢';
+        battleModeBadge.innerHTML = '<span style="background:#000080;color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">크라켄 보스 🚢</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 50000;
+        battleState.enemyDamage = 500 + Math.floor(Math.random() * 150);
+        
+        enemyCharacterEl.textContent = '🦑';
+        enemyNameEl.textContent = `대해수 크라켄 (HP: 50000)`;
         
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
