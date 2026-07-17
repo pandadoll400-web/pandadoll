@@ -1846,6 +1846,14 @@ if (!localStorage.getItem('compensation_fuse_bug_v1')) {
     saveGame();
     localStorage.setItem('compensation_fuse_bug_v1', 'true');
 }
+
+// 기존에 뿌렸던 럭/트로피 버프 일괄 취소 (유저당 1회)
+if (!localStorage.getItem('remove_bugged_buff_v1')) {
+    gameState.luckEventEndTime = 0;
+    gameState.trophyLuckEndTime = 0;
+    saveGame();
+    localStorage.setItem('remove_bugged_buff_v1', 'true');
+}
 if (!localStorage.getItem('removed_fuse_swords_v1')) {
     // 인벤토리에서 제거
     for (let i = gameState.inventory.length - 1; i >= 0; i--) {
