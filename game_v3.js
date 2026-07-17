@@ -1914,7 +1914,11 @@ if(btnExitLightInventory) {
 function updateLightCombineUI() {
     if (lightCombineMaterial1 !== null) {
         const lvl = gameState.inventory[lightCombineMaterial1];
-        lightSlot1.innerHTML = `<span style="font-size: 1rem; color: #fff;">${swordNames[lvl]}</span>`;
+        lightSlot1.innerHTML = `
+            <div style="transform: scale(0.4); transform-origin: center;">
+                ${renderSwordVisual(lvl)}
+            </div>
+        `;
         lightSlot1.style.borderColor = '#38bdf8';
     } else {
         lightSlot1.innerHTML = '+';
@@ -1923,7 +1927,11 @@ function updateLightCombineUI() {
     
     if (lightCombineMaterial2 !== null) {
         const lvl = gameState.inventory[lightCombineMaterial2];
-        lightSlot2.innerHTML = `<span style="font-size: 1rem; color: #fff;">${swordNames[lvl]}</span>`;
+        lightSlot2.innerHTML = `
+            <div style="transform: scale(0.4); transform-origin: center;">
+                ${renderSwordVisual(lvl)}
+            </div>
+        `;
         lightSlot2.style.borderColor = '#38bdf8';
     } else {
         lightSlot2.innerHTML = '+';
@@ -1974,7 +1982,12 @@ function openLightCombineInventory() {
             found = true;
             const div = document.createElement('div');
             div.className = 'inventory-item';
-            div.innerHTML = `<span style="color:#fff; font-weight:bold;">${swordNames[lvl]}</span>`;
+            div.innerHTML = `
+                <div style="transform: scale(0.6); transform-origin: top center; height: 120px;">
+                    ${renderSwordVisual(lvl)}
+                </div>
+                <p style="margin: 5px 0 0 0; color: #fff; font-weight: bold; font-size: 0.9rem;">${swordNames[lvl]}</p>
+            `;
             
             const btn = document.createElement('button');
             btn.className = 'action-btn';
