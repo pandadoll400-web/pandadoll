@@ -1783,9 +1783,7 @@ function endTrainSlice(e) {
 // Initial Setup
 loadGame();
 
-// 요청: 서버 시작/새로고침 시 버프 지급
-gameState.luckEventEndTime = Date.now() + 600000; // 퓨즈럭 10분
-gameState.trophyLuckEndTime = Date.now() + 600000; // 트로피 2배 10분
+// 요청: 서버 시작/새로고침 시 버프 지급 로직 삭제됨
 
 // 잘못 지급된 10강 24개 일괄 회수 로직 (1회성 동작 방식을 위해 즉시 실행 및 저장)
 let removedCount = 0;
