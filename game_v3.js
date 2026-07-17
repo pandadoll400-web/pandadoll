@@ -1785,15 +1785,18 @@ loadGame();
 
 // 요청: 서버 시작/새로고침 시 버프 지급 로직 삭제됨
 
-// 잘못 지급된 10강 24개 일괄 회수 로직 (1회성 동작 방식을 위해 즉시 실행 및 저장)
-let removedCount = 0;
-for (let i = gameState.inventory.length - 1; i >= 0; i--) {
-    if (gameState.inventory[i] === 10 && removedCount < 24) {
-        gameState.inventory.splice(i, 1);
-        removedCount++;
+// 잘못 지급된 10강 24개 일괄 회수 로직 (유저당 1회만 동작)
+if (!localStorage.getItem('removed_24_swords_v1')) {
+    let removedCount = 0;
+    for (let i = gameState.inventory.length - 1; i >= 0; i--) {
+        if (gameState.inventory[i] === 10 && removedCount < 24) {
+            gameState.inventory.splice(i, 1);
+            removedCount++;
+        }
     }
+    saveGame();
+    localStorage.setItem('removed_24_swords_v1', 'true');
 }
-saveGame();
 
 updateUI(); // 변경된 상태 반영
 
