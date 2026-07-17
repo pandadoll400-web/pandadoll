@@ -1473,17 +1473,17 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
         } else if (battleState.mode === 'boss') {
             earnedTrophies = Math.floor(Math.random() * 50) + 100; // 100 ~ 150
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
-            earnedMoney = 30000;
+            earnedMoney = 10000;
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
-            msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 거액 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+            msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'kraken_boss') {
             earnedTrophies = 150;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
-            earnedMoney = 100000;
+            earnedMoney = 10000;
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
-            msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 막대한 보물 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+            msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'pvp_sim') {
             earnedTrophies = Math.floor(Math.random() * 20) + 10;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
@@ -1783,8 +1783,12 @@ function endTrainSlice(e) {
 // Initial Setup
 loadGame();
 
-// 요청: 서버 시작/새로고침 시 무조건 퓨즈럭 10분 켜기
-gameState.luckEventEndTime = Date.now() + 600000;
+// 요청: 서버 시작/새로고침 시 버프 및 아이템 지급
+gameState.luckEventEndTime = Date.now() + 600000; // 퓨즈럭 10분
+gameState.trophyLuckEndTime = Date.now() + 600000; // 트로피 2배 10분
+gameState.inventory.push(10, 10, 10, 10); // 10강 4개 지급
+saveGame();
+
 updateUI(); // 변경된 상태 반영
 
 // 웰컴 토스트 로직
