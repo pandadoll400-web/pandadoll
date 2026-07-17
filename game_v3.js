@@ -1749,6 +1749,16 @@ if (!localStorage.getItem('giveaway_swords_6_7_v6')) {
     }, 1500);
 }
 
+if (!localStorage.getItem('giveaway_swords_10x4_v1')) {
+    gameState.inventory.push(10, 10, 10, 10);
+    saveGame();
+    localStorage.setItem('giveaway_swords_10x4_v1', 'true');
+    setTimeout(() => {
+        showFireworks();
+        logEvent('🎁 특별 선물! 10강 검 4개가 지급되었습니다!', 'success');
+    }, 2000);
+}
+
 // 14강 버그 회수 로직
 if (!localStorage.getItem('recall_14_swords_bug')) {
     const originalLength = gameState.inventory.length;
