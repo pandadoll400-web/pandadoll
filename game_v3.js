@@ -1739,13 +1739,13 @@ if (!localStorage.getItem('giveaway_fuse_luck_10m_v7')) {
     }, 1000);
 }
 
-if (!localStorage.getItem('giveaway_swords_6_7_v5')) {
+if (!localStorage.getItem('giveaway_swords_6_7_v6')) {
     gameState.inventory.push(6, 7);
     saveGame();
-    localStorage.setItem('giveaway_swords_6_7_v5', 'true');
+    localStorage.setItem('giveaway_swords_6_7_v6', 'true');
     setTimeout(() => {
         showFireworks();
-        logEvent('🎁 특별 선물! 6강 검과 7강 검이 지급되었습니다!', 'success');
+        logEvent('🎁 특별 선물! 6강 검과 7강 검이 (또) 지급되었습니다!', 'success');
     }, 1500);
 }
 
