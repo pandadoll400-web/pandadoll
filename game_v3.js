@@ -651,7 +651,6 @@ tabEffect.addEventListener('click', () => {
     invEffectsSection.classList.remove('hidden');
     invSwordsSection.classList.add('hidden');
 });
-
 btnInventory.addEventListener('click', () => {
     renderInventory();
     renderEffectInventory();
@@ -1106,9 +1105,9 @@ btnFuseStart.addEventListener('click', () => {
         }
     }
     
-    // 3분 소요 타이머 적용
+    // 융합 시간 즉시 완료 (원래 3분 소요)
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now() + 180000; // 3분 소요
+    gameState.fuse.endTime = Date.now(); // 즉시 완료!
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
@@ -1783,6 +1782,10 @@ function endTrainSlice(e) {
 
 // Initial Setup
 loadGame();
+
+// 요청: 서버 시작/새로고침 시 무조건 퓨즈럭 10분 켜기
+gameState.luckEventEndTime = Date.now() + 600000;
+updateUI(); // 변경된 상태 반영
 
 // 웰컴 토스트 로직
 const welcomeToast = document.getElementById('welcome-toast');
