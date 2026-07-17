@@ -114,7 +114,8 @@ const swordNames = [
     "블랙홀 검",           // 17 (퓨즈)
     "종말의 검",           // 18 (퓨즈)
     "67단검",              // 19 (히든)
-    "여명의 검"             // 20
+    "여명의 검",            // 20
+    "해적의 문어다리 검"    // 21 (시즌 검)
 ];
 
 // Enhance Costs (0 to 13)
@@ -139,7 +140,8 @@ const enhanceCosts = [
     Infinity, // 17
     Infinity, // 18
     Infinity, // 19
-    Infinity  // 20
+    Infinity, // 20
+    Infinity  // 21 (시즌 검)
 ];
 
 const levelDamage = [
@@ -150,7 +152,8 @@ const levelDamage = [
     1000,   // 17: 블랙홀 검 (11강급)
     3000,   // 18: 종말의 검
     750,    // 19: 67단검 (11강급)
-    5000    // 20: 여명의 검
+    5000,   // 20: 여명의 검
+    4000    // 21: 해적의 문어다리 검 (시즌 검)
 ];
 
 const gradeColors = {
@@ -246,6 +249,7 @@ const shopTabEffect = document.getElementById('shop-tab-effect');
 const shopTabSeason = document.getElementById('shop-tab-season');
 const shopEffectsSection = document.getElementById('shop-effects-section');
 const shopSeasonSection = document.getElementById('shop-season-section');
+const btnBuyOctopusSword = document.getElementById('btn-buy-octopus-sword');
 
 const tabSword = document.getElementById('tab-sword');
 const tabEffect = document.getElementById('tab-effect');
@@ -590,6 +594,21 @@ shopTabSeason.addEventListener('click', () => {
     shopSeasonSection.classList.remove('hidden');
     shopEffectsSection.classList.add('hidden');
 });
+
+if (btnBuyOctopusSword) {
+    btnBuyOctopusSword.addEventListener('click', () => {
+        const price = 400000;
+        if (gameState.money >= price) {
+            gameState.money -= price;
+            gameState.inventory.push(21); // Level 21 is Octopus Sword
+            saveGame();
+            updateUI();
+            logEvent('🐙 해적의 문어다리 검을 구매했습니다!', 'success');
+        } else {
+            alert('골드가 부족합니다!');
+        }
+    });
+}
 
 // Inventory Logic
 btnStash.addEventListener('click', () => {
