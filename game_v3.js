@@ -610,16 +610,33 @@ btnExitShop.addEventListener('click', () => {
 shopTabEffect.addEventListener('click', () => {
     shopTabEffect.style.background = 'var(--primary)';
     shopTabSeason.style.background = '#334155';
+    if(shopTabLimited) shopTabLimited.style.background = '#334155';
     shopEffectsSection.classList.remove('hidden');
     shopSeasonSection.classList.add('hidden');
+    if(shopLimitedSection) shopLimitedSection.classList.add('hidden');
 });
 
 shopTabSeason.addEventListener('click', () => {
     shopTabSeason.style.background = 'var(--primary)';
     shopTabEffect.style.background = '#334155';
+    if(shopTabLimited) shopTabLimited.style.background = '#334155';
     shopSeasonSection.classList.remove('hidden');
     shopEffectsSection.classList.add('hidden');
+    if(shopLimitedSection) shopLimitedSection.classList.add('hidden');
 });
+
+if (shopTabLimited) {
+    shopTabLimited.addEventListener('click', () => {
+        shopTabLimited.style.background = '#f59e0b'; // 황금색
+        shopTabEffect.style.background = '#334155';
+        shopTabSeason.style.background = '#334155';
+        shopLimitedSection.classList.remove('hidden');
+        shopEffectsSection.classList.add('hidden');
+        shopSeasonSection.classList.add('hidden');
+        
+        updateLimitedStockUI();
+    });
+}
 
 if (btnBuyOctopusSword) {
     btnBuyOctopusSword.addEventListener('click', () => {
