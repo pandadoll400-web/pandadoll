@@ -311,6 +311,15 @@ const trainSliceCanvas = document.getElementById('train-slice-canvas');
 const trainSliceCtx = trainSliceCanvas.getContext('2d');
 const robotDummy = document.getElementById('robot-dummy');
 
+const loginScreenModal = document.getElementById('login-screen-modal');
+const btnLoginStart = document.getElementById('btn-login-start');
+const btnLoginLoad = document.getElementById('btn-login-load');
+const loginNickname = document.getElementById('login-nickname');
+const loginPassword = document.getElementById('login-password');
+const loginSavecode = document.getElementById('login-savecode');
+const btnExportSave = document.getElementById('btn-export-save');
+const btnLogout = document.getElementById('btn-logout');
+
 // Battle DOM
 const battleModal = document.getElementById('battle-modal');
 const battlePlayerHp = document.getElementById('battle-player-hp');
