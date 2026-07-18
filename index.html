@@ -263,6 +263,16 @@
                             조합기 열기
                         </button>
                     </div>
+
+                    <!-- 사명의 검 (초기에는 display:none으로 숨김 처리) -->
+                    <div id="mission-sword-box" style="display:none; border: 2px solid #ef4444; padding: 20px; border-radius: 8px; background: rgba(239, 68, 68, 0.1);">
+                        <h2 style="color: #ef4444; margin-top:0; text-shadow: 0 0 10px #ef4444;">👑 사명의 검 한정 출시 👑</h2>
+                        <p style="color: #cbd5e1; font-size: 0.9rem;">진실의 검(14강) 3개 + 해적의 검(시즌) 1개로 전설의 검을 완성하세요.</p>
+                        <p id="mission-timer-text" style="color: #fde047; font-weight: bold; font-size: 1.1rem; margin: 15px 0;">남은 시간: 20:00</p>
+                        <button id="btn-open-mission-combine" class="action-btn" style="background: linear-gradient(45deg, #991b1b, #ef4444); color: white; font-weight: bold; font-size: 1.1rem; padding: 15px; border-radius: 8px; border: none; cursor: pointer; width: 100%; box-shadow: 0 0 15px #ef4444;">
+                            왕의 융합기 열기
+                        </button>
+                    </div>
                 </div>
 
                 <button id="btn-exit-shop" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
@@ -286,6 +296,24 @@
             </div>
         </div>
 
+        <!-- Mission Sword Combine Modal -->
+        <div id="mission-combine-modal" class="modal hidden">
+            <div class="modal-content" style="max-width: 450px; background: #1e293b; border: 2px solid #ef4444; box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);">
+                <h2 style="text-align: center; color: #ef4444;">👑 왕의 융합기 👑</h2>
+                <p style="text-align: center; color: #94a3b8; font-size: 0.9rem;">재료: 진실의 검 3개 + 해적의 검 1개</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                    <div id="mission-slot-1" class="fuse-slot" style="height: 100px; border: 2px dashed #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 2rem;">+</div>
+                    <div id="mission-slot-2" class="fuse-slot" style="height: 100px; border: 2px dashed #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 2rem;">+</div>
+                    <div id="mission-slot-3" class="fuse-slot" style="height: 100px; border: 2px dashed #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 2rem;">+</div>
+                    <div id="mission-slot-4" class="fuse-slot" style="height: 100px; border: 2px dashed #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 2rem;">+</div>
+                </div>
+                
+                <button id="btn-mission-combine-start" class="action-btn" style="width: 100%; background: #ef4444; color: white; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;" disabled>사명의 융합 시작</button>
+                <button id="btn-exit-mission-combine" class="action-btn" style="width: 100%; background: #475569;">취소</button>
+            </div>
+        </div>
+
         <!-- Light Combine Inventory Modal -->
         <div id="light-combine-inventory-modal" class="modal hidden">
             <div class="modal-content">
@@ -295,6 +323,18 @@
                     <!-- JS로 채워짐 -->
                 </div>
                 <button id="btn-exit-light-inventory" class="action-btn" style="width: 100%; margin-top: 15px;">닫기</button>
+            </div>
+        </div>
+        
+        <!-- Mission Combine Inventory Modal -->
+        <div id="mission-combine-inventory-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 style="color: #ef4444;">왕의 재료 선택</h2>
+                <p style="color:#94a3b8; font-size:0.85rem;">진실의 검(14) 또는 해적의 검(22)만 선택 가능합니다.</p>
+                <div id="mission-combine-inventory-list" class="inventory-grid" style="max-height: 400px; overflow-y: auto;">
+                    <!-- JS로 채워짐 -->
+                </div>
+                <button id="btn-exit-mission-inventory" class="action-btn" style="width: 100%; margin-top: 15px;">닫기</button>
             </div>
         </div>
 

@@ -117,7 +117,8 @@ const swordNames = [
     "여명의 검",            // 20
     "해적의 문어다리 검",   // 21 (시즌 검)
     "해적의 검",             // 22 (시즌 검)
-    "빛의 검"                // 23 (한정 조합)
+    "빛의 검",              // 23 (한정 조합)
+    "사명의 검"             // 24 (특별 한정)
 ];
 
 // Enhance Costs (0 to 13)
@@ -145,7 +146,8 @@ const enhanceCosts = [
     Infinity, // 20
     Infinity, // 21 (시즌 검)
     Infinity, // 22 (시즌 검)
-    Infinity  // 23 (한정 조합)
+    Infinity, // 23 (한정 조합)
+    Infinity  // 24 (특별 한정)
 ];
 
 const levelDamage = [
@@ -159,7 +161,8 @@ const levelDamage = [
     5000,   // 20: 여명의 검
     4000,   // 21: 해적의 문어다리 검 (시즌 검)
     3500,   // 22: 해적의 검 (시즌 검)
-    9000    // 23: 빛의 검 (한정 조합)
+    9000,   // 23: 빛의 검 (한정 조합)
+    15000   // 24: 사명의 검 (특별 한정)
 ];
 
 const gradeColors = {
@@ -263,6 +266,26 @@ const btnExitLightCombine = document.getElementById('btn-exit-light-combine');
 const lightSlot1 = document.getElementById('light-slot-1');
 const lightSlot2 = document.getElementById('light-slot-2');
 const btnLightCombineStart = document.getElementById('btn-light-combine-start');
+const btnMissionCombineStart = document.getElementById('btn-mission-combine-start');
+
+// Mission Sword Feature Flag (User requested to hide until ready)
+window.MISSION_SWORD_EVENT_ACTIVE = false;
+let missionCombineMaterials = [null, null, null, null]; // 4 slots
+let currentMissionSelectingSlot = null;
+const missionSwordBox = document.getElementById('mission-sword-box');
+const missionTimerText = document.getElementById('mission-timer-text');
+const btnOpenMissionCombine = document.getElementById('btn-open-mission-combine');
+const missionCombineModal = document.getElementById('mission-combine-modal');
+const btnExitMissionCombine = document.getElementById('btn-exit-mission-combine');
+
+const missionSlot1 = document.getElementById('mission-slot-1');
+const missionSlot2 = document.getElementById('mission-slot-2');
+const missionSlot3 = document.getElementById('mission-slot-3');
+const missionSlot4 = document.getElementById('mission-slot-4');
+
+const missionCombineInventoryModal = document.getElementById('mission-combine-inventory-modal');
+const missionCombineInventoryList = document.getElementById('mission-combine-inventory-list');
+const btnExitMissionInventory = document.getElementById('btn-exit-mission-inventory');
 const lightCombineInventoryModal = document.getElementById('light-combine-inventory-modal');
 const btnExitLightInventory = document.getElementById('btn-exit-light-inventory');
 const lightCombineInventoryList = document.getElementById('light-combine-inventory-list');
@@ -2073,6 +2096,209 @@ if (btnLightCombineStart) {
                 setTimeout(() => flash.remove(), 1500);
             }, 100);
         }
+    });
+}
+
+// ----------------------------------------------------
+// Mission Sword Event Logic (사명의 검)
+// ----------------------------------------------------
+
+function updateMissionSwordEventUI() {
+    if (!window.MISSION_SWORD_EVENT_ACTIVE) {
+        if(missionSwordBox) missionSwordBox.style.display = 'none';
+        return;
+    }
+    
+    // Start the timer if not started
+    if (!localStorage.getItem('missionEventStartTime')) {
+        localStorage.setItem('missionEventStartTime', Date.now().toString());
+    }
+    
+    const startTime = parseInt(localStorage.getItem('missionEventStartTime'));
+    const endTime = startTime + (20 * 60 * 1000); // 20 minutes
+    const now = Date.now();
+    
+    if (now >= endTime) {
+        // Event over
+        if(missionSwordBox) missionSwordBox.style.display = 'none';
+        if(missionCombineModal && !missionCombineModal.classList.contains('hidden')) {
+            missionCombineModal.classList.add('hidden');
+        }
+    } else {
+        // Event active
+        if(missionSwordBox) missionSwordBox.style.display = 'block';
+        const remainMs = endTime - now;
+        const mins = Math.floor(remainMs / 60000);
+        const secs = Math.floor((remainMs % 60000) / 1000);
+        if(missionTimerText) {
+            missionTimerText.textContent = `남은 시간: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+    }
+}
+
+// Update timer every second
+setInterval(updateMissionSwordEventUI, 1000);
+// Call once on load
+setTimeout(updateMissionSwordEventUI, 500);
+
+if (btnOpenMissionCombine) {
+    btnOpenMissionCombine.addEventListener('click', () => {
+        missionCombineMaterials = [null, null, null, null];
+        updateMissionCombineUI();
+        missionCombineModal.classList.remove('hidden');
+    });
+}
+if (btnExitMissionCombine) {
+    btnExitMissionCombine.addEventListener('click', () => {
+        missionCombineModal.classList.add('hidden');
+    });
+}
+if (btnExitMissionInventory) {
+    btnExitMissionInventory.addEventListener('click', () => {
+        missionCombineInventoryModal.classList.add('hidden');
+    });
+}
+
+function updateMissionCombineUI() {
+    let selectedCount = 0;
+    
+    const slots = [missionSlot1, missionSlot2, missionSlot3, missionSlot4];
+    
+    for (let i = 0; i < 4; i++) {
+        const slot = slots[i];
+        const matIndex = missionCombineMaterials[i];
+        
+        if (matIndex !== null) {
+            const lvl = gameState.inventory[matIndex];
+            slot.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+            slot.style.borderColor = '#ef4444';
+            selectedCount++;
+        } else {
+            slot.innerHTML = '+';
+            slot.style.borderColor = '#94a3b8';
+        }
+    }
+    
+    btnMissionCombineStart.disabled = (selectedCount !== 4);
+    if (selectedCount === 4) {
+        btnMissionCombineStart.style.opacity = '1';
+        btnMissionCombineStart.style.cursor = 'pointer';
+    } else {
+        btnMissionCombineStart.style.opacity = '0.5';
+        btnMissionCombineStart.style.cursor = 'not-allowed';
+    }
+}
+
+function openMissionCombineInventory() {
+    missionCombineInventoryList.innerHTML = '';
+    let found = false;
+    
+    gameState.inventory.forEach((lvl, index) => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'item-name';
+        nameSpan.style.color = 'white';
+        nameSpan.textContent = `[+${lvl}] ${swordNames[lvl]}`;
+        
+        const selBtn = document.createElement('button');
+        selBtn.className = 'action-btn shop-btn';
+        
+        // 사명의 검 재료: 진실의 검(14강), 해적의 검(22강)
+        const isValid = (lvl === 14 || lvl === 22);
+        
+        if (!isValid) {
+            selBtn.textContent = '불가 (재료 아님)';
+            selBtn.disabled = true;
+            selBtn.style.background = '#475569';
+            selBtn.style.opacity = '0.5';
+        } else {
+            // 이미 다른 슬롯에 등록된 인덱스인지 확인
+            const isAlreadySelected = missionCombineMaterials.includes(index);
+            
+            if (isAlreadySelected) {
+                selBtn.textContent = '선택됨';
+                selBtn.disabled = true;
+                selBtn.style.background = '#ef4444';
+                selBtn.style.opacity = '0.8';
+            } else {
+                found = true;
+                selBtn.textContent = '선택하기';
+                selBtn.style.background = 'var(--secondary)';
+                selBtn.onclick = () => {
+                    missionCombineMaterials[currentMissionSelectingSlot] = index;
+                    missionCombineInventoryModal.classList.add('hidden');
+                    updateMissionCombineUI();
+                };
+            }
+        }
+        
+        div.appendChild(nameSpan);
+        div.appendChild(selBtn);
+        missionCombineInventoryList.appendChild(div);
+    });
+    
+    if (gameState.inventory.length === 0) {
+        missionCombineInventoryList.innerHTML = '<p style="color:#94a3b8; text-align:center;">보관된 검이 없습니다.</p>';
+    }
+    
+    missionCombineInventoryModal.classList.remove('hidden');
+}
+
+[missionSlot1, missionSlot2, missionSlot3, missionSlot4].forEach((slot, idx) => {
+    if(slot) {
+        slot.addEventListener('click', () => {
+            currentMissionSelectingSlot = idx;
+            openMissionCombineInventory();
+        });
+    }
+});
+
+if (btnMissionCombineStart) {
+    btnMissionCombineStart.addEventListener('click', () => {
+        // 검증: 진실의검(14) 3개, 해적의검(22) 1개인지 확인
+        let count14 = 0;
+        let count22 = 0;
+        for (let i = 0; i < 4; i++) {
+            const lvl = gameState.inventory[missionCombineMaterials[i]];
+            if (lvl === 14) count14++;
+            if (lvl === 22) count22++;
+        }
+        
+        if (count14 !== 3 || count22 !== 1) {
+            alert('재료가 올바르지 않습니다! (진실의 검 3개, 해적의 검 1개 필요)');
+            return;
+        }
+        
+        // 인벤토리에서 삭제 (인덱스가 큰 것부터 삭제해야 밀림 방지)
+        const indices = [...missionCombineMaterials].sort((a,b) => b-a);
+        for (let idx of indices) {
+            gameState.inventory.splice(idx, 1);
+        }
+        
+        // 사명의 검(24강) 지급
+        gameState.inventory.push(24);
+        saveGame();
+        
+        missionCombineModal.classList.add('hidden');
+        updateUI();
+        
+        logEvent('👑 전설의 [사명의 검]이 탄생했습니다!', 'success');
+        
+        // 화면 꽉 차는 붉은 이펙트
+        const flash = document.createElement('div');
+        flash.style.position = 'fixed';
+        flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100vw'; flash.style.height = '100vh';
+        flash.style.background = '#ef4444';
+        flash.style.zIndex = '99999';
+        flash.style.transition = 'opacity 2s ease-out';
+        document.body.appendChild(flash);
+        
+        setTimeout(() => {
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 2000);
+        }, 100);
     });
 }
 

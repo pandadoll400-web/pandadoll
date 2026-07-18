@@ -948,6 +948,43 @@ h1, h2, h3, .stat-value, .btn-icon {
     50% { transform: translateY(-10px); }
 }
 
+/* Level 24: 사명의 검 (한정 조합) */
+.level-24 {
+    animation: missionSwordFloat 3s ease-in-out infinite;
+}
+.level-24 #sword-blade {
+    width: 50px;
+    height: 180px;
+    background: linear-gradient(to right, #991b1b, #ef4444, #fca5a5, #ef4444, #991b1b);
+    clip-path: polygon(50% 0%, 100% 15%, 85% 100%, 15% 100%, 0% 15%);
+    box-shadow: 0 0 40px #ef4444, inset 0 0 20px #fca5a5;
+    animation: missionSwordPulse 2s infinite alternate;
+}
+.level-24 #sword-guard {
+    background: linear-gradient(to right, #b45309, #fde047, #b45309);
+    width: 110px;
+    height: 40px;
+    border-radius: 5px;
+    clip-path: polygon(0 40%, 20% 0, 35% 30%, 50% 0, 65% 30%, 80% 0, 100% 40%, 90% 100%, 10% 100%);
+    box-shadow: 0 0 25px #fde047, inset 0 0 10px #ef4444;
+}
+.level-24 #sword-hilt {
+    background: linear-gradient(to bottom, #991b1b, #450a0a);
+    width: 28px;
+    height: 70px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 15px #ef4444;
+}
+
+@keyframes missionSwordPulse {
+    0% { box-shadow: 0 0 30px #ef4444, inset 0 0 15px #fca5a5; }
+    100% { box-shadow: 0 0 60px #ef4444, 0 0 100px #fde047, inset 0 0 30px #fff; }
+}
+@keyframes missionSwordFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+}
+
 
 @keyframes hiltGlowBlue {
     0% { background-position: 0% 50%; box-shadow: inset 0 0 5px #000, 0 0 10px #3b82f6; }
