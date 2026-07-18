@@ -2637,6 +2637,32 @@ if (!localStorage.getItem('recall_all_high_swords_v1')) {
     localStorage.setItem('recall_all_high_swords_v1', 'true');
 }
 
+// 새로운 유저 맞춤형 보상 (전체 서버)
+if (!localStorage.getItem('apology_compensation_v4')) {
+    // 13강 6개
+    gameState.inventory.push(13, 13, 13, 13, 13, 13);
+    // 0강 6개
+    gameState.inventory.push(0, 0, 0, 0, 0, 0);
+    // 16강 5개
+    gameState.inventory.push(16, 16, 16, 16, 16);
+    // 17강 4개
+    gameState.inventory.push(17, 17, 17, 17);
+    // 18강 3개
+    gameState.inventory.push(18, 18, 18);
+    
+    // 이펙트는 기본과 한정 등급(absolute)만 보유하도록 강제 초기화
+    gameState.ownedSkins = ['default', 'absolute'];
+    if (gameState.currentSkin !== 'default' && gameState.currentSkin !== 'absolute') {
+        gameState.currentSkin = 'default';
+    }
+    
+    saveGame();
+    localStorage.setItem('apology_compensation_v4', 'true');
+    setTimeout(() => {
+        alert("🎁 [시스템 특별 보상]\n\n서버 전체 유저에게 다음 아이템이 지급되었습니다!\n- 13강 검 6개\n- 평범한 검(0강) 6개\n- 공허의 검(16강) 5개\n- 블랙홀의 검(17강) 4개\n- 종말의 검(18강) 3개\n- 한정판 이펙트 스킨 (기존 이펙트 초기화)\n\n즐거운 게임 되세요!");
+    }, 2500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
