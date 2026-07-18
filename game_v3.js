@@ -2295,7 +2295,7 @@ function openMissionCombineInventory() {
 
 if (btnMissionCombineStart) {
     btnMissionCombineStart.addEventListener('click', () => {
-        // 검증: 진실의검(14) 3개, 해적의검(22) 1개인지 확인
+        // 검증: 진실의검(14) 2개, 해적의검(22) 2개인지 확인
         let count14 = 0;
         let count22 = 0;
         for (let i = 0; i < 4; i++) {
@@ -2304,8 +2304,8 @@ if (btnMissionCombineStart) {
             if (lvl === 22) count22++;
         }
         
-        if (count14 !== 3 || count22 !== 1) {
-            alert('재료가 올바르지 않습니다! (진실의 검 3개, 해적의 검 1개 필요)');
+        if (count14 !== 2 || count22 !== 2) {
+            alert('재료가 올바르지 않습니다! (진실의 검 2개, 해적의 검 2개 필요)');
             return;
         }
         
