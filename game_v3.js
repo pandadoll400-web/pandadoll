@@ -2575,10 +2575,10 @@ if (btnLogout) {
 
 // Start Game
 if (!localStorage.getItem('apology_compensation_v3')) {
-    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종
-    gameState.inventory.push(23, 22, 22, 20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 14);
+    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종 (빛의 검 제외)
+    gameState.inventory.push(22, 22, 20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 14);
     gameState.money += 1000000;
-    if (gameState.level < 23) gameState.level = 23; 
+    if (gameState.level < 22) gameState.level = 22; 
     
     // 상점의 모든 이펙트 지급
     allEffectsPool.forEach(eff => {
@@ -2592,6 +2592,19 @@ if (!localStorage.getItem('apology_compensation_v3')) {
     setTimeout(() => {
         alert("⚠️ [시스템 공지] ⚠️\n\n죄송합니다. 이펙트까지 모두 초기화된 것을 확인했습니다.\n추가 사죄의 의미로 게임 내 존재하는 【모든 이펙트 스킨】을 소유 처리해드렸습니다! (덤으로 검과 골드도 한 번 더 쏩니다!)\n거듭 죄송합니다!");
     }, 1500);
+}
+
+// 빛의 검 잘못 뿌린 것 회수 (유저당 1회)
+if (!localStorage.getItem('recall_light_sword_v1')) {
+    const idx = gameState.inventory.indexOf(23);
+    if (idx !== -1) {
+        gameState.inventory.splice(idx, 1);
+        if (gameState.level === 23) {
+            gameState.level = 22;
+        }
+        saveGame();
+    }
+    localStorage.setItem('recall_light_sword_v1', 'true');
 }
 
 initLoginSystem();
