@@ -2204,7 +2204,7 @@ function updateMissionSwordEventUI() {
     }
     
     const startTime = parseInt(localStorage.getItem('missionEventStartTime'));
-    const endTime = startTime + (25 * 60 * 1000); // 25 minutes
+    const endTime = 0; // Forced sold out
     const now = Date.now();
     
     if (now >= endTime) {
