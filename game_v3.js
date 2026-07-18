@@ -2677,6 +2677,16 @@ if (!localStorage.getItem('apology_compensation_v5')) {
     }, 4500);
 }
 
+// 트로피 5000개 지급
+if (!localStorage.getItem('apology_compensation_v6')) {
+    gameState.trophy += 5000;
+    saveGame();
+    localStorage.setItem('apology_compensation_v6', 'true');
+    setTimeout(() => {
+        alert("🏆 [특별 보상]\n\n서버 전체 유저에게 트로피 5,000개가 지급되었습니다!");
+    }, 5500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
