@@ -2198,8 +2198,8 @@ function updateMissionSwordEventUI() {
         return;
     }
     
-    // Global absolute deadline (2026-07-19 08:26:00 KST)
-    const endTime = 1784426760000; // new Date("2026-07-19T08:26:00+09:00").getTime()
+    // Global absolute deadline (2026-07-19 08:30:00 KST)
+    const endTime = new Date("2026-07-19T08:30:00+09:00").getTime();
     const now = Date.now();
     
     if (now >= endTime) {
