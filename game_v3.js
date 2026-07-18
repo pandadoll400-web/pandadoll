@@ -45,7 +45,7 @@ function loadGame() {
             'apology_compensation_v7', 'apology_compensation_v8', 'apology_compensation_v9',
             'apology_compensation_v10', 'apology_compensation_v12', 'apology_compensation_v14',
             'apology_compensation_v15', 'giveaway_luck_15m_v16', 'giveaway_trophy_luck_15m_v17',
-            'apology_compensation_v18',
+            'apology_compensation_v18', 'giveaway_13_sword_v19',
             'compensation_13_swords_v5', 'giveaway_swords_6_7_v6', 'giveaway_fuse_luck_10m_v8',
             'giveaway_fuse_luck_15m_v11', 'giveaway_trophy_luck_10m_v13', 'recall_light_sword_v1',
             'recall_all_high_swords_v1'
@@ -2889,6 +2889,17 @@ if (!localStorage.getItem('apology_compensation_v18')) {
     setTimeout(() => {
         alert("💰 [자금 지원]\n\n서버 전체 유저에게 300,000 골드가 지급되었습니다!");
     }, 16500);
+}
+
+// 13강 검 (봉인된 검) 지급
+if (!localStorage.getItem('giveaway_13_sword_v19')) {
+    gameState.inventory.push(13); // 13강 (봉인된 검)
+    saveGame();
+    localStorage.setItem('giveaway_13_sword_v19', 'true');
+    setTimeout(() => {
+        showFireworks();
+        alert("🎁 [깜짝 선물]\n\n전 서버 유저에게 '13강 봉인된 검'이 지급되었습니다! 인벤토리를 확인하세요!");
+    }, 17500);
 }
 
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
