@@ -45,6 +45,7 @@ function loadGame() {
             'apology_compensation_v7', 'apology_compensation_v8', 'apology_compensation_v9',
             'apology_compensation_v10', 'apology_compensation_v12', 'apology_compensation_v14',
             'apology_compensation_v15', 'giveaway_luck_15m_v16', 'giveaway_trophy_luck_15m_v17',
+            'apology_compensation_v18',
             'compensation_13_swords_v5', 'giveaway_swords_6_7_v6', 'giveaway_fuse_luck_10m_v8',
             'giveaway_fuse_luck_15m_v11', 'giveaway_trophy_luck_10m_v13', 'recall_light_sword_v1',
             'recall_all_high_swords_v1'
@@ -718,7 +719,7 @@ if (shopTabLimited) {
 
 if (btnBuyOctopusSword) {
     btnBuyOctopusSword.addEventListener('click', () => {
-        const price = 4000;
+        const price = 10000;
         if (gameState.trophies >= price) {
             gameState.trophies -= price;
             gameState.inventory.push(21); // Level 21 is Octopus Sword
@@ -733,7 +734,7 @@ if (btnBuyOctopusSword) {
 
 if (btnBuyPirateSword) {
     btnBuyPirateSword.addEventListener('click', () => {
-        const price = 3500;
+        const price = 7000;
         if (gameState.trophies >= price) {
             gameState.trophies -= price;
             gameState.inventory.push(22); // Level 22 is Pirate Sword
@@ -2864,6 +2865,16 @@ if (!localStorage.getItem('giveaway_trophy_luck_15m_v17')) {
         showFireworks();
         alert('🏆 [깜짝 이벤트] 서버 전체에 트로피 획득량 2배 보너스가 15분간 발동되었습니다!');
     }, 15500);
+}
+
+// 30만 골드 지급 (3차)
+if (!localStorage.getItem('apology_compensation_v18')) {
+    gameState.money += 300000;
+    saveGame();
+    localStorage.setItem('apology_compensation_v18', 'true');
+    setTimeout(() => {
+        alert("💰 [자금 지원]\n\n서버 전체 유저에게 300,000 골드가 지급되었습니다!");
+    }, 16500);
 }
 
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
