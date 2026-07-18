@@ -1476,9 +1476,9 @@ function startBattle(mode) {
         pvpTurnIndicator.classList.add('hidden');
         
         let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
-        let calcDmg = 15 + (gameState.trophies * 2) + Math.floor(Math.random() * 10);
+        let calcDmg = 10 + Math.floor(gameState.trophies * 0.05) + Math.floor(Math.random() * 5);
         battleState.enemyMaxHp = calcHp;
-        battleState.enemyDamage = Math.min(4000, calcDmg);
+        battleState.enemyDamage = Math.min(100, calcDmg);
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
         enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
