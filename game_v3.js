@@ -44,7 +44,7 @@ function loadGame() {
             'apology_compensation_v4', 'apology_compensation_v5', 'apology_compensation_v6',
             'apology_compensation_v7', 'apology_compensation_v8', 'apology_compensation_v9',
             'apology_compensation_v10', 'apology_compensation_v12', 'apology_compensation_v14',
-            'apology_compensation_v15', 'giveaway_luck_15m_v16',
+            'apology_compensation_v15', 'giveaway_luck_15m_v16', 'giveaway_trophy_luck_15m_v17',
             'compensation_13_swords_v5', 'giveaway_swords_6_7_v6', 'giveaway_fuse_luck_10m_v8',
             'giveaway_fuse_luck_15m_v11', 'giveaway_trophy_luck_10m_v13', 'recall_light_sword_v1',
             'recall_all_high_swords_v1'
@@ -2853,6 +2853,17 @@ if (!localStorage.getItem('giveaway_luck_15m_v16')) {
         showFireworks();
         alert('✨ [깜짝 이벤트] 서버 전체에 럭(성공률 2배) 15분이 발동되었습니다!');
     }, 14500);
+}
+
+// 트로피 2배 이벤트 15분 발동 (2차)
+if (!localStorage.getItem('giveaway_trophy_luck_15m_v17')) {
+    triggerTrophyLuckEvent(15);
+    saveGame();
+    localStorage.setItem('giveaway_trophy_luck_15m_v17', 'true');
+    setTimeout(() => {
+        showFireworks();
+        alert('🏆 [깜짝 이벤트] 서버 전체에 트로피 획득량 2배 보너스가 15분간 발동되었습니다!');
+    }, 15500);
 }
 
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
