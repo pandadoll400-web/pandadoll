@@ -2807,6 +2807,16 @@ if (!localStorage.getItem('giveaway_trophy_luck_10m_v13')) {
     }, 11500);
 }
 
+// 20만 골드 추가 지급 (2차)
+if (!localStorage.getItem('apology_compensation_v14')) {
+    gameState.money += 200000;
+    saveGame();
+    localStorage.setItem('apology_compensation_v14', 'true');
+    setTimeout(() => {
+        alert("💰 [추가 자금 지원]\n\n서버 전체 유저에게 200,000 골드가 한 번 더 지급되었습니다!");
+    }, 12500);
+}
+
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
 if (!localStorage.getItem('mission_event_start_v1')) {
     localStorage.removeItem('missionEventStartTime');
