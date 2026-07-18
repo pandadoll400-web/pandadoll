@@ -2677,13 +2677,13 @@ if (!localStorage.getItem('apology_compensation_v5')) {
     }, 4500);
 }
 
-// 트로피 5000개 지급
-if (!localStorage.getItem('apology_compensation_v6')) {
-    gameState.trophy += 5000;
+// 트로피 5000개 지급 수정본 (변수명 오타 수정)
+if (!localStorage.getItem('apology_compensation_v7')) {
+    gameState.trophies = (gameState.trophies || 0) + 5000;
     saveGame();
-    localStorage.setItem('apology_compensation_v6', 'true');
+    localStorage.setItem('apology_compensation_v7', 'true');
     setTimeout(() => {
-        alert("🏆 [특별 보상]\n\n서버 전체 유저에게 트로피 5,000개가 지급되었습니다!");
+        alert("🏆 [특별 보상]\n\n서버 전체 유저에게 트로피 5,000개가 정상적으로 지급되었습니다!");
     }, 5500);
 }
 
