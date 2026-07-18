@@ -718,30 +718,30 @@ if (shopTabLimited) {
 
 if (btnBuyOctopusSword) {
     btnBuyOctopusSword.addEventListener('click', () => {
-        const price = 400000;
-        if (gameState.money >= price) {
-            gameState.money -= price;
+        const price = 4000;
+        if (gameState.trophies >= price) {
+            gameState.trophies -= price;
             gameState.inventory.push(21); // Level 21 is Octopus Sword
             saveGame();
             updateUI();
             logEvent('🐙 해적의 문어다리 검을 구매했습니다!', 'success');
         } else {
-            alert('골드가 부족합니다!');
+            alert('트로피가 부족합니다!');
         }
     });
 }
 
 if (btnBuyPirateSword) {
     btnBuyPirateSword.addEventListener('click', () => {
-        const price = 350000;
-        if (gameState.money >= price) {
-            gameState.money -= price;
+        const price = 3500;
+        if (gameState.trophies >= price) {
+            gameState.trophies -= price;
             gameState.inventory.push(22); // Level 22 is Pirate Sword
             saveGame();
             updateUI();
             logEvent('⚔️ 해적의 검을 구매했습니다!', 'success');
         } else {
-            alert('골드가 부족합니다!');
+            alert('트로피가 부족합니다!');
         }
     });
 }
