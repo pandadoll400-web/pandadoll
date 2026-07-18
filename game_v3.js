@@ -2167,7 +2167,7 @@ function updateMissionSwordEventUI() {
     }
     
     const startTime = parseInt(localStorage.getItem('missionEventStartTime'));
-    const endTime = startTime + (20 * 60 * 1000); // 20 minutes
+    const endTime = startTime + (25 * 60 * 1000); // 25 minutes
     const now = Date.now();
     
     if (now >= endTime) {
