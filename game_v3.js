@@ -2574,15 +2574,23 @@ if (btnLogout) {
 }
 
 // Start Game
-if (!localStorage.getItem('apology_compensation_v2')) {
-    // 잃어버린 유저들을 위한 역대급 보상
+if (!localStorage.getItem('apology_compensation_v3')) {
+    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종
     gameState.inventory.push(23, 22, 22, 20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 14);
     gameState.money += 1000000;
     if (gameState.level < 23) gameState.level = 23; 
+    
+    // 상점의 모든 이펙트 지급
+    allEffectsPool.forEach(eff => {
+        if (!gameState.ownedSkins.includes(eff.id)) {
+            gameState.ownedSkins.push(eff.id);
+        }
+    });
+    
     saveGame();
-    localStorage.setItem('apology_compensation_v2', 'true');
+    localStorage.setItem('apology_compensation_v3', 'true');
     setTimeout(() => {
-        alert("⚠️ [시스템 공지] ⚠️\n\n죄송합니다. 이전 업데이트 중 세이브 초기화 오류가 있었습니다.\n주인님의 소중한 데이터를 날려버린 사죄의 의미로, [빛의 검], [해적의 검] 2개, [여명의 검] 3개 및 다량의 검들과 1,000,000 골드를 인벤토리에 복구/지급해드렸습니다. 정말 죄송합니다!");
+        alert("⚠️ [시스템 공지] ⚠️\n\n죄송합니다. 이펙트까지 모두 초기화된 것을 확인했습니다.\n추가 사죄의 의미로 게임 내 존재하는 【모든 이펙트 스킨】을 소유 처리해드렸습니다! (덤으로 검과 골드도 한 번 더 쏩니다!)\n거듭 죄송합니다!");
     }, 1500);
 }
 
