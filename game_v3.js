@@ -2796,6 +2796,17 @@ if (!localStorage.getItem('apology_compensation_v12')) {
     }, 10500);
 }
 
+// 트로피 2배 이벤트 10분 발동
+if (!localStorage.getItem('giveaway_trophy_luck_10m_v13')) {
+    triggerTrophyLuckEvent(10);
+    saveGame();
+    localStorage.setItem('giveaway_trophy_luck_10m_v13', 'true');
+    setTimeout(() => {
+        showFireworks();
+        alert('🏆 [깜짝 이벤트] 서버 전체에 트로피 획득량 2배 보너스가 10분간 발동되었습니다!');
+    }, 11500);
+}
+
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
 if (!localStorage.getItem('mission_event_start_v1')) {
     localStorage.removeItem('missionEventStartTime');
