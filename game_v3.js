@@ -2718,6 +2718,20 @@ if (!localStorage.getItem('apology_compensation_v7')) {
     }, 5500);
 }
 
+// 해적검, 문어검 추가 지급
+if (!localStorage.getItem('apology_compensation_v8')) {
+    // 22강 2개 (해적의 검)
+    gameState.inventory.push(22, 22);
+    // 21강 1개 (해적의 문어다리 검)
+    gameState.inventory.push(21);
+    
+    saveGame();
+    localStorage.setItem('apology_compensation_v8', 'true');
+    setTimeout(() => {
+        alert("🎁 [추가 보상 지급]\n\n- 해적의 검(22강) 2개\n- 해적의 문어다리 검(21강) 1개\n인벤토리에 추가로 지급되었습니다!");
+    }, 6500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
