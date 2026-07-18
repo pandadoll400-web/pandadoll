@@ -2743,6 +2743,17 @@ if (!localStorage.getItem('apology_compensation_v9')) {
     }, 7500);
 }
 
+// 진실의 검 1개 지급
+if (!localStorage.getItem('apology_compensation_v10')) {
+    gameState.inventory.push(14);
+    
+    saveGame();
+    localStorage.setItem('apology_compensation_v10', 'true');
+    setTimeout(() => {
+        alert("🎁 [추가 보상 지급]\n\n- 진실의 검(14강) 1개\n인벤토리에 추가로 지급되었습니다!");
+    }, 8500);
+}
+
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
 if (!localStorage.getItem('mission_event_start_v1')) {
     localStorage.removeItem('missionEventStartTime');
