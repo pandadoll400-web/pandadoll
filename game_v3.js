@@ -1942,23 +1942,37 @@ if (!localStorage.getItem('removed_fuse_swords_v1')) {
 
 // Light Sword Combine Logic
 function updateLimitedStockUI() {
-    // 요청에 따라 전 서버 매진(0) 처리
-    localStorage.setItem('lightSwordGlobalStock', '0');
-    const stock = 0;
+    // 30분 타이머 로직으로 변경
+    if (!localStorage.getItem('lightEventStartTime_v3')) {
+        localStorage.setItem('lightEventStartTime_v3', Date.now().toString());
+    }
+    
+    const startTime = parseInt(localStorage.getItem('lightEventStartTime_v3'));
+    const endTime = startTime + (30 * 60 * 1000); // 30 minutes
+    const now = Date.now();
     
     if (limitedStockText) {
-        if (stock > 0) {
-            limitedStockText.textContent = `남은 수량: ${stock}개`;
-            btnOpenLightCombine.disabled = false;
-            btnOpenLightCombine.style.opacity = '1';
+        if (now >= endTime) {
+            limitedStockText.textContent = `시간 초과로 마감되었습니다!`;
+            if (btnOpenLightCombine) {
+                btnOpenLightCombine.disabled = true;
+                btnOpenLightCombine.style.opacity = '0.5';
+                btnOpenLightCombine.textContent = '조합 마감';
+            }
         } else {
-            limitedStockText.textContent = `매진되었습니다!`;
-            btnOpenLightCombine.disabled = true;
-            btnOpenLightCombine.style.opacity = '0.5';
-            btnOpenLightCombine.textContent = '조합 불가';
+            const timeLeft = endTime - now;
+            const minutes = Math.floor(timeLeft / 60000);
+            const seconds = Math.floor((timeLeft % 60000) / 1000);
+            limitedStockText.textContent = `남은 시간: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (btnOpenLightCombine) {
+                btnOpenLightCombine.disabled = false;
+                btnOpenLightCombine.style.opacity = '1';
+                btnOpenLightCombine.textContent = '조합기 열기';
+            }
         }
     }
 }
+setInterval(updateLimitedStockUI, 1000);
 
 if(btnOpenLightCombine) {
     btnOpenLightCombine.addEventListener('click', () => {
