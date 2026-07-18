@@ -2175,10 +2175,10 @@ function updateMissionSwordEventUI() {
         if (missionTimerText) {
             missionTimerText.textContent = `매진되었습니다! (이벤트 종료)`;
         }
-        if (btnMissionCombineOpen) {
-            btnMissionCombineOpen.disabled = true;
-            btnMissionCombineOpen.style.opacity = '0.5';
-            btnMissionCombineOpen.textContent = '매진';
+        if (btnOpenMissionCombine) {
+            btnOpenMissionCombine.disabled = true;
+            btnOpenMissionCombine.style.opacity = '0.5';
+            btnOpenMissionCombine.textContent = '매진';
         }
         if(missionCombineModal && !missionCombineModal.classList.contains('hidden')) {
             missionCombineModal.classList.add('hidden');
