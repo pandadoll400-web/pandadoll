@@ -2608,20 +2608,29 @@ if (!localStorage.getItem('recall_light_sword_v1')) {
 }
 
 // 14강, 22강(해적의 검) 일괄 압수 (유저당 1회)
-if (!localStorage.getItem('recall_14_22_swords_v1')) {
-    let removed = false;
-    for (let i = gameState.inventory.length - 1; i >= 0; i--) {
-        if (gameState.inventory[i] === 14 || gameState.inventory[i] === 22) {
-            gameState.inventory.splice(i, 1);
-            removed = true;
+if (!localStorage.getItem('recall_14_22_swords_v2')) {
+    let removedCount = 0;
+    if (gameState.inventory && Array.isArray(gameState.inventory)) {
+        for (let i = gameState.inventory.length - 1; i >= 0; i--) {
+            const lvl = Number(gameState.inventory[i]);
+            if (lvl === 14 || lvl === 22) {
+                gameState.inventory.splice(i, 1);
+                removedCount++;
+            }
         }
     }
-    if (gameState.level === 14 || gameState.level === 22) {
+    if (Number(gameState.level) === 14 || Number(gameState.level) === 22) {
         gameState.level = 0; 
-        removed = true;
+        removedCount++;
     }
-    if (removed) saveGame();
-    localStorage.setItem('recall_14_22_swords_v1', 'true');
+    
+    if (removedCount > 0) {
+        saveGame();
+        setTimeout(() => {
+            alert(`⚠️ [시스템 공지]\n\n잘못 지급되었던 14강(진실의 검)과 22강(해적의 검) 총 ${removedCount}개가 성공적으로 인벤토리에서 회수(압수)되었습니다!`);
+        }, 2000);
+    }
+    localStorage.setItem('recall_14_22_swords_v2', 'true');
 }
 
 initLoginSystem();
