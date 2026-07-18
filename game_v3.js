@@ -2198,13 +2198,8 @@ function updateMissionSwordEventUI() {
         return;
     }
     
-    // Start the timer if not started
-    if (!localStorage.getItem('missionEventStartTime')) {
-        localStorage.setItem('missionEventStartTime', Date.now().toString());
-    }
-    
-    const startTime = parseInt(localStorage.getItem('missionEventStartTime'));
-    const endTime = 0; // Forced sold out
+    // Global absolute deadline (2026-07-19 08:26:00 KST)
+    const endTime = 1784426760000; // new Date("2026-07-19T08:26:00+09:00").getTime()
     const now = Date.now();
     
     if (now >= endTime) {
