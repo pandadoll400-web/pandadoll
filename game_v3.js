@@ -1478,7 +1478,7 @@ function startBattle(mode) {
         let calcHp = 200 + (gameState.trophies * 15) + Math.floor(Math.random() * 200);
         let calcDmg = 10 + Math.floor(gameState.trophies * 0.05) + Math.floor(Math.random() * 5);
         battleState.enemyMaxHp = calcHp;
-        battleState.enemyDamage = Math.min(100, calcDmg);
+        battleState.enemyDamage = Math.min(6000, calcDmg);
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
         enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
