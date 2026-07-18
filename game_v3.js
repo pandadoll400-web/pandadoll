@@ -1953,11 +1953,11 @@ function updateLimitedStockUI() {
     
     if (limitedStockText) {
         if (now >= endTime) {
-            limitedStockText.textContent = `시간 초과로 마감되었습니다!`;
+            limitedStockText.textContent = `매진되었습니다! (시간 초과)`;
             if (btnOpenLightCombine) {
                 btnOpenLightCombine.disabled = true;
                 btnOpenLightCombine.style.opacity = '0.5';
-                btnOpenLightCombine.textContent = '조합 마감';
+                btnOpenLightCombine.textContent = '매진';
             }
         } else {
             const timeLeft = endTime - now;
@@ -2171,8 +2171,15 @@ function updateMissionSwordEventUI() {
     const now = Date.now();
     
     if (now >= endTime) {
-        // Event over
-        if(missionSwordBox) missionSwordBox.style.display = 'none';
+        // Event over - mark as sold out
+        if (missionTimerText) {
+            missionTimerText.textContent = `매진되었습니다! (이벤트 종료)`;
+        }
+        if (btnMissionCombineOpen) {
+            btnMissionCombineOpen.disabled = true;
+            btnMissionCombineOpen.style.opacity = '0.5';
+            btnMissionCombineOpen.textContent = '매진';
+        }
         if(missionCombineModal && !missionCombineModal.classList.contains('hidden')) {
             missionCombineModal.classList.add('hidden');
         }
