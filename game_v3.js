@@ -1754,6 +1754,201 @@ function endSlice(e) {
 // --- Training Slicing Logic ---
 let isTrainSlicing = false;
 let trainSlicePath = [];
+            msg = `PVP 승리! 트로피 ${earnedTrophies}점과 상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'pvp') {
+            msg = `PVP 모드 승리! 플레이어의 승리입니다.`;
+        }
+        
+        endBattle(true, msg);
+        if (isWinCallback) isWinCallback();
+        return;
+    }
+    
+    updateBattleUI();
+    if (isNextHitCallback) {
+        isNextHitCallback();
+    } else {
+        if (battleState.mode === 'pvp') {
+            battleState.pvpTurn = battleState.pvpTurn === 1 ? 2 : 1;
+            const currentName = battleState.pvpTurn === 1 ? battleState.p1Name : battleState.p2Name;
+            pvpTurnIndicator.textContent = `▶ ${currentName}의 턴!`;
+            canAttack = true; // allow slicing again immediately for PVP
+        } else {
+            // PVE/Boss/pvp_sim: Real-time swiping (훈련장처럼 연속 베기 허용)
+            canAttack = true;
+        }
+    }
+}
+
+function processTurn(skillType) {
+    if (!battleState.active) return;
+    if (battleState.mode === 'pvp') {
+        if (!canAttack) return;
+        canAttack = false;
+    }
+    
+    let dmg = getPlayerDamage();
+    
+    if (skillType === 'aura') {
+        dmg = dmg * 2; // 2x damage for skill
+        battleState.skillUsed = true;
+        battlePlayerStatus.textContent = `✨ 검기 발동! ${dmg.toFixed(1)}의 피해!`;
+        logEvent(`✨ 검기 폭발! 적에게 ${dmg.toFixed(1)}의 데미지를 입혔습니다!`, 'battle');
+        dealEnemyDamage(dmg);
+    } else if (skillType === 'double') {
+        const doubleDmg = dmg * 2; 
+        battleState.doubleSkillUsed = true;
+        battlePlayerStatus.textContent = `💥 1연격! ${doubleDmg.toFixed(1)}의 피해!`;
+        logEvent(`💥 이중베기 1타! 적에게 ${doubleDmg.toFixed(1)}의 데미지!`, 'battle');
+        
+        dealEnemyDamage(doubleDmg, null, () => {
+            if (!battleState.active) return;
+            // Second hit after a short delay
+            setTimeout(() => {
+                if (!battleState.active) return;
+                battlePlayerStatus.textContent = `💥 2연격! ${doubleDmg.toFixed(1)}의 피해!`;
+                logEvent(`💥 이중베기 2타! 적에게 ${doubleDmg.toFixed(1)}의 데미지!`, 'battle');
+                dealEnemyDamage(doubleDmg);
+            }, 300);
+        });
+    } else {
+        battlePlayerStatus.textContent = `공격! ${dmg.toFixed(1)}의 피해!`;
+        dealEnemyDamage(dmg);
+    }
+}
+
+// --- Slicing Logic ---
+sliceCanvas.addEventListener('mousedown', startSlice);
+sliceCanvas.addEventListener('mousemove', drawSlice);
+window.addEventListener('mouseup', endSlice);
+
+sliceCanvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    startSlice(touch);
+}, {passive: false});
+sliceCanvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    drawSlice(touch);
+}, {passive: false});
+window.addEventListener('touchend', endSlice);
+
+function getCanvasPos(evt) {
+    const rect = sliceCanvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function createHitEffect(x, y, color) {
+    // Sparks
+    for (let i = 0; i < 6; i++) {
+        const spark = document.createElement('div');
+        spark.style.position = 'fixed';
+        spark.style.left = x + 'px';
+        spark.style.top = y + 'px';
+        spark.style.width = '4px';
+        spark.style.height = '15px';
+        spark.style.background = color || 'white';
+        spark.style.boxShadow = `0 0 5px ${color || 'white'}`;
+        spark.style.borderRadius = '2px';
+        spark.style.pointerEvents = 'none';
+        spark.style.zIndex = '9999';
+        
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 60 + 40;
+        const tx = Math.cos(angle) * speed;
+        const ty = Math.sin(angle) * speed;
+        
+        spark.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        document.body.appendChild(spark);
+        
+        requestAnimationFrame(() => {
+            spark.style.transform = `translate(${tx}px, ${ty}px) scale(0)`;
+            spark.style.opacity = '0';
+        });
+        
+        setTimeout(() => spark.remove(), 300);
+    }
+}
+
+function startSlice(e) {
+    if (!battleState.active) return;
+    if (battleState.mode === 'pvp' && !canAttack) return;
+    isSlicing = true;
+    slicePath = [getCanvasPos(e)];
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+}
+
+function drawSlice(e) {
+    if (!isSlicing || !battleState.active) return;
+    if (battleState.mode === 'pvp' && !canAttack) return;
+    
+    const pos = getCanvasPos(e);
+    slicePath.push(pos);
+    
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+    sliceCtx.beginPath();
+    sliceCtx.moveTo(slicePath[0].x, slicePath[0].y);
+    for (let i = 1; i < slicePath.length; i++) {
+        sliceCtx.lineTo(slicePath[i].x, slicePath[i].y);
+    }
+    
+    const eff = allEffectsPool.find(e => e.id === gameState.currentSkin);
+    const currentColor = eff ? eff.color : (skinColors[gameState.currentSkin] || skinColors['default']);
+    
+    sliceCtx.strokeStyle = currentColor;
+    sliceCtx.lineWidth = 4;
+    sliceCtx.lineCap = 'round';
+    sliceCtx.lineJoin = 'round';
+    sliceCtx.shadowColor = currentColor.replace('0.8)', '1)');
+    sliceCtx.shadowBlur = 10;
+    sliceCtx.stroke();
+    
+    // Continuous Slicing Attack check
+    if (slicePath.length > 5) {
+        const start = slicePath[0];
+        const end = pos;
+        const dist = Math.hypot(end.x - start.x, end.y - start.y);
+        
+        if (dist > 30) {
+            // Immediate Hit Animation
+            enemyVisualContainer.style.transform = `scale(1.2) rotate(${Math.random()*30 - 15}deg)`;
+            setTimeout(() => {
+                enemyVisualContainer.style.transform = 'scale(1) rotate(0deg)';
+            }, 150);
+            
+            // Visual feedback
+            sliceCtx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            sliceCtx.lineWidth = 6;
+            sliceCtx.stroke();
+            
+            const globalRect = sliceCanvas.getBoundingClientRect();
+            createHitEffect(globalRect.left + pos.x, globalRect.top + pos.y, currentColor);
+            
+            setTimeout(() => {
+                sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            }, 100);
+            
+            processTurn('none');
+            slicePath = [pos]; // Reset path to start a new slice from here
+        }
+    }
+}
+
+function endSlice(e) {
+    if (!isSlicing) return;
+    isSlicing = false;
+    sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+    slicePath = [];
+}
+// ---------------------
+
+// --- Training Slicing Logic ---
+let isTrainSlicing = false;
+let trainSlicePath = [];
 
 trainSliceCanvas.addEventListener('mousedown', startTrainSlice);
 trainSliceCanvas.addEventListener('mousemove', drawTrainSlice);
@@ -1850,7 +2045,7 @@ function endTrainSlice(e) {
 // ------------------------------
 
 // Initial Setup
-
+loadGame();
 
 // 요청: 서버 시작/새로고침 시 버프 지급 로직 삭제됨
 
@@ -2507,7 +2702,7 @@ if (btnLoginStart) {
         saveGame();
         
         loginScreenModal.style.display = 'none';
-        loginScreenModal.classList.add('hidden');
+        loginScreenModal.classList.remove('hidden');
         
         updateUI();
         logEvent(`환영합니다, ${nickname}님! 지원금 500원이 지급되었습니다.`, 'success');
@@ -2574,7 +2769,18 @@ if (btnLogout) {
 }
 
 // Start Game
-loadGame();
+if (!localStorage.getItem('apology_compensation_v1')) {
+    // 잃어버린 유저들을 위한 역대급 보상
+    gameState.inventory.push(23, 22, 22, 20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 14);
+    gameState.money += 1000000;
+    gameState.level = 23; 
+    saveGame();
+    localStorage.setItem('apology_compensation_v1', 'true');
+    setTimeout(() => {
+        alert("⚠️ [시스템 공지] ⚠️\n\n죄송합니다. 이전 업데이트 중 세이브 초기화 오류가 있었습니다.\n주인님의 소중한 데이터를 날려버린 사죄의 의미로, [빛의 검], [해적의 검] 2개, [여명의 검] 3개 및 다량의 검들과 1,000,000 골드를 인벤토리에 복구/지급해드렸습니다. 정말 죄송합니다!");
+    }, 1500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
