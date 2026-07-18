@@ -116,7 +116,8 @@ const swordNames = [
     "해적의 문어다리 검",   // 21 (시즌 검)
     "해적의 검",             // 22 (시즌 검)
     "빛의 검",              // 23 (한정 조합)
-    "사명의 검"             // 24 (특별 한정)
+    "사명의 검",            // 24 (특별 한정)
+    "트로피의 검"           // 25 (트로피 진척도 보상)
 ];
 
 // Enhance Costs (0 to 13)
@@ -145,7 +146,8 @@ const enhanceCosts = [
     Infinity, // 21 (시즌 검)
     Infinity, // 22 (시즌 검)
     Infinity, // 23 (한정 조합)
-    Infinity  // 24 (특별 한정)
+    Infinity, // 24 (특별 한정)
+    Infinity  // 25 (트로피 진척도 보상)
 ];
 
 const levelDamage = [
@@ -160,7 +162,8 @@ const levelDamage = [
     4000,   // 21: 해적의 문어다리 검 (시즌 검)
     3500,   // 22: 해적의 검 (시즌 검)
     9000,   // 23: 빛의 검 (한정 조합)
-    8000    // 24: 사명의 검 (특별 한정)
+    8000,   // 24: 사명의 검 (특별 한정)
+    12000   // 25: 트로피의 검
 ];
 
 const gradeColors = {
@@ -226,6 +229,7 @@ const btnStash = document.getElementById('btn-stash');
 const trophyModal = document.getElementById('trophy-modal');
 const btnExitTrophy = document.getElementById('btn-exit-trophy');
 const milestone100 = document.getElementById('milestone-100');
+const btnClaimTrophySword = document.getElementById('btn-claim-trophy-sword');
 
 const inventoryModal = document.getElementById('inventory-modal');
 const btnExitInventory = document.getElementById('btn-exit-inventory');
@@ -526,12 +530,39 @@ btnExitTrain.addEventListener('click', () => {
 });
 
 btnTrophyRoad.addEventListener('click', () => {
+    if (localStorage.getItem('claimed_trophy_sword')) {
+        if (btnClaimTrophySword) {
+            btnClaimTrophySword.innerText = '수령 완료';
+            btnClaimTrophySword.disabled = true;
+            btnClaimTrophySword.style.background = '#64748b';
+        }
+    }
     trophyModal.classList.remove('hidden');
 });
 
 btnExitTrophy.addEventListener('click', () => {
     trophyModal.classList.add('hidden');
 });
+
+if (btnClaimTrophySword) {
+    btnClaimTrophySword.addEventListener('click', () => {
+        if (gameState.trophies >= 20000) {
+            if (!localStorage.getItem('claimed_trophy_sword')) {
+                gameState.inventory.push(25);
+                saveGame();
+                localStorage.setItem('claimed_trophy_sword', 'true');
+                alert('🏆 [트로피의 검]을 성공적으로 수령했습니다! 인벤토리를 확인하세요.');
+                btnClaimTrophySword.innerText = '수령 완료';
+                btnClaimTrophySword.disabled = true;
+                btnClaimTrophySword.style.background = '#64748b';
+            } else {
+                alert('이미 수령하셨습니다!');
+            }
+        } else {
+            alert(`트로피가 부족합니다! (현재: ${gameState.trophies} / 필요: 20000)`);
+        }
+    });
+}
 
 // Shop Logic
 function rerollShop() {
