@@ -135,7 +135,8 @@ const swordNames = [
     "해적의 검",             // 22 (시즌 검)
     "빛의 검",              // 23 (한정 조합)
     "사명의 검",            // 24 (특별 한정)
-    "트로피의 검"           // 25 (트로피 진척도 보상)
+    "트로피의 검",           // 25 (트로피 진척도 보상)
+    "보물의 검"             // 26 (시즌 검)
 ];
 
 // Enhance Costs (0 to 13)
@@ -165,7 +166,8 @@ const enhanceCosts = [
     Infinity, // 22 (시즌 검)
     Infinity, // 23 (한정 조합)
     Infinity, // 24 (특별 한정)
-    Infinity  // 25 (트로피 진척도 보상)
+    Infinity, // 25 (트로피 진척도 보상)
+    Infinity  // 26 (보물의 검)
 ];
 
 const levelDamage = [
@@ -181,7 +183,8 @@ const levelDamage = [
     3500,   // 22: 해적의 검 (시즌 검)
     9000,   // 23: 빛의 검 (한정 조합)
     8000,   // 24: 사명의 검 (특별 한정)
-    7000    // 25: 트로피의 검
+    7000,   // 25: 트로피의 검
+    4500    // 26: 보물의 검
 ];
 
 const gradeColors = {
@@ -726,6 +729,22 @@ if (btnBuyOctopusSword) {
             saveGame();
             updateUI();
             logEvent('🐙 해적의 문어다리 검을 구매했습니다!', 'success');
+        } else {
+            alert('트로피가 부족합니다!');
+        }
+    });
+}
+
+const btnBuyTreasureSword = document.getElementById('btn-buy-treasure-sword');
+if (btnBuyTreasureSword) {
+    btnBuyTreasureSword.addEventListener('click', () => {
+        const price = 12000;
+        if (gameState.trophies >= price) {
+            gameState.trophies -= price;
+            gameState.inventory.push(26); // Level 26 is Treasure Sword
+            saveGame();
+            updateUI();
+            logEvent('💎 보물의 검을 구매했습니다!', 'success');
         } else {
             alert('트로피가 부족합니다!');
         }
