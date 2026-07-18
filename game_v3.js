@@ -37,6 +37,22 @@ function loadGame() {
         console.warn('localStorage is blocked or not available.');
     }
     
+    if (!saved) {
+        // New user! Let's set ALL current giveaway flags so they don't get them.
+        const currentFlags = [
+            'apology_compensation_v1', 'apology_compensation_v2', 'apology_compensation_v3',
+            'apology_compensation_v4', 'apology_compensation_v5', 'apology_compensation_v6',
+            'apology_compensation_v7', 'apology_compensation_v8', 'apology_compensation_v9',
+            'apology_compensation_v10', 'apology_compensation_v12', 'apology_compensation_v14',
+            'compensation_13_swords_v5', 'giveaway_swords_6_7_v6', 'giveaway_fuse_luck_10m_v8',
+            'giveaway_fuse_luck_15m_v11', 'giveaway_trophy_luck_10m_v13', 'recall_light_sword_v1',
+            'recall_all_high_swords_v1'
+        ];
+        try {
+            currentFlags.forEach(f => localStorage.setItem(f, 'true'));
+        } catch(e) {}
+    }
+    
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
