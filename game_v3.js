@@ -1496,15 +1496,15 @@ function startBattle(mode) {
         enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
         
     } else if (mode === 'kraken_boss') {
-        battleTitle.textContent = '🚢 대해수 전투 🚢';
-        battleModeBadge.innerHTML = '<span style="background:#000080;color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">크라켄 보스 🚢</span>';
+        battleTitle.textContent = '🚢 해적 전투 🚢';
+        battleModeBadge.innerHTML = '<span style="background:#8b0000;color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">해적 보스 🏴‍☠️</span>';
         pvpTurnIndicator.classList.add('hidden');
         
         battleState.enemyMaxHp = 50000;
-        battleState.enemyDamage = 500 + Math.floor(Math.random() * 150);
+        battleState.enemyDamage = 2000;
         
-        enemyCharacterEl.textContent = '🦑';
-        enemyNameEl.textContent = `대해수 크라켄 (HP: 50000)`;
+        enemyCharacterEl.textContent = '🏴‍☠️';
+        enemyNameEl.textContent = `해적 선장 (HP: 50000)`;
         
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
