@@ -16,7 +16,9 @@ let gameState = {
     shopNextReroll: 0,
     currentShopItems: [],
     luckEventEndTime: 0,
-    trophyLuckEndTime: 0
+    trophyLuckEndTime: 0,
+    username: "",
+    password: ""
 };
 
 function saveGame() {
@@ -48,10 +50,6 @@ function loadGame() {
         } catch(e) {
             console.error("Save file corrupted");
         }
-    } else {
-        // 처음 접속 시 500원 지급
-        gameState.money = 500;
-        logEvent('환영합니다! 지원금 500원이 지급되었습니다.', 'success');
     }
     
     // 이펙트 체력 보너스 계산 (비정상적으로 저장된 hp가 있을경우 대비)
@@ -1843,7 +1841,7 @@ function endTrainSlice(e) {
 // ------------------------------
 
 // Initial Setup
-loadGame();
+
 
 // 요청: 서버 시작/새로고침 시 버프 지급 로직 삭제됨
 
@@ -2465,7 +2463,112 @@ if (!localStorage.getItem('giveaway_13_swords_v7')) {
     }, 2000);
 }
 
+// ----------------------------------------------------
+// 계정 시스템 및 세이브 연동
+// ----------------------------------------------------
+
+function initLoginSystem() {
+    let saved = localStorage.getItem('swordGameState');
+    if (!saved) {
+        // 저장된 데이터가 없으면 로그인 창 표시
+        loginScreenModal.style.display = 'flex';
+        loginScreenModal.classList.remove('hidden');
+    } else {
+        // 저장된 데이터가 있으면 환영 메시지 출력
+        setTimeout(() => {
+            logEvent(`환영합니다, ${gameState.username || '용사'}님!`, 'success');
+        }, 1000);
+    }
+}
+
+if (btnLoginStart) {
+    btnLoginStart.addEventListener('click', () => {
+        const nickname = loginNickname.value.trim();
+        const password = loginPassword.value.trim();
+        
+        if (!nickname) {
+            alert('닉네임을 입력해주세요!');
+            return;
+        }
+        
+        gameState.username = nickname;
+        gameState.password = password; // 추후 암호화나 확인용
+        gameState.money = 500;
+        
+        saveGame();
+        
+        loginScreenModal.style.display = 'none';
+        loginScreenModal.classList.add('hidden');
+        
+        updateUI();
+        logEvent(`환영합니다, ${nickname}님! 지원금 500원이 지급되었습니다.`, 'success');
+    });
+}
+
+if (btnLoginLoad) {
+    btnLoginLoad.addEventListener('click', () => {
+        const code = loginSavecode.value.trim();
+        if (!code) {
+            alert('세이브 코드를 입력해주세요!');
+            return;
+        }
+        
+        try {
+            // Base64 디코딩 (유니코드 지원)
+            const decodedStr = decodeURIComponent(atob(code).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            
+            const parsed = JSON.parse(decodedStr);
+            if (parsed && typeof parsed === 'object' && parsed.hasOwnProperty('level')) {
+                localStorage.setItem('swordGameState', JSON.stringify(parsed));
+                alert('세이브 데이터를 성공적으로 불러왔습니다!');
+                window.location.reload();
+            } else {
+                throw new Error("Invalid Save Data");
+            }
+        } catch (e) {
+            alert('잘못된 세이브 코드입니다. 복사한 코드가 맞는지 확인해주세요.');
+        }
+    });
+}
+
+if (btnExportSave) {
+    btnExportSave.addEventListener('click', () => {
+        try {
+            const dataStr = JSON.stringify(gameState);
+            // Base64 인코딩 (유니코드 지원)
+            const encodedStr = btoa(encodeURIComponent(dataStr).replace(/%([0-9A-F]{2})/g,
+                function toSolidBytes(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+            }));
+            
+            navigator.clipboard.writeText(encodedStr).then(() => {
+                alert('세이브 코드가 클립보드에 복사되었습니다! (다른 기기에서 이어하기 창에 붙여넣으세요)');
+            }).catch(err => {
+                // 클립보드 복사 실패 시 prompt 제공
+                prompt('클립보드 복사에 실패했습니다. 아래 코드를 복사하세요:', encodedStr);
+            });
+        } catch(e) {
+            alert('세이브 코드 생성에 실패했습니다.');
+        }
+    });
+}
+
+if (btnLogout) {
+    btnLogout.addEventListener('click', () => {
+        if(confirm('정말 로그아웃 하시겠습니까? (현재 기기의 플레이 데이터가 초기화되며, 다른 기기에서 불러오려면 미리 세이브 코드를 복사해두셔야 합니다!)')) {
+            localStorage.removeItem('swordGameState');
+            window.location.reload();
+        }
+    });
+}
+
+// Start Game
+loadGame();
+initLoginSystem();
 updateUI();
-} catch (e) {
+} catch(e) {
+    console.error(e);
     alert("상세 에러:\n" + e.message + "\n" + e.stack);
 }
