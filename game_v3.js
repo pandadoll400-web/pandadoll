@@ -1207,7 +1207,7 @@ btnFuseStart.addEventListener('click', () => {
     
     // 3분 소요 타이머 적용
     gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now() + 180000; // 3분 소요
+    gameState.fuse.endTime = Date.now(); // 즉시 완료
     gameState.fuse.resultLevel = resultLvl;
     
     saveGame();
@@ -2766,6 +2766,17 @@ if (!localStorage.getItem('apology_compensation_v10')) {
     setTimeout(() => {
         alert("🎁 [추가 보상 지급]\n\n- 진실의 검(14강) 1개\n인벤토리에 추가로 지급되었습니다!");
     }, 8500);
+}
+
+// 퓨즈 럭 15분 추가 이벤트
+if (!localStorage.getItem('giveaway_fuse_luck_15m_v11')) {
+    triggerLuckEvent(15);
+    saveGame();
+    localStorage.setItem('giveaway_fuse_luck_15m_v11', 'true');
+    setTimeout(() => {
+        showFireworks();
+        alert('✨ [깜짝 이벤트] 서버 전체에 퓨즈 럭(성공률 2배) 15분이 발동되었습니다! 게다가 퓨즈머신 소요 시간도 즉시 완료로 변경되었습니다!! 🏃‍♂️🏃‍♀️');
+    }, 9500);
 }
 
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
