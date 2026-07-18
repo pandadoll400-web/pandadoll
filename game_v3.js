@@ -2575,10 +2575,10 @@ if (btnLogout) {
 
 // Start Game
 if (!localStorage.getItem('apology_compensation_v3')) {
-    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종 (빛의 검 제외)
-    gameState.inventory.push(22, 22, 20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 14);
+    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종 (빛, 해적, 14강 제외)
+    gameState.inventory.push(20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15);
     gameState.money += 1000000;
-    if (gameState.level < 22) gameState.level = 22; 
+    if (gameState.level < 20) gameState.level = 20; 
     
     // 상점의 모든 이펙트 지급
     allEffectsPool.forEach(eff => {
@@ -2605,6 +2605,23 @@ if (!localStorage.getItem('recall_light_sword_v1')) {
         saveGame();
     }
     localStorage.setItem('recall_light_sword_v1', 'true');
+}
+
+// 14강, 22강(해적의 검) 일괄 압수 (유저당 1회)
+if (!localStorage.getItem('recall_14_22_swords_v1')) {
+    let removed = false;
+    for (let i = gameState.inventory.length - 1; i >= 0; i--) {
+        if (gameState.inventory[i] === 14 || gameState.inventory[i] === 22) {
+            gameState.inventory.splice(i, 1);
+            removed = true;
+        }
+    }
+    if (gameState.level === 14 || gameState.level === 22) {
+        gameState.level = 0; 
+        removed = true;
+    }
+    if (removed) saveGame();
+    localStorage.setItem('recall_14_22_swords_v1', 'true');
 }
 
 initLoginSystem();
