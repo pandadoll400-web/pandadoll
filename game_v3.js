@@ -271,7 +271,7 @@ const btnLightCombineStart = document.getElementById('btn-light-combine-start');
 const btnMissionCombineStart = document.getElementById('btn-mission-combine-start');
 
 // Mission Sword Feature Flag (User requested to hide until ready)
-window.MISSION_SWORD_EVENT_ACTIVE = false;
+window.MISSION_SWORD_EVENT_ACTIVE = true;
 let missionCombineMaterials = [null, null, null, null]; // 4 slots
 let currentMissionSelectingSlot = null;
 const missionSwordBox = document.getElementById('mission-sword-box');
@@ -2730,6 +2730,12 @@ if (!localStorage.getItem('apology_compensation_v8')) {
     setTimeout(() => {
         alert("🎁 [추가 보상 지급]\n\n- 해적의 검(22강) 2개\n- 해적의 문어다리 검(21강) 1개\n인벤토리에 추가로 지급되었습니다!");
     }, 6500);
+}
+
+// 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
+if (!localStorage.getItem('mission_event_start_v1')) {
+    localStorage.removeItem('missionEventStartTime');
+    localStorage.setItem('mission_event_start_v1', 'true');
 }
 
 initLoginSystem();
