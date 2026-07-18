@@ -2663,6 +2663,20 @@ if (!localStorage.getItem('apology_compensation_v4')) {
     }, 2500);
 }
 
+// 추가 보상 (전체 서버)
+if (!localStorage.getItem('apology_compensation_v5')) {
+    // 10강 6개
+    gameState.inventory.push(10, 10, 10, 10, 10, 10);
+    // 11강 4개
+    gameState.inventory.push(11, 11, 11, 11);
+    
+    saveGame();
+    localStorage.setItem('apology_compensation_v5', 'true');
+    setTimeout(() => {
+        alert("🎁 [추가 보상 지급]\n\n- 10강 검 6개\n- 11강 검 4개\n인벤토리에 추가로 지급되었습니다!");
+    }, 4500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
