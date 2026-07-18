@@ -1541,7 +1541,7 @@ function startBattle(mode) {
     logEvent(`⚔️ ${mode.toUpperCase()} 전투를 시작합니다!`, 'battle');
     
     if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
-    if (mode === 'pve' || mode === 'boss' || mode === 'pvp_sim') {
+    if (mode === 'pve' || mode === 'boss' || mode === 'pvp_sim' || mode === 'kraken_boss') {
         pveEnemyAttackInterval = setInterval(() => {
             if (!battleState.active) {
                 clearInterval(pveEnemyAttackInterval);
