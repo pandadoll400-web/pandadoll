@@ -1881,15 +1881,9 @@ if (!localStorage.getItem('removed_fuse_swords_v1')) {
 
 // Light Sword Combine Logic
 function updateLimitedStockUI() {
-    if(!localStorage.getItem('lightSwordGlobalStock')) {
-        localStorage.setItem('lightSwordGlobalStock', '2'); // Fake global stock
-    } else {
-        let currentStock = parseInt(localStorage.getItem('lightSwordGlobalStock'));
-        if (currentStock > 2) {
-            localStorage.setItem('lightSwordGlobalStock', '2');
-        }
-    }
-    const stock = parseInt(localStorage.getItem('lightSwordGlobalStock'));
+    // 요청에 따라 전 서버 매진(0) 처리
+    localStorage.setItem('lightSwordGlobalStock', '0');
+    const stock = 0;
     
     if (limitedStockText) {
         if (stock > 0) {
