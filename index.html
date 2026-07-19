@@ -397,8 +397,20 @@
                     <img src="synthesis_machine.png?v=2" alt="합성머신" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(합성머신 이미지 없음 - synthesis_machine.png 필요)'; this.style.padding='40px'; this.style.color='#94a3b8';">
                 </div>
                 
-                <div id="fuse-status-box" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #0ea5e9;">
-                    <h3 style="margin:0 0 10px 0; color: #fde047; text-align: center;">👑 [왕자의 검] 조합 레시피 👑</h3>
+                <button id="btn-fuse-insert" class="action-btn" style="width:100%; margin-bottom: 20px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none; font-size: 1.1rem; padding: 15px;">🔥 합성머신에 넣기</button>
+                
+                <!-- 확률표가 원래 있던 자리 (이동됨) -->
+                <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
+            </div>
+        </div>
+
+        <!-- ====== 합성 레시피 및 융합 Modal ====== -->
+        <div id="synth-recipe-modal" class="modal hidden">
+            <div class="modal-content synth-recipe-content" style="max-width: 450px; border: 2px solid #06b6d4; box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);">
+                <h2 style="color: #22d3ee; text-align: center;">👑 합성머신 레시피 👑</h2>
+                
+                <div id="fuse-status-box" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #0ea5e9;">
+                    <h3 style="margin:0 0 10px 0; color: #fde047; text-align: center;">[왕자의 검]</h3>
                     <p style="color: #cbd5e1; font-size: 0.95rem; text-align: center; margin: 0;">
                         <span style="color:#fde047;">진실의검(14강)</span> 1개 + <span style="color:#60a5fa;">봉인된 검(13강)</span> 1개를 넣어<br>
                         데미지 <strong style="color:#ef4444;">7,000</strong>의 <strong>왕자의 검</strong>을 획득하세요!
@@ -412,8 +424,7 @@
                     <button id="btn-synth-combine" class="action-btn" style="height: 70px; margin-left: 10px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none; font-weight: bold; flex: 1;" disabled>조합하기!</button>
                 </div>
                 
-                <!-- 확률표가 원래 있던 자리 (이동됨) -->
-                <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
+                <button id="btn-exit-synth-recipe" class="action-btn" style="width:100%;">취소</button>
             </div>
         </div>
 

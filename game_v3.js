@@ -263,6 +263,10 @@ const inventoryList = document.getElementById('inventory-list');
 const btnOpenFuse = document.getElementById('btn-open-fuse');
 const fuseModal = document.getElementById('fuse-modal');
 const btnExitFuse = document.getElementById('btn-exit-fuse');
+const btnFuseInsert = document.getElementById('btn-fuse-insert');
+
+const synthRecipeModal = document.getElementById('synth-recipe-modal');
+const btnExitSynthRecipe = document.getElementById('btn-exit-synth-recipe');
 
 const synthSlot1 = document.getElementById('synth-slot-1');
 const synthSlot2 = document.getElementById('synth-slot-2');
@@ -960,14 +964,22 @@ function renderInventory() {
 // Fuse Logic
 // =======================
 btnOpenFuse.addEventListener('click', () => {
-    synthMaterial1 = null;
-    synthMaterial2 = null;
-    updateSynthUI();
     fuseModal.classList.remove('hidden');
 });
 
 btnExitFuse.addEventListener('click', () => {
     fuseModal.classList.add('hidden');
+});
+
+btnFuseInsert.addEventListener('click', () => {
+    synthMaterial1 = null;
+    synthMaterial2 = null;
+    updateSynthUI();
+    synthRecipeModal.classList.remove('hidden');
+});
+
+btnExitSynthRecipe.addEventListener('click', () => {
+    synthRecipeModal.classList.add('hidden');
 });
 
 synthSlot1.addEventListener('click', () => {
@@ -1103,6 +1115,7 @@ btnSynthCombine.addEventListener('click', () => {
     synthMaterial2 = null;
     updateSynthUI();
     
+    synthRecipeModal.classList.add('hidden');
     fuseModal.classList.add('hidden');
     showFireworks();
     logEvent('👑 합성 성공! [왕자의 검]을 얻었습니다!', 'success');
