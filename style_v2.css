@@ -1218,3 +1218,69 @@ h1, h2, h3, .stat-value, .btn-icon {
     height: 60px;
     border-radius: 0 0 15px 15px;
 }
+
+/* Level 30: 과거의 검 */
+.level-30 #sword-blade {
+    background: linear-gradient(180deg, #f8fafc 0%, #cbd5e1 50%, #64748b 100%);
+    box-shadow: 0 0 50px #93c5fd, inset 0 0 25px #e0f2fe;
+    border: 2px solid #f1f5f9;
+    width: 36px;
+    height: 190px;
+    border-radius: 5px 5px 0 0;
+    clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%);
+    position: relative;
+    overflow: hidden;
+    animation: ghostPulse 3s infinite alternate;
+}
+.level-30 #sword-blade::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(147,197,253,0.3) 0%, transparent 70%);
+    animation: rotateGlow 8s linear infinite reverse;
+}
+.level-30 #sword-blade::after {
+    content: '🕰️';
+    font-size: 2.5rem;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #bfdbfe;
+    opacity: 0.8;
+}
+.level-30 #sword-guard {
+    background: linear-gradient(90deg, #475569 0%, #94a3b8 50%, #475569 100%);
+    box-shadow: 0 0 40px #bfdbfe;
+    border: 2px solid #e2e8f0;
+    width: 130px;
+    height: 25px;
+    border-radius: 5px;
+    position: relative;
+}
+.level-30 #sword-guard::after {
+    content: '✧';
+    font-size: 3rem;
+    color: #e0f2fe;
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #93c5fd;
+}
+.level-30 #sword-hilt {
+    background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+    border: 2px solid #94a3b8;
+    box-shadow: inset 0 0 15px #000;
+    width: 24px;
+    height: 70px;
+    border-radius: 0 0 15px 15px;
+}
+
+@keyframes ghostPulse {
+    0% { filter: drop-shadow(0 0 10px #93c5fd); }
+    100% { filter: drop-shadow(0 0 30px #bfdbfe); }
+}

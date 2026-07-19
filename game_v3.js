@@ -139,7 +139,8 @@ const swordNames = [
     "보물의 검",            // 26 (시즌 검)
     "왕자의 검",            // 27 (합성)
     "세월의 검",            // 28 (합성)
-    "로얄의 검"             // 29 (합성)
+    "로얄의 검",            // 29 (합성)
+    "과거의 검"             // 30 (합성)
 ];
 
 // Enhance Costs (0 to 13)
@@ -173,7 +174,8 @@ const enhanceCosts = [
     Infinity, // 26 (보물의 검)
     Infinity, // 27 (왕자의 검)
     Infinity, // 28 (세월의 검)
-    Infinity  // 29 (로얄의 검)
+    Infinity, // 29 (로얄의 검)
+    Infinity  // 30 (과거의 검)
 ];
 
 const levelDamage = [
@@ -193,7 +195,8 @@ const levelDamage = [
     4500,   // 26: 보물의 검
     7000,   // 27: 왕자의 검
     9500,   // 28: 세월의 검
-    8500    // 29: 로얄의 검
+    8500,   // 29: 로얄의 검
+    10000   // 30: 과거의 검
 ];
 
 const gradeColors = {
@@ -285,7 +288,7 @@ const synthCombineInventoryList = document.getElementById('synth-combine-invento
 let synthMaterial1 = null; // index in inventory
 let synthMaterial2 = null; // index in inventory
 let currentSynthSlot = 1;
-let currentSynthType = 'prince'; // 'prince', 'time', or 'royal'
+let currentSynthType = 'prince'; // 'prince', 'time', 'royal', or 'past'
 
 const timeSlot1 = document.getElementById('time-slot-1');
 const timeSlot2 = document.getElementById('time-slot-2');
@@ -302,6 +305,13 @@ const btnRoyalCombine = document.getElementById('btn-royal-combine');
 
 let royalMaterial1 = null; // index in inventory
 let royalMaterial2 = null; // index in inventory
+
+const pastSlot1 = document.getElementById('past-slot-1');
+const pastSlot2 = document.getElementById('past-slot-2');
+const btnPastCombine = document.getElementById('btn-past-combine');
+
+let pastMaterial1 = null; // index in inventory
+let pastMaterial2 = null; // index in inventory
 
 const shopTabSword = document.getElementById('shop-tab-sword');
 const shopTabEffect = document.getElementById('shop-tab-effect');
@@ -1047,6 +1057,18 @@ royalSlot2.addEventListener('click', () => {
     openSynthInventory();
 });
 
+pastSlot1.addEventListener('click', () => {
+    currentSynthType = 'past';
+    currentSynthSlot = 1;
+    openSynthInventory();
+});
+
+pastSlot2.addEventListener('click', () => {
+    currentSynthType = 'past';
+    currentSynthSlot = 2;
+    openSynthInventory();
+});
+
 btnExitSynthInventory.addEventListener('click', () => {
     synthCombineInventoryModal.classList.add('hidden');
 });
@@ -1163,6 +1185,38 @@ function updateSynthUI() {
     } else {
         btnRoyalCombine.disabled = true;
     }
+
+    // 과거의 검 UI 업데이트
+    if (pastMaterial1 !== null) {
+        const lvl = gameState.inventory[pastMaterial1];
+        pastSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        pastSlot1.style.borderColor = '#cbd5e1';
+    } else {
+        pastSlot1.innerHTML = `빛`;
+        pastSlot1.style.borderColor = '#94a3b8';
+    }
+
+    if (pastMaterial2 !== null) {
+        const lvl = gameState.inventory[pastMaterial2];
+        pastSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        pastSlot2.style.borderColor = '#cbd5e1';
+    } else {
+        pastSlot2.innerHTML = `해적`;
+        pastSlot2.style.borderColor = '#94a3b8';
+    }
+
+    if (pastMaterial1 !== null && pastMaterial2 !== null) {
+        const lvls = [gameState.inventory[pastMaterial1], gameState.inventory[pastMaterial2]];
+        const has23 = lvls.includes(23); // 빛의 검
+        const has22 = lvls.includes(22); // 해적의 검
+        if (has23 && has22) {
+            btnPastCombine.disabled = false;
+        } else {
+            btnPastCombine.disabled = true;
+        }
+    } else {
+        btnPastCombine.disabled = true;
+    }
 }
 
 function renderSynthInventory() {
@@ -1197,6 +1251,9 @@ function renderSynthInventory() {
         } else if (currentSynthType === 'royal') {
             isValid = (lvl === 22 || lvl === 14); // 해적, 진실
             isAlreadySelected = (index === royalMaterial1 || index === royalMaterial2);
+        } else if (currentSynthType === 'past') {
+            isValid = (lvl === 23 || lvl === 22); // 빛의 검, 해적의 검
+            isAlreadySelected = (index === pastMaterial1 || index === pastMaterial2);
         }
         
         if (!isValid) {
@@ -1222,6 +1279,9 @@ function renderSynthInventory() {
                 } else if (currentSynthType === 'royal') {
                     if (currentSynthSlot === 1) royalMaterial1 = index;
                     else royalMaterial2 = index;
+                } else if (currentSynthType === 'past') {
+                    if (currentSynthSlot === 1) pastMaterial1 = index;
+                    else pastMaterial2 = index;
                 }
                 synthCombineInventoryModal.classList.add('hidden');
                 updateSynthUI();
@@ -1333,6 +1393,38 @@ btnRoyalCombine.addEventListener('click', () => {
     fuseModal.classList.add('hidden');
     showFireworks();
     logEvent('⚜️ 합성 성공! [로얄의 검]을 얻었습니다!', 'success');
+});
+
+btnPastCombine.addEventListener('click', () => {
+    if (pastMaterial1 === null || pastMaterial2 === null) return;
+    
+    const lvls = [gameState.inventory[pastMaterial1], gameState.inventory[pastMaterial2]];
+    const has23 = lvls.includes(23); // 빛의 검
+    const has22 = lvls.includes(22); // 해적의 검
+    
+    if (!has23 || !has22) {
+        logEvent('빛의 검과 해적의 검이 각각 1개씩 필요합니다.', 'fail');
+        return;
+    }
+    
+    let indices = [pastMaterial1, pastMaterial2];
+    indices.sort((a,b) => b - a);
+    indices.forEach(idx => {
+        gameState.inventory.splice(idx, 1);
+    });
+    
+    // 과거의 검 (30) 인벤토리에 추가
+    gameState.inventory.push(30);
+    saveGame();
+    
+    pastMaterial1 = null;
+    pastMaterial2 = null;
+    updateSynthUI();
+    
+    synthRecipeModal.classList.add('hidden');
+    fuseModal.classList.add('hidden');
+    showFireworks();
+    logEvent('🕰️ 합성 성공! [과거의 검]을 얻었습니다!', 'success');
 });
 
 setInterval(() => {
