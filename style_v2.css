@@ -1175,3 +1175,73 @@ h1, h2, h3, .stat-value, .btn-icon {
     border-radius: 0 0 15px 15px;
 }
 
+
+.level-27 #sword-guard::after {
+    content: '💎';
+    font-size: 1.5rem;
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 10px #60a5fa;
+}
+
+/* Level 29: 로얄의 검 */
+.level-29 #sword-blade {
+    background: linear-gradient(180deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
+    box-shadow: 0 0 40px #facc15, inset 0 0 20px #ffffff;
+    border: 3px solid #fef08a;
+    width: 40px;
+    height: 180px;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+.level-29 #sword-blade::before {
+    content: '👑';
+    font-size: 3rem;
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 25px #facc15;
+    z-index: 2;
+}
+.level-29 #sword-blade::after {
+    content: '💰';
+    font-size: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 15px #facc15;
+}
+.level-29 #sword-guard {
+    background: linear-gradient(90deg, #ca8a04 0%, #fef08a 50%, #ca8a04 100%);
+    box-shadow: 0 0 30px #facc15;
+    border: 3px solid #ffffff;
+    width: 120px;
+    height: 30px;
+    border-radius: 12px;
+    position: relative;
+}
+.level-29 #sword-guard::before {
+    content: '💎';
+    font-size: 1.5rem;
+    position: absolute;
+    top: -5px;
+    left: -15px;
+}
+.level-29 #sword-guard::after {
+    content: '💎';
+    font-size: 1.5rem;
+    position: absolute;
+    top: -5px;
+    right: -15px;
+}
+.level-29 #sword-hilt {
+    background: linear-gradient(90deg, #78350f 0%, #b45309 50%, #78350f 100%);
+    border: 2px solid #facc15;
+    width: 26px;
+    height: 60px;
+    border-radius: 0 0 15px 15px;
+}
