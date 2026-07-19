@@ -3349,6 +3349,15 @@ if (!localStorage.getItem('giveaway_level_12_swords_x4_v1')) {
     localStorage.setItem('giveaway_level_12_swords_x4_v1', 'true');
 }
 
+if (!localStorage.getItem('giveaway_level_13_swords_x4_v1')) {
+    for(let i=0; i<4; i++) {
+        gameState.inventory.push(13);
+    }
+    saveGame();
+    logEvent('🎁 운영자 선물이 도착했습니다! 인벤토리에 [+13] 봉인된 검 4개가 지급되었습니다.', 'success');
+    localStorage.setItem('giveaway_level_13_swords_x4_v1', 'true');
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
