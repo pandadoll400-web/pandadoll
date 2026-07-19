@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -3147,7 +3147,7 @@ function updateClassicFuseUI() {
         btnClassicFuseInsert.style.opacity = '1';
         classicFuseStatusText.textContent = '대기중...';
         classicFuseStatusText.style.color = '#38bdf8';
-        classicif(typeof classicFuseTimerText !== 'undefined') classicFuseTimerText.textContent = '';
+        if(typeof classicFuseTimerText !== 'undefined') classicFuseTimerText.textContent = '';
     }
 }
 
