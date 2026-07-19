@@ -137,7 +137,8 @@ const swordNames = [
     "사명의 검",            // 24 (특별 한정)
     "트로피의 검",           // 25 (트로피 진척도 보상)
     "보물의 검",            // 26 (시즌 검)
-    "왕자의 검"             // 27 (합성)
+    "왕자의 검",            // 27 (합성)
+    "세월의 검"             // 28 (합성)
 ];
 
 // Enhance Costs (0 to 13)
@@ -169,7 +170,8 @@ const enhanceCosts = [
     Infinity, // 24 (특별 한정)
     Infinity, // 25 (트로피 진척도 보상)
     Infinity, // 26 (보물의 검)
-    Infinity  // 27 (왕자의 검)
+    Infinity, // 27 (왕자의 검)
+    Infinity  // 28 (세월의 검)
 ];
 
 const levelDamage = [
@@ -187,7 +189,8 @@ const levelDamage = [
     8000,   // 24: 사명의 검 (특별 한정)
     7000,   // 25: 트로피의 검
     4500,   // 26: 보물의 검
-    7000    // 27: 왕자의 검
+    7000,   // 27: 왕자의 검
+    9500    // 28: 세월의 검
 ];
 
 const gradeColors = {
@@ -279,6 +282,16 @@ const synthCombineInventoryList = document.getElementById('synth-combine-invento
 let synthMaterial1 = null; // index in inventory
 let synthMaterial2 = null; // index in inventory
 let currentSynthSlot = 1;
+let currentSynthType = 'prince'; // 'prince' or 'time'
+
+const timeSlot1 = document.getElementById('time-slot-1');
+const timeSlot2 = document.getElementById('time-slot-2');
+const timeSlot3 = document.getElementById('time-slot-3');
+const btnTimeCombine = document.getElementById('btn-time-combine');
+
+let timeMaterial1 = null; // index in inventory
+let timeMaterial2 = null; // index in inventory
+let timeMaterial3 = null; // index in inventory
 
 const shopTabSword = document.getElementById('shop-tab-sword');
 const shopTabEffect = document.getElementById('shop-tab-effect');
@@ -983,12 +996,32 @@ btnExitSynthRecipe.addEventListener('click', () => {
 });
 
 synthSlot1.addEventListener('click', () => {
+    currentSynthType = 'prince';
     currentSynthSlot = 1;
     openSynthInventory();
 });
 
 synthSlot2.addEventListener('click', () => {
+    currentSynthType = 'prince';
     currentSynthSlot = 2;
+    openSynthInventory();
+});
+
+timeSlot1.addEventListener('click', () => {
+    currentSynthType = 'time';
+    currentSynthSlot = 1;
+    openSynthInventory();
+});
+
+timeSlot2.addEventListener('click', () => {
+    currentSynthType = 'time';
+    currentSynthSlot = 2;
+    openSynthInventory();
+});
+
+timeSlot3.addEventListener('click', () => {
+    currentSynthType = 'time';
+    currentSynthSlot = 3;
     openSynthInventory();
 });
 
@@ -1002,12 +1035,13 @@ function openSynthInventory() {
 }
 
 function updateSynthUI() {
+    // 왕자의 검 UI 업데이트
     if (synthMaterial1 !== null) {
         const lvl = gameState.inventory[synthMaterial1];
         synthSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
         synthSlot1.style.borderColor = '#38bdf8';
     } else {
-        synthSlot1.innerHTML = `14강<br>넣기`;
+        synthSlot1.innerHTML = `14강`;
         synthSlot1.style.borderColor = '#06b6d4';
     }
     
@@ -1016,7 +1050,7 @@ function updateSynthUI() {
         synthSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
         synthSlot2.style.borderColor = '#38bdf8';
     } else {
-        synthSlot2.innerHTML = `13강<br>넣기`;
+        synthSlot2.innerHTML = `13강`;
         synthSlot2.style.borderColor = '#06b6d4';
     }
 
@@ -1032,6 +1066,48 @@ function updateSynthUI() {
         }
     } else {
         btnSynthCombine.disabled = true;
+    }
+
+    // 세월의 검 UI 업데이트
+    if (timeMaterial1 !== null) {
+        const lvl = gameState.inventory[timeMaterial1];
+        timeSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        timeSlot1.style.borderColor = '#d8b4fe';
+    } else {
+        timeSlot1.innerHTML = `사명`;
+        timeSlot1.style.borderColor = '#a855f7';
+    }
+
+    if (timeMaterial2 !== null) {
+        const lvl = gameState.inventory[timeMaterial2];
+        timeSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        timeSlot2.style.borderColor = '#d8b4fe';
+    } else {
+        timeSlot2.innerHTML = `진실`;
+        timeSlot2.style.borderColor = '#a855f7';
+    }
+
+    if (timeMaterial3 !== null) {
+        const lvl = gameState.inventory[timeMaterial3];
+        timeSlot3.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        timeSlot3.style.borderColor = '#d8b4fe';
+    } else {
+        timeSlot3.innerHTML = `공허`;
+        timeSlot3.style.borderColor = '#a855f7';
+    }
+
+    if (timeMaterial1 !== null && timeMaterial2 !== null && timeMaterial3 !== null) {
+        const lvls = [gameState.inventory[timeMaterial1], gameState.inventory[timeMaterial2], gameState.inventory[timeMaterial3]];
+        const has24 = lvls.includes(24); // 사명의 검
+        const has14 = lvls.includes(14); // 진실의 검
+        const has16 = lvls.includes(16); // 공허의 검
+        if (has24 && has14 && has16) {
+            btnTimeCombine.disabled = false;
+        } else {
+            btnTimeCombine.disabled = true;
+        }
+    } else {
+        btnTimeCombine.disabled = true;
     }
 }
 
@@ -1055,14 +1131,23 @@ function renderSynthInventory() {
         const selBtn = document.createElement('button');
         selBtn.className = 'action-btn shop-btn';
         
-        const isValid = (lvl === 13 || lvl === 14);
+        let isValid = false;
+        let isAlreadySelected = false;
+
+        if (currentSynthType === 'prince') {
+            isValid = (lvl === 13 || lvl === 14);
+            isAlreadySelected = (index === synthMaterial1 || index === synthMaterial2);
+        } else if (currentSynthType === 'time') {
+            isValid = (lvl === 14 || lvl === 16 || lvl === 24); // 진실, 공허, 사명
+            isAlreadySelected = (index === timeMaterial1 || index === timeMaterial2 || index === timeMaterial3);
+        }
         
         if (!isValid) {
             selBtn.textContent = '선택 불가';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
             selBtn.style.opacity = '0.5';
-        } else if (index === synthMaterial1 || index === synthMaterial2) {
+        } else if (isAlreadySelected) {
             selBtn.textContent = '이미 선택됨';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
@@ -1070,10 +1155,13 @@ function renderSynthInventory() {
             selBtn.textContent = '선택하기';
             selBtn.style.background = 'var(--secondary)';
             selBtn.addEventListener('click', () => {
-                if (currentSynthSlot === 1) {
-                    synthMaterial1 = index;
+                if (currentSynthType === 'prince') {
+                    if (currentSynthSlot === 1) synthMaterial1 = index;
+                    else synthMaterial2 = index;
                 } else {
-                    synthMaterial2 = index;
+                    if (currentSynthSlot === 1) timeMaterial1 = index;
+                    else if (currentSynthSlot === 2) timeMaterial2 = index;
+                    else timeMaterial3 = index;
                 }
                 synthCombineInventoryModal.classList.add('hidden');
                 updateSynthUI();
@@ -1119,6 +1207,40 @@ btnSynthCombine.addEventListener('click', () => {
     fuseModal.classList.add('hidden');
     showFireworks();
     logEvent('👑 합성 성공! [왕자의 검]을 얻었습니다!', 'success');
+});
+
+btnTimeCombine.addEventListener('click', () => {
+    if (timeMaterial1 === null || timeMaterial2 === null || timeMaterial3 === null) return;
+    
+    const lvls = [gameState.inventory[timeMaterial1], gameState.inventory[timeMaterial2], gameState.inventory[timeMaterial3]];
+    const has24 = lvls.includes(24);
+    const has14 = lvls.includes(14);
+    const has16 = lvls.includes(16);
+    
+    if (!has24 || !has14 || !has16) {
+        logEvent('사명의 검, 진실의 검, 공허의 검이 각각 1개씩 필요합니다.', 'fail');
+        return;
+    }
+    
+    let indices = [timeMaterial1, timeMaterial2, timeMaterial3];
+    indices.sort((a,b) => b - a);
+    indices.forEach(idx => {
+        gameState.inventory.splice(idx, 1);
+    });
+    
+    // 세월의 검 (28) 인벤토리에 추가
+    gameState.inventory.push(28);
+    saveGame();
+    
+    timeMaterial1 = null;
+    timeMaterial2 = null;
+    timeMaterial3 = null;
+    updateSynthUI();
+    
+    synthRecipeModal.classList.add('hidden');
+    fuseModal.classList.add('hidden');
+    showFireworks();
+    logEvent('⏳ 합성 성공! [세월의 검]을 얻었습니다!', 'success');
 });
 
 setInterval(() => {

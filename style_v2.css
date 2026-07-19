@@ -1,4 +1,4 @@
-* {
+Ôªø* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -1075,37 +1075,122 @@ h1, h2, h3, .stat-value, .btn-icon {
     border-radius: 0 0 10px 10px;
 }
 
-/* Level 27: ø’¿⁄¿« ∞À */
+/* Level 27: ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ */
+/* Level 27: ÏôïÏûêÏùò Í≤Ä */
 .level-27 #sword-blade {
-    background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 100%);
-    box-shadow: 0 0 30px #06b6d4, inset 0 0 10px #ffffff;
-    border: 2px solid #22d3ee;
-    width: 32px;
+    background: linear-gradient(180deg, #ffffff 0%, #60a5fa 100%);
+    box-shadow: 0 0 30px #60a5fa, inset 0 0 15px #3b82f6;
+    border: 3px solid #2563eb;
+    width: 34px;
     height: 160px;
     border-radius: 5px 5px 0 0;
     position: relative;
 }
 .level-27 #sword-blade::before {
-    content: '??';
-    font-size: 1.8rem;
+    content: 'üëë';
+    font-size: 2.5rem;
     position: absolute;
-    top: -25px;
+    top: -35px;
     left: 50%;
     transform: translateX(-50%);
-    text-shadow: 0 0 15px #fde047;
+    text-shadow: 0 0 20px #fde047;
+    z-index: 2;
+}
+.level-27 #sword-blade::after {
+    content: 'üíé';
+    font-size: 1.5rem;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.8;
 }
 .level-27 #sword-guard {
-    background: linear-gradient(90deg, #fbbf24 0%, #fef08a 50%, #fbbf24 100%);
-    box-shadow: 0 0 20px #fbbf24;
-    border: 2px solid #ffffff;
-    width: 100px;
-    height: 22px;
-    border-radius: 8px;
+    background: linear-gradient(90deg, #eab308 0%, #fef08a 50%, #eab308 100%);
+    box-shadow: 0 0 25px #facc15;
+    border: 3px solid #ffffff;
+    width: 110px;
+    height: 28px;
+    border-radius: 10px;
+    position: relative;
+}
+.level-27 #sword-guard::before {
+    content: 'üíé';
+    font-size: 1.2rem;
+    position: absolute;
+    top: -5px;
+    left: -10px;
+}
+.level-27 #sword-guard::after {
+    content: 'üíé';
+    font-size: 1.2rem;
+    position: absolute;
+    top: -5px;
+    right: -10px;
 }
 .level-27 #sword-hilt {
-    background: linear-gradient(90deg, #b45309 0%, #d97706 50%, #b45309 100%);
-    border: 2px solid #fbbf24;
-    width: 22px;
-    height: 50px;
+    background: linear-gradient(90deg, #78350f 0%, #b45309 50%, #78350f 100%);
+    border: 2px solid #facc15;
+    width: 24px;
+    height: 55px;
     border-radius: 0 0 12px 12px;
+}
+
+/* Level 28: ÏÑ∏ÏõîÏùò Í≤Ä */
+.level-28 #sword-blade {
+    background: linear-gradient(180deg, #57534e 0%, #292524 50%, #1c1917 100%);
+    box-shadow: 0 0 40px #a855f7, inset 0 0 20px #14b8a6;
+    border: 3px solid #78716c;
+    width: 38px;
+    height: 170px;
+    clip-path: polygon(50% 0%, 100% 15%, 85% 100%, 15% 100%, 0% 15%);
+    position: relative;
+    overflow: hidden;
+}
+.level-28 #sword-blade::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(20,184,166,0.4) 0%, transparent 60%);
+    animation: rotateGlow 10s linear infinite;
+}
+.level-28 #sword-blade::after {
+    content: '‚è≥';
+    font-size: 2rem;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #14b8a6;
+    opacity: 0.9;
+}
+.level-28 #sword-guard {
+    background: linear-gradient(90deg, #27272a 0%, #52525b 50%, #27272a 100%);
+    box-shadow: 0 0 30px #a855f7;
+    border: 2px solid #14b8a6;
+    width: 130px;
+    height: 35px;
+    border-radius: 2px 2px 15px 15px;
+    position: relative;
+}
+.level-28 #sword-guard::after {
+    content: '‚úµ';
+    font-size: 2.5rem;
+    color: #14b8a6;
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 10px #a855f7;
+}
+.level-28 #sword-hilt {
+    background: repeating-linear-gradient(45deg, #1c1917, #1c1917 10px, #292524 10px, #292524 20px);
+    border: 2px solid #57534e;
+    box-shadow: inset 0 0 10px #000;
+    width: 26px;
+    height: 65px;
+    border-radius: 0 0 15px 15px;
 }
