@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1495,15 +1495,15 @@ setInterval(() => {
         gameState.inventory.push(gameState.fuse.resultLevel);
         const resultName = swordNames[gameState.fuse.resultLevel];
         logEvent(`⚙️ 퓨즈머신 완료! 인벤토리에 [${resultName}] 이(가) 추가되었습니다!`, 'success');
-        updateFuseUI();
+        if(typeof updateClassicFuseUI === 'function') updateClassicFuseUI();
         saveGame();
     } else {
         // 남은 시간 렌더링
-        if (!fuseModal.classList.contains('hidden')) {
+        if (typeof classicFuseModal !== 'undefined' && !classicFuseModal.classList.contains('hidden')) {
             const totalSec = Math.ceil(remain / 1000);
             const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
             const s = (totalSec % 60).toString().padStart(2, '0');
-            fuseTimerText.textContent = `남은 시간: ${m}:${s}`;
+            if(typeof classicFuseTimerText !== 'undefined') classicFuseTimerText.textContent = `남은 시간: ${m}:${s}`;
         }
     }
 }, 1000);
@@ -3090,6 +3090,243 @@ if (!localStorage.getItem('giveaway_12_sword_v20')) {
 if (!localStorage.getItem('mission_event_start_v1')) {
     localStorage.removeItem('missionEventStartTime');
     localStorage.setItem('mission_event_start_v1', 'true');
+}
+
+const btnOpenClassicFuse = document.getElementById('btn-open-classic-fuse');
+const classicFuseModal = document.getElementById('classic-fuse-modal');
+const btnExitClassicFuse = document.getElementById('btn-exit-classic-fuse');
+const btnClassicFuseInsert = document.getElementById('btn-classic-fuse-insert');
+const classicFuseStatusText = document.getElementById('classic-fuse-status-text');
+const classicFuseTimerText = document.getElementById('classic-fuse-timer-text');
+const classicFuseSelectModal = document.getElementById('classic-fuse-select-modal');
+const btnExitClassicFuseSelect = document.getElementById('btn-exit-classic-fuse-select');
+const btnClassicFuseStart = document.getElementById('btn-classic-fuse-start');
+const classicFuseInventoryList = document.getElementById('classic-fuse-inventory-list');
+const classicFuseSelectedCount = document.getElementById('classic-fuse-selected-count');
+const classicFuseProbContainer = document.getElementById('classic-fuse-prob-container');
+let classicFuseSelectedIndices = [];
+
+if (btnOpenClassicFuse) {
+    btnOpenClassicFuse.addEventListener('click', () => {
+        updateClassicFuseUI();
+        classicFuseModal.classList.remove('hidden');
+    });
+}
+
+if (btnExitClassicFuse) {
+    btnExitClassicFuse.addEventListener('click', () => {
+        classicFuseModal.classList.add('hidden');
+    });
+}
+
+if (btnClassicFuseInsert) {
+    btnClassicFuseInsert.addEventListener('click', () => {
+        if (gameState.fuse.active) {
+            logEvent('이미 퓨즈 조합이 진행 중입니다!', 'fail');
+            return;
+        }
+        openClassicFuseSelect();
+    });
+}
+
+if (btnExitClassicFuseSelect) {
+    btnExitClassicFuseSelect.addEventListener('click', () => {
+        classicFuseSelectModal.classList.add('hidden');
+    });
+}
+
+function updateClassicFuseUI() {
+    if (!btnClassicFuseInsert) return;
+    if (gameState.fuse.active) {
+        btnClassicFuseInsert.disabled = true;
+        btnClassicFuseInsert.style.opacity = '0.5';
+        classicFuseStatusText.textContent = '조합 진행 중.. ⚙️';
+        classicFuseStatusText.style.color = '#fbbf24';
+    } else {
+        btnClassicFuseInsert.disabled = false;
+        btnClassicFuseInsert.style.opacity = '1';
+        classicFuseStatusText.textContent = '대기중...';
+        classicFuseStatusText.style.color = '#38bdf8';
+        classicif(typeof classicFuseTimerText !== 'undefined') classicFuseTimerText.textContent = '';
+    }
+}
+
+function openClassicFuseSelect() {
+    classicFuseSelectedIndices = [];
+    classicFuseSelectModal.classList.remove('hidden');
+    renderClassicFuseInventory();
+}
+
+function renderClassicFuseInventory() {
+    classicFuseInventoryList.innerHTML = '';
+    classicFuseSelectedCount.textContent = classicFuseSelectedIndices.length;
+    btnClassicFuseStart.disabled = classicFuseSelectedIndices.length !== 2;
+    
+    let validItemsFound = false;
+    
+    if (gameState.inventory.length === 0) {
+        classicFuseInventoryList.innerHTML = '<p style=\"color:#94a3b8; text-align:center;\">인벤토리가 비어 있습니다.</p>';
+        updateClassicFuseProbTable();
+        return;
+    }
+    
+    gameState.inventory.forEach((lvl, index) => {
+        if (lvl < 1 || lvl > 14) return;
+        
+        validItemsFound = true;
+        let isSelectable = true;
+        const isSelected = classicFuseSelectedIndices.includes(index);
+        
+        if (classicFuseSelectedIndices.length >= 2 && !isSelected) {
+            isSelectable = false;
+        }
+        
+        if (classicFuseSelectedIndices.length === 1 && !isSelected) {
+            const firstLvl = gameState.inventory[classicFuseSelectedIndices[0]];
+            const firstGroup = (firstLvl <= 6) ? 1 : (firstLvl <= 12 ? 2 : 3);
+            const currentGroup = (lvl <= 6) ? 1 : (lvl <= 12 ? 2 : 3);
+            if (firstGroup !== currentGroup) isSelectable = false;
+        }
+        
+        const itemEl = document.createElement('div');
+        itemEl.style.padding = '8px';
+        itemEl.style.border = isSelected ? '2px solid #fbbf24' : '1px solid #475569';
+        itemEl.style.borderRadius = '5px';
+        itemEl.style.background = isSelected ? 'rgba(251,191,36,0.2)' : 'transparent';
+        itemEl.style.display = 'flex';
+        itemEl.style.justifyContent = 'space-between';
+        itemEl.style.alignItems = 'center';
+        
+        if (!isSelectable) {
+            itemEl.style.opacity = '0.5';
+        } else {
+            itemEl.style.cursor = 'pointer';
+            itemEl.onclick = () => {
+                if (isSelected) {
+                    classicFuseSelectedIndices = classicFuseSelectedIndices.filter(i => i !== index);
+                } else {
+                    classicFuseSelectedIndices.push(index);
+                }
+                renderClassicFuseInventory();
+            };
+        }
+        
+        itemEl.innerHTML = `<span>[+${lvl}] ${swordNames[lvl]}</span>`;
+        classicFuseInventoryList.appendChild(itemEl);
+    });
+    
+    if (!validItemsFound) {
+        classicFuseInventoryList.innerHTML = '<p style=\"color:#94a3b8; text-align:center;\">퓨즈머신에 사용할 수 있는 검이 없습니다. (1~14강 필요)</p>';
+    }
+    
+    updateClassicFuseProbTable();
+}
+
+function updateClassicFuseProbTable() {
+    if (classicFuseSelectedIndices.length !== 2) {
+        classicFuseProbContainer.innerHTML = '<p style=\"text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;\">검을 선택하면 확률표가 표시됩니다.</p>';
+        return;
+    }
+    
+    const lvl1 = gameState.inventory[classicFuseSelectedIndices[0]];
+    const lvl2 = gameState.inventory[classicFuseSelectedIndices[1]];
+    const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
+    const is67Combo = (lvl1 === 6 && lvl2 === 7) || (lvl1 === 7 && lvl2 === 6);
+    const is1314Combo = (lvl1 >= 13 && lvl2 >= 13);
+    
+    let html = '';
+    
+    if (is1314Combo) {
+        html += `<div style=\"margin-bottom:5px; color:#fbbf24;\">[+15] ${swordNames[15]} : 65%</div>`;
+        html += `<div style=\"margin-bottom:5px; color:#a855f7;\">[+16] ${swordNames[16]} : 18%</div>`;
+        html += `<div style=\"margin-bottom:5px; color:#000; text-shadow:0 0 5px #f59e0b;\">[+17] ${swordNames[17]} : 9%</div>`;
+        html += `<div style=\"margin-bottom:5px; color:#dc2626;\">[+18] ${swordNames[18]} : 6%</div>`;
+        html += `<div style=\"color:#fde047;\">[+20] ${swordNames[20]} : 2%</div>`;
+    } else if (is67Combo) {
+        html += `<div style=\"color:#fbbf24;\">[+19] ${swordNames[19]} : 100%</div>`;
+    } else if (isHighTier) {
+        if (gameState.luckEventEndTime > 0) {
+            html += `<div style=\"margin-bottom:5px; color:#9ca3af;\">[+15] ${swordNames[15]} : 40%</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#a855f7;\">[+16] ${swordNames[16]} : 30% (럭x2)</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#000; text-shadow:0 0 5px #f59e0b;\">[+17] ${swordNames[17]} : 20% (럭x2)</div>`;
+            html += `<div style=\"color:#dc2626;\">[+18] ${swordNames[18]} : 10% (럭x2)</div>`;
+        } else {
+            html += `<div style=\"margin-bottom:5px; color:#9ca3af;\">[+15] ${swordNames[15]} : 70%</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#a855f7;\">[+16] ${swordNames[16]} : 15%</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#000; text-shadow:0 0 5px #f59e0b;\">[+17] ${swordNames[17]} : 10%</div>`;
+            html += `<div style=\"color:#dc2626;\">[+18] ${swordNames[18]} : 5%</div>`;
+        }
+    } else {
+        if (gameState.luckEventEndTime > 0) {
+            html += `<div style=\"margin-bottom:5px; color:#fbbf24;\">[+14] ${swordNames[14]} : 80%</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#9ca3af;\">[+15] ${swordNames[15]} : 14% (럭x2)</div>`;
+            html += `<div style=\"color:#a855f7;\">[+16] ${swordNames[16]} : 6% (럭x2)</div>`;
+        } else {
+            html += `<div style=\"margin-bottom:5px; color:#fbbf24;\">[+14] ${swordNames[14]} : 90%</div>`;
+            html += `<div style=\"margin-bottom:5px; color:#9ca3af;\">[+15] ${swordNames[15]} : 7%</div>`;
+            html += `<div style=\"color:#a855f7;\">[+16] ${swordNames[16]} : 3%</div>`;
+        }
+    }
+    classicFuseProbContainer.innerHTML = html;
+}
+
+if (btnClassicFuseStart) {
+    btnClassicFuseStart.addEventListener('click', () => {
+        if (classicFuseSelectedIndices.length !== 2) return;
+        
+        const lvl1 = gameState.inventory[classicFuseSelectedIndices[0]];
+        const lvl2 = gameState.inventory[classicFuseSelectedIndices[1]];
+        const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
+        const is67Combo = (lvl1 === 6 && lvl2 === 7) || (lvl1 === 7 && lvl2 === 6);
+        const is1314Combo = (lvl1 >= 13 && lvl2 >= 13);
+        
+        classicFuseSelectedIndices.sort((a,b) => b - a);
+        classicFuseSelectedIndices.forEach(idx => {
+            gameState.inventory.splice(idx, 1);
+        });
+        
+        const roll = Math.random() * 100;
+        let resultLvl = 14; 
+        
+        if (is1314Combo) {
+            if (roll <= 65) resultLvl = 15;
+            else if (roll <= 83) resultLvl = 16;
+            else if (roll <= 92) resultLvl = 17;
+            else if (roll <= 98) resultLvl = 18;
+            else resultLvl = 20;
+        } else if (is67Combo) {
+            resultLvl = 19;
+        } else if (isHighTier) {
+            resultLvl = 15;
+            if (gameState.luckEventEndTime > 0) {
+                if (roll > 40 && roll <= 70) resultLvl = 16;
+                else if (roll > 70 && roll <= 90) resultLvl = 17;
+                else if (roll > 90) resultLvl = 18;
+            } else {
+                if (roll > 70 && roll <= 85) resultLvl = 16;
+                else if (roll > 85 && roll <= 95) resultLvl = 17;
+                else if (roll > 95) resultLvl = 18;
+            }
+        } else {
+            if (gameState.luckEventEndTime > 0) {
+                if (roll > 80 && roll <= 94) resultLvl = 15;
+                else if (roll > 94) resultLvl = 16;
+            } else {
+                if (roll > 90 && roll <= 97) resultLvl = 15;
+                else if (roll > 97) resultLvl = 16;
+            }
+        }
+        
+        gameState.fuse.active = true;
+        gameState.fuse.endTime = Date.now();
+        gameState.fuse.resultLevel = resultLvl;
+        
+        saveGame();
+        
+        classicFuseSelectModal.classList.add('hidden');
+        updateClassicFuseUI();
+        logEvent('🔥 퓨즈머신 가동 시작! 즉시 완료됩니다.', 'success');
+    });
 }
 
 initLoginSystem();
