@@ -734,11 +734,6 @@ btnShop.addEventListener('click', () => {
         renderShop();
     }
     
-    const seasonSwordEndTime = new Date("2026-07-22T21:50:40+09:00").getTime();
-    if (Date.now() < seasonSwordEndTime) {
-        logEvent('⚠️ 시즌검 3종이 3일 뒤에 사라집니다! 서두르세요!', 'info');
-    }
-    
     shopModal.classList.remove('hidden');
 });
 
@@ -757,6 +752,10 @@ shopTabEffect.addEventListener('click', () => {
 
 shopTabSeason.addEventListener('click', () => {
     shopTabSeason.style.background = 'var(--primary)';
+    const seasonSwordEndTime = new Date("2026-07-22T21:50:40+09:00").getTime();
+    if (Date.now() < seasonSwordEndTime) {
+        logEvent('⚠️ 시즌검 3종이 3일 뒤에 사라집니다! 서두르세요!', 'info');
+    }
     shopTabEffect.style.background = '#334155';
     if(shopTabLimited) shopTabLimited.style.background = '#334155';
     shopSeasonSection.classList.remove('hidden');
