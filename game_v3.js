@@ -1517,6 +1517,31 @@ btnMonarchCombine.addEventListener('click', () => {
 setInterval(() => {
     const now = Date.now();
     
+    // Season Sword Timer
+    const seasonBanner = document.getElementById('season-timer-banner');
+    const seasonTimeLeftEl = document.getElementById('season-time-left');
+    // Using current time 2026-07-19T21:50:40+09:00 + 3 days
+    const seasonSwordEndTime = new Date("2026-07-22T21:50:40+09:00").getTime();
+    
+    if (seasonBanner && seasonTimeLeftEl) {
+        const sRemain = seasonSwordEndTime - now;
+        if (sRemain <= 0) {
+            seasonBanner.innerHTML = "⏳ 시즌 검 판매가 종료되었습니다.";
+            seasonBanner.style.background = "rgba(71, 85, 105, 0.9)";
+            seasonBanner.style.animation = "none";
+            
+            // Hide shop season tab and section if they exist
+            if (shopTabSeason) shopTabSeason.style.display = 'none';
+            if (shopSeasonSection) shopSeasonSection.style.display = 'none';
+        } else {
+            const d = Math.floor(sRemain / (1000 * 60 * 60 * 24));
+            const h = Math.floor((sRemain % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((sRemain % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((sRemain % (1000 * 60)) / 1000);
+            seasonTimeLeftEl.textContent = `${d}일 ${h}시간 ${m}분 ${s}초 남았습니다!`;
+        }
+    }
+
     // Shop Reroll Timer
     if (gameState.shopNextReroll) {
         const shopRemain = gameState.shopNextReroll - now;
