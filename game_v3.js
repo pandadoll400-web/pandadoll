@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1903,9 +1903,9 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             gameState.money += earnedMoney;
             msg = `크라켄 토벌 성공! 트로피 ${earnedTrophies}개와 돈 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'king_boss') {
-            earnedTrophies = 500;
+            earnedTrophies = 200;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
-            earnedMoney = 50000;
+            earnedMoney = 25000;
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `왕과의 전투 승리! 트로피 ${earnedTrophies}개와 돈 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
