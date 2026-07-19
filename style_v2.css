@@ -1192,6 +1192,16 @@ h1, h2, h3, .stat-value, .btn-icon {
     clip-path: none;
     position: relative;
 }
+.level-29 #sword-blade::before {
+    content: '👑';
+    font-size: 2.2rem;
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #facc15;
+    z-index: 2;
+}
 .level-29 #sword-guard {
     background: linear-gradient(90deg, #ca8a04 0%, #fef08a 50%, #ca8a04 100%);
     box-shadow: 0 0 30px #facc15;
@@ -1200,16 +1210,6 @@ h1, h2, h3, .stat-value, .btn-icon {
     height: 30px;
     border-radius: 12px;
     position: relative;
-}
-.level-29 #sword-guard::after {
-    content: '👑';
-    font-size: 4rem;
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-shadow: 0 0 20px #facc15;
-    z-index: 3;
 }
 .level-29 #sword-hilt {
     background: linear-gradient(90deg, #78350f 0%, #b45309 50%, #78350f 100%);
