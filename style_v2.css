@@ -1290,3 +1290,69 @@ h1, h2, h3, .stat-value, .btn-icon {
     50% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 60px #ef4444, inset 0 0 30px #ef4444; }
     100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px #ef4444, inset 0 0 10px #ef4444; }
 }
+
+/* Level 31: 군주의 검 */
+.level-31 #sword-blade {
+    background: linear-gradient(180deg, #fef08a 0%, #a855f7 50%, #4c1d95 100%);
+    box-shadow: 0 0 50px #fbbf24, inset 0 0 25px #c084fc;
+    border: 2px solid #fef08a;
+    width: 44px;
+    height: 220px;
+    border-radius: 5px 5px 0 0;
+    clip-path: polygon(50% 0%, 100% 20%, 85% 100%, 15% 100%, 0% 20%);
+    position: relative;
+    overflow: hidden;
+    animation: monarchPulse 2s infinite alternate;
+}
+.level-31 #sword-blade::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(253,224,71,0.4) 0%, transparent 60%);
+    animation: rotateGlow 6s linear infinite;
+}
+.level-31 #sword-blade::after {
+    content: '👑';
+    font-size: 3rem;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 20px #fef08a;
+    filter: drop-shadow(0 0 10px #fbbf24);
+}
+.level-31 #sword-guard {
+    background: linear-gradient(90deg, #ca8a04 0%, #fef08a 50%, #ca8a04 100%);
+    box-shadow: 0 0 40px #fbbf24;
+    border: 3px solid #fef08a;
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    position: relative;
+}
+.level-31 #sword-guard::after {
+    content: '✨';
+    font-size: 2.5rem;
+    color: #fef08a;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #fef08a;
+}
+.level-31 #sword-hilt {
+    background: linear-gradient(90deg, #3b0764 0%, #581c87 50%, #3b0764 100%);
+    border: 2px solid #a855f7;
+    box-shadow: inset 0 0 15px #000;
+    width: 28px;
+    height: 80px;
+    border-radius: 0 0 15px 15px;
+}
+
+@keyframes monarchPulse {
+    0% { filter: drop-shadow(0 0 15px #fbbf24) drop-shadow(0 0 5px #a855f7); }
+    100% { filter: drop-shadow(0 0 40px #fef08a) drop-shadow(0 0 20px #d8b4fe); }
+}
