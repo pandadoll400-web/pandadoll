@@ -1189,13 +1189,14 @@ h1, h2, h3, .stat-value, .btn-icon {
     width: 40px;
     height: 180px;
     border-radius: 5px 5px 0 0;
+    clip-path: none;
     position: relative;
 }
 .level-29 #sword-blade::before {
-    content: '👑';
-    font-size: 3rem;
+    content: '💎';
+    font-size: 2.5rem;
     position: absolute;
-    top: -45px;
+    top: -35px;
     left: 50%;
     transform: translateX(-50%);
     text-shadow: 0 0 25px #facc15;
