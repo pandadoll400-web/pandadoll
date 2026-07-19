@@ -1985,7 +1985,7 @@ function updateLimitedStockUI() {
     }
     
     const startTime = parseInt(localStorage.getItem('lightEventStartTime_v3'));
-    const endTime = startTime + (30 * 60 * 1000); // 30 minutes
+    const endTime = 0; // Forced sold out
     const now = Date.now();
     
     if (limitedStockText) {
