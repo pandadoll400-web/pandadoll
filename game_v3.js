@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -733,6 +733,12 @@ btnShop.addEventListener('click', () => {
     } else {
         renderShop();
     }
+    
+    const seasonSwordEndTime = new Date("2026-07-22T21:50:40+09:00").getTime();
+    if (Date.now() < seasonSwordEndTime) {
+        logEvent('⚠️ 시즌검 3종이 3일 뒤에 사라집니다! 서두르세요!', 'info');
+    }
+    
     shopModal.classList.remove('hidden');
 });
 
