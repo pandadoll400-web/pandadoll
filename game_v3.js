@@ -136,7 +136,8 @@ const swordNames = [
     "빛의 검",              // 23 (한정 조합)
     "사명의 검",            // 24 (특별 한정)
     "트로피의 검",           // 25 (트로피 진척도 보상)
-    "보물의 검"             // 26 (시즌 검)
+    "보물의 검",            // 26 (시즌 검)
+    "왕자의 검"             // 27 (합성)
 ];
 
 // Enhance Costs (0 to 13)
@@ -167,7 +168,8 @@ const enhanceCosts = [
     Infinity, // 23 (한정 조합)
     Infinity, // 24 (특별 한정)
     Infinity, // 25 (트로피 진척도 보상)
-    Infinity  // 26 (보물의 검)
+    Infinity, // 26 (보물의 검)
+    Infinity  // 27 (왕자의 검)
 ];
 
 const levelDamage = [
@@ -184,7 +186,8 @@ const levelDamage = [
     9000,   // 23: 빛의 검 (한정 조합)
     8000,   // 24: 사명의 검 (특별 한정)
     7000,   // 25: 트로피의 검
-    4500    // 26: 보물의 검
+    4500,   // 26: 보물의 검
+    12000   // 27: 왕자의 검
 ];
 
 const gradeColors = {
@@ -1016,10 +1019,10 @@ function renderFuseInventory() {
         const selBtn = document.createElement('button');
         selBtn.className = 'action-btn shop-btn';
         
-        const isValid = (lvl >= 1 && lvl <= 14);
+        const isValid = (lvl === 13 || lvl === 14);
         
         if (!isValid) {
-            selBtn.textContent = '불가 (1~14강만)';
+            selBtn.textContent = '불가 (재료 아님)';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
             selBtn.style.opacity = '0.5';
@@ -1048,12 +1051,9 @@ function renderFuseInventory() {
                     if (fuseSelectedIndices.length === 1) {
                         const firstIdx = fuseSelectedIndices[0];
                         const firstLvl = gameState.inventory[firstIdx];
-                        const currentTier = (firstLvl >= 1 && firstLvl <= 6) ? 1 : 2;
-                        const thisTier = (lvl >= 1 && lvl <= 6) ? 1 : 2;
-                        const is67Combo = (firstLvl === 6 && lvl === 7) || (firstLvl === 7 && lvl === 6);
                         
-                        if (currentTier !== thisTier && !is67Combo) {
-                            logEvent('1~6강과 7~12강은 섞어서 융합할 수 없습니다. (6강+7강 특수 융합 제외)', 'fail');
+                        if (firstLvl === lvl) {
+                            logEvent('서로 다른 검(13강, 14강) 1개씩을 선택해야 합니다.', 'fail');
                             return;
                         }
                     }
@@ -1073,131 +1073,22 @@ function renderFuseInventory() {
 }
 
 function updateFuseProbTable() {
-    const container = document.getElementById('fuse-prob-container');
-    if (!container) return;
-    
-    if (fuseSelectedIndices.length > 0) {
-        const firstIdx = fuseSelectedIndices[0];
-        const firstLvl = gameState.inventory[firstIdx];
-        const isHighTier = (firstLvl >= 7 && firstLvl <= 12);
-        
-        let is67Combo = false;
-        let is1314Combo = false;
-        if (fuseSelectedIndices.length === 2) {
-            const secondLvl = gameState.inventory[fuseSelectedIndices[1]];
-            is67Combo = (firstLvl === 6 && secondLvl === 7) || (firstLvl === 7 && secondLvl === 6);
-            is1314Combo = (firstLvl >= 13 && secondLvl >= 13);
-        }
-        
-        if (is1314Combo) {
-            container.innerHTML = `
-                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">✨ 13~14강 특별 융합 ✨</h4>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">65%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">18%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">9%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">6%</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                    <span style="color: #fde047; text-shadow: 0 0 10px #f97316;">☀️ 여명의 검</span> <span style="color: #fde047; font-weight: bold;">2%</span>
-                </div>
-            `;
-            return;
-        }
-        
-        if (is67Combo) {
-            container.innerHTML = `
-                <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">⚔️ 히든 융합 조합 ⚔️</h4>
-                <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                    <span style="color: #ff007f; text-shadow: 0 0 5px #ff007f;">67쌍단검</span> <span style="color: #ff007f; font-weight: bold;">100%</span>
-                </div>
-            `;
-            return;
-        }
-
-        if (isHighTier) {
-            if (gameState.luckEventEndTime > 0) {
-                container.innerHTML = `
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (7~12강) 🍀</h4>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">40%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">30%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">20%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">10%</span>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (7~12강)</h4>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검</span> <span style="color: #38bdf8; font-weight: bold;">70%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검</span> <span style="color: #c084fc; font-weight: bold;">15%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검</span> <span style="color: #fbbf24; font-weight: bold;">10%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #ef4444; text-shadow: 0 0 5px #f87171;">종말의 검</span> <span style="color: #ef4444; font-weight: bold;">5%</span>
-                    </div>
-                `;
-            }
-        } else {
-            if (gameState.luckEventEndTime > 0) {
-                container.innerHTML = `
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">🍀 럭 이벤트 2배 확률! (1~6강) 🍀</h4>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">80%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">14%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">6%</span>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <h4 style="margin: 0 0 10px 0; text-align: center; color: var(--text-secondary);">융합 결과 확률표 (1~6강)</h4>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #94a3b8;">평범한 검 (2강과 동급)</span> <span style="color: #38bdf8; font-weight: bold;">90%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #334155;">
-                        <span style="color: #a855f7;">공허의 검 (8강과 동급)</span> <span style="color: #c084fc; font-weight: bold;">7%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
-                        <span style="color: #000; text-shadow: 0 0 5px #fff, 0 0 10px #fbbf24;">블랙홀 검 (11강과 동급)</span> <span style="color: #fbbf24; font-weight: bold;">3%</span>
-                    </div>
-                `;
-            }
-        }
-    } else {
-        container.innerHTML = `<p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">검을 선택하면 확률표가 표시됩니다.</p>`;
-    }
+    // 확률표가 고정되어 있으므로 아무 작업도 하지 않음
 }
 
 btnFuseStart.addEventListener('click', () => {
     if (fuseSelectedIndices.length !== 2) return;
     
-    // Check tier
     const lvl1 = gameState.inventory[fuseSelectedIndices[0]];
     const lvl2 = gameState.inventory[fuseSelectedIndices[1]];
-    const isHighTier = (lvl1 >= 7 && lvl1 <= 12);
-    const is67Combo = (lvl1 === 6 && lvl2 === 7) || (lvl1 === 7 && lvl2 === 6);
-    const is1314Combo = (lvl1 >= 13 && lvl2 >= 13);
+    
+    const has13 = (lvl1 === 13 || lvl2 === 13);
+    const has14 = (lvl1 === 14 || lvl2 === 14);
+    
+    if (!has13 || !has14) {
+        logEvent('진실의검(14강)과 봉인된 검(13강)이 각각 1개씩 필요합니다.', 'fail');
+        return;
+    }
     
     // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
     fuseSelectedIndices.sort((a,b) => b - a);
@@ -1205,49 +1096,15 @@ btnFuseStart.addEventListener('click', () => {
         gameState.inventory.splice(idx, 1);
     });
     
-    // 확률 계산
-    const roll = Math.random() * 100;
-    let resultLvl = 15; // 기본 평범한 검 (90% or 70%)
-    
-    if (is1314Combo) {
-        if (roll <= 65) resultLvl = 15;
-        else if (roll <= 83) resultLvl = 16;
-        else if (roll <= 92) resultLvl = 17;
-        else if (roll <= 98) resultLvl = 18;
-        else resultLvl = 20;
-    } else if (is67Combo) {
-        resultLvl = 19; // 히든 쌍단검 100%
-    } else if (isHighTier) {
-        if (gameState.luckEventEndTime > 0) {
-            // 2배 럭
-            if (roll > 40 && roll <= 70) resultLvl = 16; // 30% 공허
-            else if (roll > 70 && roll <= 90) resultLvl = 17; // 20% 블랙홀
-            else if (roll > 90) resultLvl = 18; // 10% 종말
-        } else {
-            if (roll > 70 && roll <= 85) resultLvl = 16; // 15% 공허
-            else if (roll > 85 && roll <= 95) resultLvl = 17; // 10% 블랙홀
-            else if (roll > 95) resultLvl = 18; // 5% 종말
-        }
-    } else {
-        if (gameState.luckEventEndTime > 0) {
-            if (roll > 80 && roll <= 94) resultLvl = 16; // 14% 공허
-            else if (roll > 94) resultLvl = 17; // 6% 블랙홀
-        } else {
-            if (roll > 90 && roll <= 97) resultLvl = 16; // 7% 공허
-            else if (roll > 97) resultLvl = 17; // 3% 블랙홀
-        }
-    }
-    
-    // 3분 소요 타이머 적용
-    gameState.fuse.active = true;
-    gameState.fuse.endTime = Date.now(); // 즉시 완료
-    gameState.fuse.resultLevel = resultLvl;
-    
+    // 왕자의 검 (27) 인벤토리에 즉시 추가
+    gameState.inventory.push(27);
     saveGame();
     
     fuseSelectModal.classList.add('hidden');
+    fuseModal.classList.add('hidden');
     updateFuseUI();
-    logEvent('🔥 퓨즈머신 가동 시작! 3분 뒤에 완료됩니다.', 'success');
+    showFireworks();
+    logEvent('👑 합성 성공! [왕자의 검]을 얻었습니다!', 'success');
 });
 
 setInterval(() => {

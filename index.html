@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검 강화하기 (Sword Enhancement)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style_v2.css?v=5">
+    <link rel="stylesheet" href="style_v2.css?v=6">
 </head>
 <body>
     <div id="app-container">
@@ -412,23 +412,22 @@
         <!-- ====== 퓨즈머신 선택 Modal ====== -->
         <div id="fuse-select-modal" class="modal hidden">
             <div class="modal-content">
-                <h2>⚔️ 퓨즈머신 제물 선택</h2>
-                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 같은 등급(1~6강, 7~12강 또는 13~14강)의 검 2개를 선택하세요.</p>
-                <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">선택한 검은 영구적으로 파괴됩니다!</p>
+                <h2 style="color: #22d3ee;">👑 합성머신 레시피: 왕자의 검</h2>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 <span style="color:#fde047;">진실의검(14강)</span>과 <span style="color:#60a5fa;">봉인된 검(13강)</span>을 각각 1개씩 선택하세요.</p>
+                <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">재료로 사용된 검은 사라집니다!</p>
                 
                 <div id="fuse-inventory-list" style="margin: 15px 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
                     <!-- Selectable inventory items go here -->
                 </div>
                 
-                <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#fbbf24;">0</span> / 2</p>
+                <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#06b6d4;">0</span> / 2</p>
 
                 <!-- 확률표 (돌리기 버튼 바로 전) -->
                 <div id="fuse-prob-container" class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
-                    <!-- JS will populate this based on selection -->
-                    <p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">검을 선택하면 확률표가 표시됩니다.</p>
+                    <p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">확률 100%: 왕자의 검 제작 성공!</p>
                 </div>
                 
-                <button id="btn-fuse-start" class="action-btn danger-btn" style="width:100%; margin-top: 10px;" disabled>융합 시작! (즉시 완료)</button>
+                <button id="btn-fuse-start" class="action-btn" style="width:100%; margin-top: 10px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none;" disabled>합성 시작!</button>
                 <button id="btn-exit-fuse-select" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
             </div>
         </div>
@@ -486,6 +485,6 @@
         </div>
     </div>
 
-    <script src="game_v3.js?v=43" charset="utf-8"></script>
+    <script src="game_v3.js?v=44" charset="utf-8"></script>
 </body>
 </html>

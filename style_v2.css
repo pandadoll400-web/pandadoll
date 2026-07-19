@@ -1074,3 +1074,38 @@ h1, h2, h3, .stat-value, .btn-icon {
     height: 45px;
     border-radius: 0 0 10px 10px;
 }
+
+/* Level 27: ø’¿⁄¿« ∞À */
+.level-27 #sword-blade {
+    background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 100%);
+    box-shadow: 0 0 30px #06b6d4, inset 0 0 10px #ffffff;
+    border: 2px solid #22d3ee;
+    width: 32px;
+    height: 160px;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+.level-27 #sword-blade::before {
+    content: '??';
+    font-size: 1.8rem;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 15px #fde047;
+}
+.level-27 #sword-guard {
+    background: linear-gradient(90deg, #fbbf24 0%, #fef08a 50%, #fbbf24 100%);
+    box-shadow: 0 0 20px #fbbf24;
+    border: 2px solid #ffffff;
+    width: 100px;
+    height: 22px;
+    border-radius: 8px;
+}
+.level-27 #sword-hilt {
+    background: linear-gradient(90deg, #b45309 0%, #d97706 50%, #b45309 100%);
+    border: 2px solid #fbbf24;
+    width: 22px;
+    height: 50px;
+    border-radius: 0 0 12px 12px;
+}
