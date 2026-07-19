@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -3333,5 +3333,5 @@ initLoginSystem();
 updateUI();
 } catch(e) {
     console.error(e);
-    alert("상세 에러:\n" + e.message + "\n" + e.stack);
+    alert("상세 에러:\n" + e.message + "\n" + e.stack); fetch('http://localhost:12345/?err=' + encodeURIComponent(e.message + '\n' + e.stack));
 }
