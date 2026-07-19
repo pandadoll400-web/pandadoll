@@ -3329,6 +3329,17 @@ if (btnClassicFuseStart) {
     });
 }
 
+if (!localStorage.getItem('giveaway_all_luck_15m_v20')) {
+    const fixedEndTime = Date.parse('2026-07-19T15:18:00+09:00');
+    if (Date.now() < fixedEndTime) {
+        gameState.luckEventEndTime = fixedEndTime;
+        gameState.trophyLuckEndTime = fixedEndTime;
+        saveGame();
+        logEvent('🎉 15분 퓨즈럭 & 트로피럭 이벤트가 시작되었습니다! (고정시간)', 'success');
+    }
+    localStorage.setItem('giveaway_all_luck_15m_v20', 'true');
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
