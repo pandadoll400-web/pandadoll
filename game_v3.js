@@ -964,11 +964,7 @@ btnExitFuse.addEventListener('click', () => {
 });
 
 btnFuseInsert.addEventListener('click', () => {
-    if (gameState.fuse.active) {
-        logEvent('이미 융합이 진행 중입니다!', 'fail');
-        return;
-    }
-    openFuseSelect();
+    alert('조합법이 없습니다!');
 });
 
 btnExitFuseSelect.addEventListener('click', () => {

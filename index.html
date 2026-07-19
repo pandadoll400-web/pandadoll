@@ -40,7 +40,7 @@
                     <div id="sword-hilt"></div>
                 </div>
                 <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                    <button id="btn-open-fuse" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: #eab308; color: black; font-weight:bold;">⚙️ 퓨즈머신으로 가기</button>
+                    <button id="btn-open-fuse" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: #06b6d4; color: white; font-weight:bold; box-shadow: 0 0 10px #06b6d4;">⚙️ 합성머신가기</button>
                     <button id="btn-stash" class="action-btn" style="padding: 5px 10px; font-size: 0.9rem; background: var(--secondary); color: white;">🎒 인벤토리에 보관</button>
                 </div>
             </section>
@@ -389,13 +389,12 @@
             </div>
         </div>
 
-        <!-- ====== 퓨즈머신(Fuse Machine) 메인 Modal ====== -->
+        <!-- ====== 합성머신(Synthesis Machine) 메인 Modal ====== -->
         <div id="fuse-modal" class="modal hidden">
-            <div class="modal-content fuse-content" style="max-width: 500px;">
-                <h2 style="color: #fbbf24;">⚙️ 퓨즈머신 ⚙️</h2>
-                <div class="fuse-image-container" style="margin: 15px 0; border: 2px solid #fbbf24; border-radius: 10px; overflow: hidden; background: #0f172a;">
-                    <!-- 유저가 넣은 이미지가 여기에 표시됩니다 -->
-                    <img src="fuse_machine.png" alt="퓨즈머신" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(퓨즈머신 이미지 없음 - 폴더에 fuse_machine.png를 넣어주세요)'; this.style.padding='40px'; this.style.color='#94a3b8';">
+            <div class="modal-content fuse-content" style="max-width: 500px; border: 2px solid #06b6d4; box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);">
+                <h2 style="color: #22d3ee; text-shadow: 0 0 10px #06b6d4;">⚙️ 합성 머신 ⚙️</h2>
+                <div class="fuse-image-container" style="margin: 15px 0; border: 2px solid #06b6d4; border-radius: 10px; overflow: hidden; background: #0f172a; box-shadow: inset 0 0 20px #06b6d4;">
+                    <img src="synthesis_machine.png" alt="합성머신" id="fuse-image" style="width: 100%; height: auto; display: block;" onerror="this.src=''; this.alt='(합성머신 이미지 없음 - synthesis_machine.png 필요)'; this.style.padding='40px'; this.style.color='#94a3b8';">
                 </div>
                 
                 <div id="fuse-status-box" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
@@ -403,7 +402,7 @@
                     <p id="fuse-timer-text" style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;"></p>
                 </div>
 
-                <button id="btn-fuse-insert" class="action-btn danger-btn" style="width:100%; margin-bottom: 20px;">🔥 퓨즈에 넣기 (1~6강 2개 필요)</button>
+                <button id="btn-fuse-insert" class="action-btn" style="width:100%; margin-bottom: 20px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none;">🔥 합성머신에 넣기</button>
                 
                 <!-- 확률표가 원래 있던 자리 (이동됨) -->
                 <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
@@ -487,6 +486,6 @@
         </div>
     </div>
 
-    <script src="game_v3.js?v=42" charset="utf-8"></script>
+    <script src="game_v3.js?v=43" charset="utf-8"></script>
 </body>
 </html>
