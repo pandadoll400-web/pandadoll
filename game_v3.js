@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -424,6 +424,7 @@ const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
 const bossSelectModal = document.getElementById('boss-select-modal');
 const btnStartNormalBoss = document.getElementById('btn-start-normal-boss');
 const btnStartKrakenBoss = document.getElementById('btn-start-kraken-boss');
+const btnStartKingBoss = document.getElementById('btn-start-king-boss');
 const btnExitBossSelect = document.getElementById('btn-exit-boss-select');
 
 
@@ -1627,6 +1628,11 @@ btnStartKrakenBoss.addEventListener('click', () => {
     startBattle('kraken_boss');
 });
 
+btnStartKingBoss.addEventListener('click', () => {
+    bossSelectModal.classList.add('hidden');
+    startBattle('king_boss');
+});
+
 btnModePvp.addEventListener('click', () => {
     let playerName = localStorage.getItem('playerName');
     if (!playerName) {
@@ -1738,6 +1744,11 @@ function startBattle(mode) {
     if (arena) {
         if (mode === 'kraken_boss') {
             arena.style.background = 'linear-gradient(to bottom, #87CEEB, #1E90FF)';
+        } else if (mode === 'king_boss') {
+            arena.style.background = 'linear-gradient(to bottom, #FFD700, #B8860B)';
+            arena.style.boxShadow = 'inset 0 0 50px rgba(0,0,0,0.7)';
+            arena.style.textShadow = '2px 2px 4px #000, -2px -2px 4px #000, 2px -2px 4px #000, -2px 2px 4px #000';
+            arena.style.color = '#fff';
             arena.style.boxShadow = 'inset 0 0 50px rgba(0,0,0,0.5)';
             arena.style.textShadow = '2px 2px 4px #000, -2px -2px 4px #000, 2px -2px 4px #000, -2px 2px 4px #000';
             arena.style.color = '#fff';
@@ -1785,6 +1796,17 @@ function startBattle(mode) {
         enemyCharacterEl.textContent = '🦑';
         enemyNameEl.textContent = `해적 보스 (HP: 50000)`;
         
+    } else if (mode === 'king_boss') {
+        battleTitle.textContent = '⚔️ 왕과의 전투 ⚔️';
+        battleModeBadge.innerHTML = '<span style="background:#B8860B;color:white;padding:2px 8px;border-radius:12px;font-size:0.8rem;">왕과의 전투</span>';
+        pvpTurnIndicator.classList.add('hidden');
+        
+        battleState.enemyMaxHp = 200000;
+        battleState.enemyDamage = 5000;
+        
+        enemyCharacterEl.textContent = '🤴';
+        enemyNameEl.textContent = "왕 (HP: 200000)";
+        
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
         battleModeBadge.innerHTML = '<span style="background:var(--accent-gold);color:black;padding:2px 8px;border-radius:12px;font-size:0.8rem;">PVP</span>';
@@ -1820,7 +1842,7 @@ function startBattle(mode) {
     logEvent(`⚔️ ${mode.toUpperCase()} 전투를 시작합니다!`, 'battle');
     
     if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
-    if (mode === 'pve' || mode === 'boss' || mode === 'pvp_sim' || mode === 'kraken_boss') {
+    if (mode === 'pve' || mode === 'boss' || mode === 'pvp_sim' || mode === 'kraken_boss' || mode === 'king_boss') {
         pveEnemyAttackInterval = setInterval(() => {
             if (!battleState.active) {
                 clearInterval(pveEnemyAttackInterval);
@@ -1875,6 +1897,20 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             msg = `🎉 보스 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
         } else if (battleState.mode === 'kraken_boss') {
             earnedTrophies = 150;
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
+            earnedMoney = 10000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `크라켄 토벌 성공! 트로피 ${earnedTrophies}개와 돈 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'king_boss') {
+            earnedTrophies = 500;
+            if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
+            earnedMoney = 50000;
+            gameState.trophies += earnedTrophies;
+            gameState.money += earnedMoney;
+            msg = `왕과의 전투 승리! 트로피 ${earnedTrophies}개와 돈 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+        } else if (battleState.mode === 'king_boss') {
+            earnedTrophies = 500;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
             earnedMoney = 10000;
             gameState.trophies += earnedTrophies;
