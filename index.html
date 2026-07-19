@@ -402,33 +402,30 @@
                     <p id="fuse-timer-text" style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;"></p>
                 </div>
 
-                <button id="btn-fuse-insert" class="action-btn" style="width:100%; margin-bottom: 20px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none;">🔥 합성머신에 넣기</button>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <div id="synth-slot-1" class="fuse-slot" style="width: 70px; height: 70px; border: 2px dashed #06b6d4; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 1.2rem; color:#fde047; text-align:center;">14강<br>넣기</div>
+                    <div style="color: #22d3ee; font-size: 1.5rem;">+</div>
+                    <div id="synth-slot-2" class="fuse-slot" style="width: 70px; height: 70px; border: 2px dashed #06b6d4; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(0,0,0,0.3); font-size: 1.2rem; color:#60a5fa; text-align:center;">13강<br>넣기</div>
+                    <button id="btn-synth-combine" class="action-btn" style="height: 70px; margin-left: 10px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none; font-weight: bold; flex: 1;" disabled>조합하기!</button>
+                </div>
                 
                 <!-- 확률표가 원래 있던 자리 (이동됨) -->
                 <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
             </div>
         </div>
 
-        <!-- ====== 퓨즈머신 선택 Modal ====== -->
-        <div id="fuse-select-modal" class="modal hidden">
+        <!-- ====== 합성머신 재료 선택 Modal ====== -->
+        <div id="synth-combine-inventory-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 style="color: #22d3ee;">👑 합성머신 레시피: 왕자의 검</h2>
-                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 <span style="color:#fde047;">진실의검(14강)</span>과 <span style="color:#60a5fa;">봉인된 검(13강)</span>을 각각 1개씩 선택하세요.</p>
+                <h2 style="color: #22d3ee;">👑 합성머신 재료 선택</h2>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리에서 <span style="color:#fde047;">진실의검(14강)</span> 또는 <span style="color:#60a5fa;">봉인된 검(13강)</span>을 선택하세요.</p>
                 <p style="color: #fca5a5; font-size: 0.8rem; margin-bottom: 10px;">재료로 사용된 검은 사라집니다!</p>
                 
-                <div id="fuse-inventory-list" style="margin: 15px 0; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
-                    <!-- Selectable inventory items go here -->
+                <div id="synth-combine-inventory-list" class="inventory-grid" style="max-height: 400px; overflow-y: auto;">
+                    <!-- JS로 채워짐 -->
                 </div>
                 
-                <p style="text-align: center; font-weight: bold;">선택됨: <span id="fuse-selected-count" style="color:#06b6d4;">0</span> / 2</p>
-
-                <!-- 확률표 (돌리기 버튼 바로 전) -->
-                <div id="fuse-prob-container" class="fuse-prob-table" style="background: #1e293b; border-radius: 8px; padding: 10px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
-                    <p style="text-align:center; color: #94a3b8; font-size:0.85rem; margin:0;">확률 100%: 왕자의 검 제작 성공!</p>
-                </div>
-                
-                <button id="btn-fuse-start" class="action-btn" style="width:100%; margin-top: 10px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none;" disabled>합성 시작!</button>
-                <button id="btn-exit-fuse-select" class="action-btn" style="width:100%; margin-top: 8px;">취소</button>
+                <button id="btn-exit-synth-inventory" class="action-btn" style="width: 100%; margin-top: 15px;">닫기</button>
             </div>
         </div>
     </div>

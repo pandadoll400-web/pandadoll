@@ -187,7 +187,7 @@ const levelDamage = [
     8000,   // 24: 사명의 검 (특별 한정)
     7000,   // 25: 트로피의 검
     4500,   // 26: 보물의 검
-    12000   // 27: 왕자의 검
+    7000    // 27: 왕자의 검
 ];
 
 const gradeColors = {
@@ -259,20 +259,22 @@ const inventoryModal = document.getElementById('inventory-modal');
 const btnExitInventory = document.getElementById('btn-exit-inventory');
 const inventoryList = document.getElementById('inventory-list');
 
-// Fuse DOM
+// Synthesis DOM
 const btnOpenFuse = document.getElementById('btn-open-fuse');
 const fuseModal = document.getElementById('fuse-modal');
 const btnExitFuse = document.getElementById('btn-exit-fuse');
-const btnFuseInsert = document.getElementById('btn-fuse-insert');
-const fuseStatusText = document.getElementById('fuse-status-text');
-const fuseTimerText = document.getElementById('fuse-timer-text');
 
-const fuseSelectModal = document.getElementById('fuse-select-modal');
-const btnExitFuseSelect = document.getElementById('btn-exit-fuse-select');
-const btnFuseStart = document.getElementById('btn-fuse-start');
-const fuseInventoryList = document.getElementById('fuse-inventory-list');
-const fuseSelectedCount = document.getElementById('fuse-selected-count');
-let fuseSelectedIndices = [];
+const synthSlot1 = document.getElementById('synth-slot-1');
+const synthSlot2 = document.getElementById('synth-slot-2');
+const btnSynthCombine = document.getElementById('btn-synth-combine');
+
+const synthCombineInventoryModal = document.getElementById('synth-combine-inventory-modal');
+const btnExitSynthInventory = document.getElementById('btn-exit-synth-inventory');
+const synthCombineInventoryList = document.getElementById('synth-combine-inventory-list');
+
+let synthMaterial1 = null; // index in inventory
+let synthMaterial2 = null; // index in inventory
+let currentSynthSlot = 1;
 
 const shopTabSword = document.getElementById('shop-tab-sword');
 const shopTabEffect = document.getElementById('shop-tab-effect');
@@ -958,7 +960,9 @@ function renderInventory() {
 // Fuse Logic
 // =======================
 btnOpenFuse.addEventListener('click', () => {
-    updateFuseUI();
+    synthMaterial1 = null;
+    synthMaterial2 = null;
+    updateSynthUI();
     fuseModal.classList.remove('hidden');
 });
 
@@ -966,44 +970,64 @@ btnExitFuse.addEventListener('click', () => {
     fuseModal.classList.add('hidden');
 });
 
-btnFuseInsert.addEventListener('click', () => {
-    alert('조합법이 없습니다!');
+synthSlot1.addEventListener('click', () => {
+    currentSynthSlot = 1;
+    openSynthInventory();
 });
 
-btnExitFuseSelect.addEventListener('click', () => {
-    fuseSelectModal.classList.add('hidden');
+synthSlot2.addEventListener('click', () => {
+    currentSynthSlot = 2;
+    openSynthInventory();
 });
 
-function updateFuseUI() {
-    if (gameState.fuse.active) {
-        btnFuseInsert.disabled = true;
-        btnFuseInsert.style.opacity = '0.5';
-        fuseStatusText.textContent = '융합 진행 중... ⚙️⚡';
-        fuseStatusText.style.color = '#fbbf24';
+btnExitSynthInventory.addEventListener('click', () => {
+    synthCombineInventoryModal.classList.add('hidden');
+});
+
+function openSynthInventory() {
+    synthCombineInventoryModal.classList.remove('hidden');
+    renderSynthInventory();
+}
+
+function updateSynthUI() {
+    if (synthMaterial1 !== null) {
+        const lvl = gameState.inventory[synthMaterial1];
+        synthSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        synthSlot1.style.borderColor = '#38bdf8';
     } else {
-        btnFuseInsert.disabled = false;
-        btnFuseInsert.style.opacity = '1';
-        fuseStatusText.textContent = '대기 중...';
-        fuseStatusText.style.color = '#38bdf8';
-        fuseTimerText.textContent = '';
+        synthSlot1.innerHTML = `14강<br>넣기`;
+        synthSlot1.style.borderColor = '#06b6d4';
+    }
+    
+    if (synthMaterial2 !== null) {
+        const lvl = gameState.inventory[synthMaterial2];
+        synthSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        synthSlot2.style.borderColor = '#38bdf8';
+    } else {
+        synthSlot2.innerHTML = `13강<br>넣기`;
+        synthSlot2.style.borderColor = '#06b6d4';
+    }
+
+    if (synthMaterial1 !== null && synthMaterial2 !== null) {
+        const lvl1 = gameState.inventory[synthMaterial1];
+        const lvl2 = gameState.inventory[synthMaterial2];
+        const has13 = (lvl1 === 13 || lvl2 === 13);
+        const has14 = (lvl1 === 14 || lvl2 === 14);
+        if (has13 && has14) {
+            btnSynthCombine.disabled = false;
+        } else {
+            btnSynthCombine.disabled = true;
+        }
+    } else {
+        btnSynthCombine.disabled = true;
     }
 }
 
-function openFuseSelect() {
-    fuseSelectedIndices = [];
-    fuseSelectModal.classList.remove('hidden');
-    renderFuseInventory();
-}
-
-function renderFuseInventory() {
-    fuseInventoryList.innerHTML = '';
-    fuseSelectedCount.textContent = fuseSelectedIndices.length;
-    btnFuseStart.disabled = fuseSelectedIndices.length !== 2;
-    
-    let validItemsFound = false;
+function renderSynthInventory() {
+    synthCombineInventoryList.innerHTML = '';
     
     if (gameState.inventory.length === 0) {
-        fuseInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">보관된 검이 없습니다.</p>';
+        synthCombineInventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">보관된 검이 없습니다.</p>';
         return;
     }
     
@@ -1022,66 +1046,40 @@ function renderFuseInventory() {
         const isValid = (lvl === 13 || lvl === 14);
         
         if (!isValid) {
-            selBtn.textContent = '불가 (재료 아님)';
+            selBtn.textContent = '선택 불가';
             selBtn.disabled = true;
             selBtn.style.background = '#475569';
             selBtn.style.opacity = '0.5';
+        } else if (index === synthMaterial1 || index === synthMaterial2) {
+            selBtn.textContent = '이미 선택됨';
+            selBtn.disabled = true;
+            selBtn.style.background = '#475569';
         } else {
-            validItemsFound = true;
-            const isSelected = fuseSelectedIndices.includes(index);
-            if (isSelected) {
-                div.classList.add('fuse-item-selected');
-                selBtn.textContent = '선택 취소';
-                selBtn.style.background = 'var(--danger)';
-            } else {
-                selBtn.textContent = '선택하기';
-                selBtn.style.background = 'var(--secondary)';
-            }
-            
+            selBtn.textContent = '선택하기';
+            selBtn.style.background = 'var(--secondary)';
             selBtn.addEventListener('click', () => {
-                const selIdx = fuseSelectedIndices.indexOf(index);
-                if (selIdx > -1) {
-                    fuseSelectedIndices.splice(selIdx, 1);
+                if (currentSynthSlot === 1) {
+                    synthMaterial1 = index;
                 } else {
-                    if (fuseSelectedIndices.length >= 2) {
-                        logEvent('제물은 2개까지만 선택할 수 있습니다.', 'info');
-                        return;
-                    }
-                    
-                    if (fuseSelectedIndices.length === 1) {
-                        const firstIdx = fuseSelectedIndices[0];
-                        const firstLvl = gameState.inventory[firstIdx];
-                        
-                        if (firstLvl === lvl) {
-                            logEvent('서로 다른 검(13강, 14강) 1개씩을 선택해야 합니다.', 'fail');
-                            return;
-                        }
-                    }
-                    
-                    fuseSelectedIndices.push(index);
+                    synthMaterial2 = index;
                 }
-                renderFuseInventory();
+                synthCombineInventoryModal.classList.add('hidden');
+                updateSynthUI();
             });
         }
         
         div.appendChild(nameSpan);
         div.appendChild(selBtn);
-        fuseInventoryList.appendChild(div);
+        synthCombineInventoryList.appendChild(div);
     });
-    
-    updateFuseProbTable();
 }
 
-function updateFuseProbTable() {
-    // 확률표가 고정되어 있으므로 아무 작업도 하지 않음
-}
-
-btnFuseStart.addEventListener('click', () => {
-    if (fuseSelectedIndices.length !== 2) return;
+btnSynthCombine.addEventListener('click', () => {
+    if (synthMaterial1 === null || synthMaterial2 === null) return;
     
-    const lvl1 = gameState.inventory[fuseSelectedIndices[0]];
-    const lvl2 = gameState.inventory[fuseSelectedIndices[1]];
-    
+    // Check validation again just in case
+    const lvl1 = gameState.inventory[synthMaterial1];
+    const lvl2 = gameState.inventory[synthMaterial2];
     const has13 = (lvl1 === 13 || lvl2 === 13);
     const has14 = (lvl1 === 14 || lvl2 === 14);
     
@@ -1091,18 +1089,21 @@ btnFuseStart.addEventListener('click', () => {
     }
     
     // 가장 높은 인덱스부터 지워야 인벤토리 배열이 꼬이지 않음
-    fuseSelectedIndices.sort((a,b) => b - a);
-    fuseSelectedIndices.forEach(idx => {
+    let indices = [synthMaterial1, synthMaterial2];
+    indices.sort((a,b) => b - a);
+    indices.forEach(idx => {
         gameState.inventory.splice(idx, 1);
     });
     
-    // 왕자의 검 (27) 인벤토리에 즉시 추가
+    // 왕자의 검 (27) 인벤토리에 추가
     gameState.inventory.push(27);
     saveGame();
     
-    fuseSelectModal.classList.add('hidden');
+    synthMaterial1 = null;
+    synthMaterial2 = null;
+    updateSynthUI();
+    
     fuseModal.classList.add('hidden');
-    updateFuseUI();
     showFireworks();
     logEvent('👑 합성 성공! [왕자의 검]을 얻었습니다!', 'success');
 });
