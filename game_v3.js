@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -313,6 +313,13 @@ const btnPastCombine = document.getElementById('btn-past-combine');
 
 let pastMaterial1 = null; // index in inventory
 let pastMaterial2 = null; // index in inventory
+
+const monarchSlot1 = document.getElementById('monarch-slot-1');
+const monarchSlot2 = document.getElementById('monarch-slot-2');
+const btnMonarchCombine = document.getElementById('btn-monarch-combine');
+
+let monarchMaterial1 = null; // index in inventory
+let monarchMaterial2 = null; // index in inventory
 
 const shopTabSword = document.getElementById('shop-tab-sword');
 const shopTabEffect = document.getElementById('shop-tab-effect');
@@ -1070,6 +1077,18 @@ pastSlot2.addEventListener('click', () => {
     openSynthInventory();
 });
 
+monarchSlot1.addEventListener('click', () => {
+    currentSynthType = 'monarch';
+    currentSynthSlot = 1;
+    openSynthInventory();
+});
+
+monarchSlot2.addEventListener('click', () => {
+    currentSynthType = 'monarch';
+    currentSynthSlot = 2;
+    openSynthInventory();
+});
+
 btnExitSynthInventory.addEventListener('click', () => {
     synthCombineInventoryModal.classList.add('hidden');
 });
@@ -1218,6 +1237,34 @@ function updateSynthUI() {
     } else {
         btnPastCombine.disabled = true;
     }
+
+    if (monarchMaterial1 !== null) {
+        const lvl = gameState.inventory[monarchMaterial1];
+        monarchSlot1.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        monarchSlot1.style.borderColor = '#fef08a';
+    } else {
+        monarchSlot1.innerHTML = `빔`;
+        monarchSlot1.style.borderColor = '#eab308';
+    }
+
+    if (monarchMaterial2 !== null) {
+        const lvl = gameState.inventory[monarchMaterial2];
+        monarchSlot2.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
+        monarchSlot2.style.borderColor = '#fef08a';
+    } else {
+        monarchSlot2.innerHTML = `빔`;
+        monarchSlot2.style.borderColor = '#eab308';
+    }
+
+    if (monarchMaterial1 !== null && monarchMaterial2 !== null) {
+        btnMonarchCombine.disabled = false;
+        btnMonarchCombine.style.opacity = '1';
+        btnMonarchCombine.style.animation = 'pulse 1s infinite';
+    } else {
+        btnMonarchCombine.disabled = true;
+        btnMonarchCombine.style.opacity = '0.5';
+        btnMonarchCombine.style.animation = 'none';
+    }
 }
 
 function renderSynthInventory() {
@@ -1255,6 +1302,9 @@ function renderSynthInventory() {
         } else if (currentSynthType === 'past') {
             isValid = (lvl === 23 || lvl === 22); // 빛의 검, 해적의 검
             isAlreadySelected = (index === pastMaterial1 || index === pastMaterial2);
+        } else if (currentSynthType === 'monarch') {
+            isValid = (lvl === 14 || lvl === 16); // 진실의검, 공허의 검
+            isAlreadySelected = (index === monarchMaterial1 || index === monarchMaterial2);
         }
         
         if (!isValid) {
@@ -1283,6 +1333,9 @@ function renderSynthInventory() {
                 } else if (currentSynthType === 'past') {
                     if (currentSynthSlot === 1) pastMaterial1 = index;
                     else pastMaterial2 = index;
+                } else if (currentSynthType === 'monarch') {
+                    if (currentSynthSlot === 1) monarchMaterial1 = index;
+                    else monarchMaterial2 = index;
                 }
                 synthCombineInventoryModal.classList.add('hidden');
                 updateSynthUI();
@@ -1426,6 +1479,38 @@ btnPastCombine.addEventListener('click', () => {
     fuseModal.classList.add('hidden');
     showFireworks();
     logEvent('🕰️ 합성 성공! [과거의 검]을 얻었습니다!', 'success');
+});
+
+btnMonarchCombine.addEventListener('click', () => {
+    if (monarchMaterial1 === null || monarchMaterial2 === null) return;
+    
+    const lvls = [gameState.inventory[monarchMaterial1], gameState.inventory[monarchMaterial2]];
+    const has14 = lvls.includes(14); // 진실의검
+    const has16 = lvls.includes(16); // 공허의 검
+    
+    if (!has14 || !has16) {
+        logEvent('진실의검(14)과 공허의 검(16)이 1개씩 필요합니다.', 'fail');
+        return;
+    }
+    
+    let indices = [monarchMaterial1, monarchMaterial2];
+    indices.sort((a,b) => b - a);
+    indices.forEach(idx => {
+        gameState.inventory.splice(idx, 1);
+    });
+    
+    // 군주의 검 (31) 획득
+    gameState.inventory.push(31);
+    saveGame();
+    
+    monarchMaterial1 = null;
+    monarchMaterial2 = null;
+    updateSynthUI();
+    
+    synthRecipeModal.classList.add('hidden');
+    fuseModal.classList.add('hidden');
+    showFireworks();
+    logEvent('👑👑👑 찬란하게 빛나는 [군주의 검]을 제작했습니다!', 'success');
 });
 
 setInterval(() => {
