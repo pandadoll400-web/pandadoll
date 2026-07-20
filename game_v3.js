@@ -332,6 +332,23 @@ const btnMonarchCombine = document.getElementById('btn-monarch-combine');
 let monarchMaterial1 = null; // index in inventory
 let monarchMaterial2 = null; // index in inventory
 
+// Lucky Block Combine DOM
+const btnOpenLuckyBlockCombine = document.getElementById('btn-open-luckyblock-combine');
+const luckyBlockCombineModal = document.getElementById('luckyblock-combine-modal');
+const btnExitLbCombine = document.getElementById('btn-exit-lb-combine');
+const lbSlot1 = document.getElementById('lb-slot-1');
+const lbSlot2 = document.getElementById('lb-slot-2');
+const lbSlot3 = document.getElementById('lb-slot-3');
+const btnLbCombine = document.getElementById('btn-lb-combine');
+
+let lbMaterial1 = null;
+let lbMaterial2 = null;
+let lbMaterial3 = null;
+
+// Lucky Block Inventory Tab
+const tabLuckyBlock = document.getElementById('tab-luckyblock');
+const inventoryLuckyBlockSection = document.getElementById('inventory-luckyblock-section');
+const luckyblockInventoryList = document.getElementById('luckyblock-inventory-list');
 // =======================
 // Lucky Block Combine Logic
 // =======================
@@ -506,23 +523,6 @@ const btnModePvp = document.getElementById('btn-mode-pvp');
 const btnModeBoss = document.getElementById('btn-mode-boss');
 const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
 
-// Lucky Block Combine DOM
-const btnOpenLuckyBlockCombine = document.getElementById('btn-open-luckyblock-combine');
-const luckyBlockCombineModal = document.getElementById('luckyblock-combine-modal');
-const btnExitLbCombine = document.getElementById('btn-exit-lb-combine');
-const lbSlot1 = document.getElementById('lb-slot-1');
-const lbSlot2 = document.getElementById('lb-slot-2');
-const lbSlot3 = document.getElementById('lb-slot-3');
-const btnLbCombine = document.getElementById('btn-lb-combine');
-
-let lbMaterial1 = null;
-let lbMaterial2 = null;
-let lbMaterial3 = null;
-
-// Lucky Block Inventory Tab
-const tabLuckyBlock = document.getElementById('tab-luckyblock');
-const inventoryLuckyBlockSection = document.getElementById('inventory-luckyblock-section');
-const luckyblockInventoryList = document.getElementById('luckyblock-inventory-list');
 
 // Boss Select DOM
 const bossSelectModal = document.getElementById('boss-select-modal');
