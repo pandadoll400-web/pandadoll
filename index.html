@@ -453,6 +453,7 @@
                 <button id="btn-fuse-insert" class="action-btn" style="width:100%; margin-bottom: 20px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: white; border: none; font-size: 1.1rem; padding: 15px;">🔥 합성머신에 넣기</button>
                 
                 <!-- 확률표가 원래 있던 자리 (이동됨) -->
+                <button id="btn-open-luckyblock-combine" class="action-btn" style="width:100%; margin-bottom: 20px; background: linear-gradient(135deg, #fde047, #ca8a04); color: black;">🎁 럭키블록 합성 (11강 x 3)</button>
                 <button id="btn-exit-fuse" class="action-btn" style="width:100%; margin-top: 15px;">닫기</button>
             </div>
         </div>
@@ -562,6 +563,19 @@
                 </div>
                 
                 <button id="btn-exit-synth-inventory" class="action-btn" style="width: 100%; margin-top: 15px;">닫기</button>
+            </div>
+        </div>
+        <div id="luckyblock-combine-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 style="color: #fde047;">🎁 럭키블록 조합</h2>
+                <p style="color:var(--text-secondary); margin-bottom:10px;">인벤토리의 <span style="color:#ef4444;">???의 검(11강)</span> 3개를 선택하세요.</p>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                    <div id="lb-slot-1" class="combine-slot" style="width: 80px; height: 80px; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #94a3b8;">빔</div>
+                    <div id="lb-slot-2" class="combine-slot" style="width: 80px; height: 80px; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #94a3b8;">빔</div>
+                    <div id="lb-slot-3" class="combine-slot" style="width: 80px; height: 80px; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #94a3b8;">빔</div>
+                </div>
+                <button id="btn-lb-combine" class="action-btn" style="width: 100%; margin-bottom: 10px; font-size: 1.2rem; background: linear-gradient(90deg, #f59e0b, #d97706); opacity: 0.5;" disabled>합성하기</button>
+                <button id="btn-exit-lb-combine" class="action-btn" style="width: 100%; background: #475569;">닫기</button>
             </div>
         </div>
     </div>
