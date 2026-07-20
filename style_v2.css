@@ -1462,3 +1462,53 @@ h1, h2, h3, .stat-value, .btn-icon {
     0% { transform: scale(1); filter: hue-rotate(0deg); }
     100% { transform: scale(1.05); filter: hue-rotate(45deg); }
 }
+
+/* 35: 최초의 검 (Level 35) */
+.level-35 .sword-visual {
+    height: 300px;
+}
+.level-35 #sword-name {
+    color: #cd7f32;
+    text-shadow: 0 0 10px #cd7f32, 0 0 20px #0f766e;
+    font-weight: 900;
+    letter-spacing: 3px;
+    animation: ancientPulse 3s infinite alternate;
+}
+.level-35 #sword-blade {
+    width: 50px;
+    height: 200px;
+    background: linear-gradient(90deg, #4e342e 0%, #8b5a2b 30%, #5c4033 50%, #8b5a2b 70%, #4e342e 100%);
+    /* 들쭉날쭉하게 깨진 고대 검 모양 */
+    clip-path: polygon(50% 0%, 80% 10%, 100% 25%, 75% 45%, 100% 65%, 90% 100%, 10% 100%, 0 70%, 25% 50%, 0 30%, 20% 10%);
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.8),
+        0 0 30px rgba(20, 184, 166, 0.5); /* 신비한 고대 유물의 오라 */
+}
+.level-35 #sword-guard {
+    width: 120px;
+    height: 35px;
+    background: linear-gradient(to right, #5d4037, #8d6e63, #5d4037);
+    border: 3px solid #3e2723;
+    border-radius: 8px;
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
+}
+.level-35 #sword-hilt {
+    width: 25px;
+    height: 90px;
+    background: repeating-linear-gradient(
+        45deg,
+        #3e2723,
+        #3e2723 10px,
+        #5d4037 10px,
+        #5d4037 20px
+    );
+    border: 2px solid #271410;
+    border-radius: 3px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+}
+
+@keyframes ancientPulse {
+    0% { filter: brightness(0.8) drop-shadow(0 0 5px #0f766e); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 30px #2dd4bf); }
+}
