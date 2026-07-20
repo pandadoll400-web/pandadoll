@@ -620,6 +620,9 @@ function updateUI() {
             const lb = document.createElement('div');
             lb.id = 'lb-visual-element';
             lb.className = 'lucky-block-visual';
+            const wings = document.createElement('div');
+            wings.className = 'lucky-block-visual-wings';
+            lb.appendChild(wings);
             swordDisplay.appendChild(lb);
         }
         swordDisplay.style.background = 'transparent';

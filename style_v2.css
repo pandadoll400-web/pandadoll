@@ -1,4 +1,4 @@
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -1359,39 +1359,64 @@ h1, h2, h3, .stat-value, .btn-icon {
 /* Lucky Block Visuals */
 .lucky-block-visual {
     position: relative;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #fef08a, #eab308);
-    border: 3px solid #ca8a04;
-    border-radius: 8px;
-    box-shadow: 0 0 20px #fde047;
-    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
+    border: 4px solid #fbbf24;
+    border-radius: 12px;
+    box-shadow: 
+        0 0 30px rgba(250, 204, 21, 0.8), 
+        inset 0 0 20px rgba(255, 255, 255, 0.6),
+        inset 0 0 10px rgba(0,0,0,0.3);
+    margin: 30px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
-    color: #854d0e;
-    font-weight: bold;
-    animation: luckyBounce 2s infinite ease-in-out;
-}
-.lucky-block-visual::before,
-.lucky-block-visual::after {
-    content: '???';
-    position: absolute;
-    font-size: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    filter: drop-shadow(0 0 5px #fff);
+    transform-style: preserve-3d;
+    animation: luckyFloat 3s ease-in-out infinite, luckyPulse 1.5s infinite alternate;
 }
 .lucky-block-visual::before {
-    left: -40px;
-    transform: translateY(-50%) rotate(-45deg);
+    content: '?';
+    font-size: 4rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5), 2px 2px 0 #ca8a04, -2px -2px 0 #ca8a04, 2px -2px 0 #ca8a04, -2px 2px 0 #ca8a04;
+    z-index: 2;
 }
-.lucky-block-visual::after {
-    right: -40px;
-    transform: translateY(-50%) rotate(45deg);
+.lucky-block-visual-wings {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
 }
-@keyframes luckyBounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-10px) scale(1.05); }
+.lucky-block-visual-wings::before,
+.lucky-block-visual-wings::after {
+    content: '⚔️';
+    position: absolute;
+    font-size: 3.5rem;
+    top: 15%;
+    filter: drop-shadow(0 0 10px #fef08a);
+    z-index: 1;
+    animation: wingFlap 2s ease-in-out infinite alternate;
+}
+.lucky-block-visual-wings::before {
+    left: -60px;
+    transform: rotate(-45deg) scaleX(-1);
+}
+.lucky-block-visual-wings::after {
+    right: -60px;
+    transform: rotate(45deg);
+}
+@keyframes luckyFloat {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    50% { transform: translateY(-15px) scale(1.05) rotate(5deg); }
+}
+@keyframes luckyPulse {
+    0% { box-shadow: 0 0 30px rgba(250, 204, 21, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.6); }
+    100% { box-shadow: 0 0 50px rgba(250, 204, 21, 1), inset 0 0 30px rgba(255, 255, 255, 0.8); }
+}
+@keyframes wingFlap {
+    0% { transform: rotate(-45deg) scaleX(-1) translateY(0); }
+    100% { transform: rotate(-25deg) scaleX(-1) translateY(-10px); }
+}
 }
