@@ -375,6 +375,7 @@
                 <div class="inv-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
                     <button id="tab-sword" class="action-btn" style="flex:1; background: var(--primary);">⚔️ 검</button>
                     <button id="tab-effect" class="action-btn" style="flex:1; background: #334155;">✨ 이펙트</button>
+                    <button id="tab-luckyblock" class="action-btn" style="flex:1; background: #334155;">🎁 럭키블록</button>
                 </div>
                 
                 <!-- 검 인벤토리 -->
@@ -393,6 +394,11 @@
                     </div>
                 </div>
 
+                <div id="inventory-luckyblock-section" class="hidden">
+                    <p style="color:var(--text-secondary); margin-bottom:10px;">럭키블록을 장착하고 [돌리기!] 버튼을 눌러 뽑아보세요!</p>
+                    <div id="luckyblock-inventory-list" style="margin: 10px 0; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
+                    </div>
+                </div>
                 <button id="btn-exit-inventory" class="action-btn" style="width:100%;">닫기</button>
             </div>
         </div>

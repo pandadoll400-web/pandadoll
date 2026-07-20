@@ -1356,3 +1356,42 @@ h1, h2, h3, .stat-value, .btn-icon {
     0% { filter: drop-shadow(0 0 15px #fbbf24) drop-shadow(0 0 5px #a855f7); }
     100% { filter: drop-shadow(0 0 40px #fef08a) drop-shadow(0 0 20px #d8b4fe); }
 }
+/* Lucky Block Visuals */
+.lucky-block-visual {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #fef08a, #eab308);
+    border: 3px solid #ca8a04;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #fde047;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #854d0e;
+    font-weight: bold;
+    animation: luckyBounce 2s infinite ease-in-out;
+}
+.lucky-block-visual::before,
+.lucky-block-visual::after {
+    content: '???';
+    position: absolute;
+    font-size: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    filter: drop-shadow(0 0 5px #fff);
+}
+.lucky-block-visual::before {
+    left: -40px;
+    transform: translateY(-50%) rotate(-45deg);
+}
+.lucky-block-visual::after {
+    right: -40px;
+    transform: translateY(-50%) rotate(45deg);
+}
+@keyframes luckyBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
