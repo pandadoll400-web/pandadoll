@@ -987,8 +987,8 @@ tabLuckyBlock.addEventListener('click', () => {
     tabSword.style.background = '#334155';
     tabEffect.style.background = '#334155';
     inventoryLuckyBlockSection.classList.remove('hidden');
-    inventorySwordsSection.classList.add('hidden');
-    inventoryEffectsSection.classList.add('hidden');
+    invSwordsSection.classList.add('hidden');
+    invEffectsSection.classList.add('hidden');
 });
 tabSword.addEventListener('click', () => {
     tabSword.style.background = 'var(--primary)';
