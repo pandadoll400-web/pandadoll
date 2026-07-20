@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -369,10 +369,10 @@ function updateLbCombineUI() {
     ].forEach(item => {
         if (item.mat !== null) {
             const lvl = gameState.inventory[item.mat];
-            item.slot.innerHTML = <span style="font-size: 0.9rem; color: #fff;">[+ + lvl + ]<br> + swordNames[lvl] + </span>;
+            item.slot.innerHTML = `<span style="font-size: 0.9rem; color: #fff;">[+${lvl}]<br>${swordNames[lvl]}</span>`;
             item.slot.style.borderColor = '#fde047';
         } else {
-            item.slot.innerHTML = 빔;
+            item.slot.innerHTML = `빔`;
             item.slot.style.borderColor = '#94a3b8';
         }
     });
