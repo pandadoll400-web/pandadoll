@@ -98,6 +98,40 @@ function getEffectBonus() {
             bonusDamage = Math.floor(bonusDamage * multiplier);
         }
     }
+function showPurchaseToast(msg) {
+    let toast = document.getElementById('purchase-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'purchase-toast';
+        toast.style.position = 'fixed';
+        toast.style.top = '20%';
+        toast.style.left = '50%';
+        toast.style.transform = 'translate(-50%, -50%)';
+        toast.style.background = 'rgba(0, 0, 0, 0.9)';
+        toast.style.color = '#fbbf24';
+        toast.style.padding = '15px 30px';
+        toast.style.borderRadius = '10px';
+        toast.style.fontSize = '1.8rem';
+        toast.style.fontWeight = 'bold';
+        toast.style.textAlign = 'center';
+        toast.style.zIndex = '999999';
+        toast.style.border = '2px solid #f59e0b';
+        toast.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.5)';
+        toast.style.pointerEvents = 'none';
+        toast.style.transition = 'opacity 0.3s ease, top 0.3s ease';
+        toast.style.opacity = '0';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.top = '15%'; // Slide up animation
+    toast.style.opacity = '1';
+    
+    if (window.purchaseToastTimeout) clearTimeout(window.purchaseToastTimeout);
+    window.purchaseToastTimeout = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.top = '20%';
+    }, 2000);
+}
     return { hp: bonusHp, dmg: bonusDamage };
 }
 
@@ -605,6 +639,38 @@ function logEvent(msg, type = 'info') {
     eventLogEl.prepend(p);
 }
 
+function showPurchaseToast(msg) {
+    let toast = document.getElementById('purchase-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'purchase-toast';
+        toast.style.position = 'fixed';
+        toast.style.top = '50%';
+        toast.style.left = '50%';
+        toast.style.transform = 'translate(-50%, -50%)';
+        toast.style.background = 'rgba(0,0,0,0.85)';
+        toast.style.color = '#fff';
+        toast.style.padding = '20px 40px';
+        toast.style.borderRadius = '15px';
+        toast.style.fontSize = '1.8rem';
+        toast.style.fontWeight = 'bold';
+        toast.style.textAlign = 'center';
+        toast.style.zIndex = '999999';
+        toast.style.border = '3px solid #f59e0b';
+        toast.style.boxShadow = '0 0 30px #f59e0b';
+        toast.style.pointerEvents = 'none';
+        toast.style.transition = 'opacity 0.3s ease';
+        toast.style.opacity = '0';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    
+    if (window.purchaseToastTimeout) clearTimeout(window.purchaseToastTimeout);
+    window.purchaseToastTimeout = setTimeout(() => {
+        toast.style.opacity = '0';
+    }, 1500);
+}
 function updateUI() {
     // Removed money limit
     hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
@@ -865,6 +931,7 @@ function renderShop() {
                     gameState.money -= currentItemPrice;
                     gameState.ownedSkins.push(effect.id);
                     logEvent(`[${effect.name}] 이펙트를 구매했습니다! 인벤토리를 확인하세요.`, 'success');
+                    showPurchaseToast('[' + effect.name + '] 구매 완료!');
                     saveGame();
                     renderShop();
                     updateUI();
@@ -939,6 +1006,7 @@ if (btnBuyOctopusSword) {
             saveGame();
             updateUI();
             logEvent('🐙 해적의 문어다리 검을 구매했습니다!', 'success');
+            showPurchaseToast('🐙 문어다리 검 구매 완료!');
         } else {
             alert('트로피가 부족합니다!');
         }
@@ -955,6 +1023,7 @@ if (btnBuyTreasureSword) {
             saveGame();
             updateUI();
             logEvent('💎 보물의 검을 구매했습니다!', 'success');
+            showPurchaseToast('💎 보물의 검 구매 완료!');
         } else {
             alert('트로피가 부족합니다!');
         }
@@ -970,6 +1039,7 @@ if (btnBuyPirateSword) {
             saveGame();
             updateUI();
             logEvent('⚔️ 해적의 검을 구매했습니다!', 'success');
+            showPurchaseToast('⚔️ 해적의 검 구매 완료!');
         } else {
             alert('트로피가 부족합니다!');
         }
