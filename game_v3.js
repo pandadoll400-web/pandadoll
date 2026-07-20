@@ -180,7 +180,8 @@ const swordNames = [
     "대검",                 // 33 (럭키블록)
     "반대의 검",            // 34 (럭키블록)
     "최초의 검",            // 35 (럭키블록)
-    "태초의 검"             // 36 (럭키블록)
+    "태초의 검"             // 36 (럭키블록),
+    "템페스트 골드검"       // 37 (럭블)
 ];
 
 // Enhance Costs (0 to 13)
@@ -242,7 +243,8 @@ const levelDamage = [
     2000,   // 33: 대검
     4000,   // 34: 반대의 검
     5500,   // 35: 최초의 검
-    7500    // 36: 태초의 검
+    7500    // 36: 태초의 검,
+    10000   // 37: 템페스트 골드검
 ];
 
 const gradeColors = {
@@ -771,8 +773,9 @@ btnEnhance.addEventListener('click', () => {
             swordDisplay.classList.remove('shake');
             let r = Math.random();
             let newLvl = 33; // 대검 65%
-            if (r >= 0.95) newLvl = 36;      // 태초 5%
-            else if (r >= 0.85) newLvl = 35; // 최초 10%
+            if (r >= 0.99) newLvl = 37;      // 템페스트 골드검 1%
+            else if (r >= 0.94) newLvl = 36; // 태초 5%
+            else if (r >= 0.85) newLvl = 35; // 최초 9%
             else if (r >= 0.65) newLvl = 34; // 반대 20%
             
             gameState.level = newLvl;
