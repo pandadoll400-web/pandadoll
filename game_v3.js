@@ -406,6 +406,7 @@ btnLbCombine.addEventListener('click', () => {
     showFireworks();
     logEvent('🎁 [럭키블록]을 합성했습니다!', 'success');
 });
+
 const shopTabSword = document.getElementById('shop-tab-sword');
 const shopTabEffect = document.getElementById('shop-tab-effect');
 const shopTabSeason = document.getElementById('shop-tab-season');
@@ -522,6 +523,7 @@ let lbMaterial3 = null;
 const tabLuckyBlock = document.getElementById('tab-luckyblock');
 const inventoryLuckyBlockSection = document.getElementById('inventory-luckyblock-section');
 const luckyblockInventoryList = document.getElementById('luckyblock-inventory-list');
+
 // Boss Select DOM
 const bossSelectModal = document.getElementById('boss-select-modal');
 const btnStartNormalBoss = document.getElementById('btn-start-normal-boss');
@@ -611,15 +613,43 @@ function updateUI() {
     
     swordNameEl.textContent = swordNames[gameState.level];
     
-    if (gameState.level >= 15) {
-        swordLevelEl.textContent = `[특수 검]`;
-        swordLevelEl.style.color = '#ef4444';
+    if (gameState.level === 32) {
+        swordLevelEl.style.display = 'none';
+        swordNameEl.style.display = 'none';
+        if (!document.getElementById('lb-visual-element')) {
+            const lb = document.createElement('div');
+            lb.id = 'lb-visual-element';
+            lb.className = 'lucky-block-visual';
+            swordDisplay.appendChild(lb);
+        }
+        swordDisplay.style.background = 'transparent';
+        swordDisplay.style.border = 'none';
+        btnEnhance.innerHTML = `<span class="btn-icon">✨</span> 돌리기! <br><span id="enhance-cost" style="font-size: 0.9rem; font-weight:normal;">(비용: 무료)</span>`;
+        btnEnhance.style.background = 'linear-gradient(135deg, #fef08a, #ca8a04)';
+        btnEnhance.style.color = 'black';
+        btnEnhance.style.animation = 'pulse 1s infinite';
     } else {
-        swordLevelEl.textContent = `[+${gameState.level}]`;
-        if (gameState.level >= 14) {
-            enhanceCostEl.textContent = '(최고 레벨 달성)';
+        swordLevelEl.style.display = 'block';
+        swordNameEl.style.display = 'block';
+        const lb = document.getElementById('lb-visual-element');
+        if (lb) lb.remove();
+        swordDisplay.style.background = '';
+        swordDisplay.style.border = '';
+        btnEnhance.innerHTML = `<span class="btn-icon">🔨</span> 강화하기 <br><span id="enhance-cost" style="font-size: 0.9rem; font-weight:normal;">(비용: ${enhanceCosts[gameState.level] ? enhanceCosts[gameState.level].toLocaleString() + '원' : '불가'})</span>`;
+        btnEnhance.style.background = '';
+        btnEnhance.style.color = '';
+        btnEnhance.style.animation = '';
+        
+        if (gameState.level >= 15) {
+            swordLevelEl.textContent = `[특수 검]`;
+            swordLevelEl.style.color = '#ef4444';
         } else {
-            enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
+            swordLevelEl.textContent = `[+${gameState.level}]`;
+            if (gameState.level >= 14) {
+                enhanceCostEl.textContent = '(최고 강화 달성)';
+            } else {
+                enhanceCostEl.textContent = `(비용: ${enhanceCosts[gameState.level].toLocaleString()}원)`;
+            }
         }
     }
     
@@ -672,19 +702,14 @@ btnEnhance.addEventListener('click', () => {
             swordDisplay.classList.remove('shake');
             let r = Math.random();
             let newLvl = 33; // 대검 65%
-            if (r > 0.95) newLvl = 36;      // 태초 5%
-            else if (r > 0.85) newLvl = 35; // 최초 10%
-            else if (r > 0.35) newLvl = 34; // 반대 30% wait, user said 20%. So > 0.35 is not 20. 
-            // 65%, 20%, 10%, 5% 
-            // cumulative: 0.65, 0.85, 0.95, 1.00
-            if (r >= 0.95) newLvl = 36;
-            else if (r >= 0.85) newLvl = 35;
-            else if (r >= 0.65) newLvl = 34;
+            if (r >= 0.95) newLvl = 36;      // 태초 5%
+            else if (r >= 0.85) newLvl = 35; // 최초 10%
+            else if (r >= 0.65) newLvl = 34; // 반대 20%
             
             gameState.level = newLvl;
             saveGame();
             updateUI();
-            logEvent("🎉 럭키블록에서 [" + swordNames[newLvl] + "] 획득!", 'success');
+            logEvent(`🎉 럭키블록에서 [${swordNames[newLvl]}] 획득!`, 'success');
             showFireworks();
         }, 500);
         return;
@@ -960,29 +985,27 @@ btnStash.addEventListener('click', () => {
 tabLuckyBlock.addEventListener('click', () => {
     tabLuckyBlock.style.background = 'var(--primary)';
     tabSword.style.background = '#334155';
-tabLuckyBlock.style.background = '#334155';
     tabEffect.style.background = '#334155';
-tabLuckyBlock.style.background = '#334155';
     inventoryLuckyBlockSection.classList.remove('hidden');
     inventorySwordsSection.classList.add('hidden');
-inventoryLuckyBlockSection.classList.add('hidden');
     inventoryEffectsSection.classList.add('hidden');
-inventoryLuckyBlockSection.classList.add('hidden');
 });
 tabSword.addEventListener('click', () => {
     tabSword.style.background = 'var(--primary)';
     tabEffect.style.background = '#334155';
-tabLuckyBlock.style.background = '#334155';
+    tabLuckyBlock.style.background = '#334155';
     invSwordsSection.classList.remove('hidden');
     invEffectsSection.classList.add('hidden');
+    inventoryLuckyBlockSection.classList.add('hidden');
 });
 
 tabEffect.addEventListener('click', () => {
     tabEffect.style.background = 'var(--primary)';
     tabSword.style.background = '#334155';
-tabLuckyBlock.style.background = '#334155';
+    tabLuckyBlock.style.background = '#334155';
     invEffectsSection.classList.remove('hidden');
     invSwordsSection.classList.add('hidden');
+    inventoryLuckyBlockSection.classList.add('hidden');
 });
 btnInventory.addEventListener('click', () => {
     renderInventory();
@@ -1100,9 +1123,6 @@ function renderInventory() {
     
     let swordCount = 0;
     let lbCount = 0;
-        inventoryList.innerHTML = '<p style="color:#94a3b8;text-align:center;">보관된 검이 없습니다.</p>';
-        return;
-    }
     
     gameState.inventory.forEach((lvl, index) => {
         const div = document.createElement('div');
@@ -1495,9 +1515,20 @@ function renderSynthInventory() {
                     if (currentSynthSlot === 1) pastMaterial1 = index;
                     else pastMaterial2 = index;
                 } else if (currentSynthType === 'luckyblock') {
-            isValid = (lvl === 11);
-            isAlreadySelected = (index === lbMaterial1 || index === lbMaterial2 || index === lbMaterial3);
-        } else if (currentSynthType === 'monarch') {
+                    if (currentSynthSlot === 1) lbMaterial1 = index;
+                    else if (currentSynthSlot === 2) lbMaterial2 = index;
+                    else lbMaterial3 = index;
+                    synthCombineInventoryModal.classList.add('hidden');
+                    updateLbCombineUI();
+                    return;
+                } else if (currentSynthType === 'luckyblock') {
+                    if (currentSynthSlot === 1) lbMaterial1 = index;
+                    else if (currentSynthSlot === 2) lbMaterial2 = index;
+                    else lbMaterial3 = index;
+                    synthCombineInventoryModal.classList.add('hidden');
+                    updateLbCombineUI();
+                    return;
+                } else if (currentSynthType === 'monarch') {
                     if (currentSynthSlot === 1) monarchMaterial1 = index;
                     else monarchMaterial2 = index;
                 }
