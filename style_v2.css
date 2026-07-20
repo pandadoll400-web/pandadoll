@@ -1512,3 +1512,52 @@ h1, h2, h3, .stat-value, .btn-icon {
     0% { filter: brightness(0.8) drop-shadow(0 0 5px #0f766e); }
     100% { filter: brightness(1.2) drop-shadow(0 0 30px #2dd4bf); }
 }
+
+/* 36: 태초의 검 (Level 36) */
+.level-36 .sword-visual {
+    height: 360px;
+    animation: genesisFloat 4s ease-in-out infinite, genesisAura 2s infinite alternate;
+}
+.level-36 #sword-name {
+    color: #fef08a;
+    text-shadow: 0 0 15px #fef08a, 0 0 30px #eab308, 0 0 45px #ca8a04, 0 0 60px #ffffff;
+    font-weight: 900;
+    letter-spacing: 5px;
+    font-size: 2.2rem;
+}
+.level-36 #sword-blade {
+    width: 45px;
+    height: 250px;
+    background: linear-gradient(135deg, #ffffff 0%, #fef08a 20%, #eab308 50%, #fef08a 80%, #ffffff 100%);
+    clip-path: polygon(50% 0%, 100% 15%, 85% 100%, 15% 100%, 0% 15%);
+    box-shadow: 
+        inset 0 0 30px rgba(255, 255, 255, 0.9),
+        0 0 50px rgba(250, 204, 21, 0.8),
+        0 0 100px rgba(255, 215, 0, 0.5); /* 황금빛 아우라 */
+}
+.level-36 #sword-guard {
+    width: 150px;
+    height: 35px;
+    background: linear-gradient(90deg, #fef08a, #ffffff, #fef08a);
+    border: 3px solid #ca8a04;
+    border-radius: 50% 50% 10% 10%;
+    box-shadow: 0 0 40px rgba(250, 204, 21, 1);
+}
+.level-36 #sword-hilt {
+    width: 30px;
+    height: 100px;
+    background: linear-gradient(90deg, #eab308, #ca8a04, #eab308);
+    border: 3px solid #854d0e;
+    border-radius: 5px;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes genesisFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes genesisAura {
+    0% { filter: drop-shadow(0 0 20px #fef08a); transform: scale(1); }
+    100% { filter: drop-shadow(0 0 60px #eab308) drop-shadow(0 0 120px #ffffff); transform: scale(1.02); }
+}
