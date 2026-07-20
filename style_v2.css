@@ -1420,3 +1420,45 @@ h1, h2, h3, .stat-value, .btn-icon {
     100% { transform: rotate(-25deg) scaleX(-1) translateY(-10px); }
 }
 }
+
+/* 34: 반대의 검 (Level 34) */
+.level-34 .sword-visual {
+    height: 320px;
+}
+.level-34 #sword-name {
+    color: #a855f7;
+    text-shadow: 0 0 10px #a855f7, 0 0 20px #9333ea;
+    font-weight: bold;
+    animation: reverseGlow 2s infinite alternate;
+}
+.level-34 #sword-blade {
+    /* 원래 칼날 자리에 손잡이 디자인을 적용 (위쪽) */
+    width: 25px;
+    height: 80px;
+    background: #451a03;
+    border-radius: 4px;
+    border: 2px solid #78350f;
+    clip-path: none;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+.level-34 #sword-guard {
+    width: 100px;
+    height: 15px;
+    background: #1e293b;
+    border: 2px solid #0f172a;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+.level-34 #sword-hilt {
+    /* 원래 손잡이 자리에 거대한 칼날 디자인을 적용 (아래쪽 뾰족하게) */
+    width: 60px;
+    height: 200px;
+    background: linear-gradient(180deg, #d8b4fe, #9333ea);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+    border: none;
+}
+@keyframes reverseGlow {
+    0% { transform: scale(1); filter: hue-rotate(0deg); }
+    100% { transform: scale(1.05); filter: hue-rotate(45deg); }
+}
