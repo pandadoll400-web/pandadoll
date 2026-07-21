@@ -67,6 +67,7 @@ function loadGame() {
             if (!gameState.skinLevels) gameState.skinLevels = {};
             if (gameState.luckEventEndTime === undefined) gameState.luckEventEndTime = 0;
             if (gameState.compPoints === undefined) gameState.compPoints = 0;
+    if (gameState.lastCompResetWeek === undefined) gameState.lastCompResetWeek = Math.floor((Date.now() + 3 * 24 * 60 * 60 * 1000) / (7 * 24 * 60 * 60 * 1000));
         } catch(e) {
             console.error("Save file corrupted");
         }
@@ -78,6 +79,51 @@ function loadGame() {
         gameState.maxHp = 5000;
     }
     recalculateMaxHp();
+    checkCompWeeklyReset();
+}
+
+function checkCompWeeklyReset() {
+    if (!gameState) return;
+    
+    const msInWeek = 7 * 24 * 60 * 60 * 1000;
+    const offset = 3 * 24 * 60 * 60 * 1000; // Shift to Monday 00:00 UTC
+    const currentWeekId = Math.floor((Date.now() + offset) / msInWeek);
+    
+    if (gameState.lastCompResetWeek === undefined) {
+        gameState.lastCompResetWeek = currentWeekId;
+        return;
+    }
+    
+    if (currentWeekId > gameState.lastCompResetWeek) {
+        const tierName = getCompTierInfo(gameState.compPoints).name;
+        let rewardCount = 0;
+        if (tierName === '실버') rewardCount = 1;
+        else if (tierName === '골드') rewardCount = 2;
+        else if (tierName === '다이아') rewardCount = 3;
+        else if (tierName === '에메랄드') rewardCount = 5;
+        else if (tierName === '마스터') rewardCount = 6;
+        else if (tierName === '프로') rewardCount = 7;
+        else if (tierName === '전설') rewardCount = 8;
+        
+        if (rewardCount > 0) {
+            for (let i = 0; i < rewardCount; i++) {
+                gameState.inventory.push({ level: 32 }); // 32: 럭키블록
+            }
+            setTimeout(() => {
+                alert(`🏆 주간 경쟁전 시즌이 종료되었습니다!\n최종 티어: [${tierName}]\n보상으로 럭키블록 ${rewardCount}개가 지급되었습니다!\n새로운 시즌이 시작되어 브론즈 티어로 초기화됩니다.`);
+            }, 1000);
+            logEvent(`주간 보상: [${tierName}] 티어 마감! 럭키블록 ${rewardCount}개 지급!`, 'success');
+        } else {
+            setTimeout(() => {
+                alert(`🏆 주간 경쟁전 시즌이 종료되었습니다!\n최종 티어: [${tierName}]\n새로운 시즌이 시작되어 브론즈 티어로 초기화됩니다.`);
+            }, 1000);
+        }
+        
+        gameState.compPoints = 0;
+        gameState.lastCompResetWeek = currentWeekId;
+        saveGame();
+        updateUI();
+    }
 }
 
 function getEffectBonus() {
