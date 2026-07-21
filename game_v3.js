@@ -2025,12 +2025,10 @@ if (btnStartCompBattle) {
         let isPro = tierInfo.name === '프로';
         
         let aiHp = 3000 + (p * 20);
-        if (isPro) aiHp = Math.min(aiHp, 35000);
-        else if (isMaster) aiHp = Math.min(aiHp, 25000);
+        if (isPro || isMaster) aiHp = 35000;
         
         let aiDmg = 50 + (p * 2);
-        if (isPro) aiDmg = Math.min(aiDmg, 8000);
-        else if (isMaster) aiDmg = Math.min(aiDmg, 7300);
+        if (isPro || isMaster) aiDmg = 8000;
         
         let aiName = tierInfo.name + " 수문장";
         
