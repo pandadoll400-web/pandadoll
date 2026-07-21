@@ -2050,7 +2050,7 @@ if (btnStartCompBattle) {
         
         let aiAtkSpeed = 900;
         if (p >= 5000) aiAtkSpeed = 100;
-        else if (p >= 2500) aiAtkSpeed = 250;
+        else if (p >= 2500) aiAtkSpeed = 166;
         else if (p >= 1800) aiAtkSpeed = 400;
         else if (p >= 1200) aiAtkSpeed = 550;
         else if (p >= 700) aiAtkSpeed = 700;
