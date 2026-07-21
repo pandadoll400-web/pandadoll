@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -183,7 +183,8 @@ const swordNames = [
     "반대의 검",            // 34 (럭키블록)
     "최초의 검",            // 35 (럭키블록)
     "태초의 검",            // 36 (럭블)
-    "템페스트 골드검"       // 37 (럭블)
+    "템페스트 골드검",       // 37 (럭블)
+    "프로의검"              // 38 (경쟁전)
 ];
 
 // Enhance Costs (0 to 13)
@@ -246,7 +247,8 @@ const levelDamage = [
     4000,   // 34: 반대의 검
     5500,   // 35: 최초의 검
     7500,   // 36: 태초의 검
-    10000   // 37: 템페스트 골드검
+    10000,  // 37: 템페스트 골드검
+    8000    // 38: 프로의검
 ];
 
 const gradeColors = {
@@ -2023,12 +2025,13 @@ if (btnStartCompBattle) {
         let tierInfo = getCompTierInfo(p);
         let isMaster = tierInfo.name === '마스터';
         let isPro = tierInfo.name === '프로';
+        let isLegend = tierInfo.name === '전설';
         
         let aiHp = 3000 + (p * 20);
-        if (isPro || isMaster) aiHp = 35000;
+        if (isPro || isMaster || isLegend) aiHp = 35000;
         
         let aiDmg = 50 + (p * 2);
-        if (isPro || isMaster) aiDmg = 8000;
+        if (isPro || isMaster || isLegend) aiDmg = 8000;
         
         let aiName = tierInfo.name + " 수문장";
         
@@ -2404,6 +2407,13 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             msg = `⚔️ 경쟁전 승리! 랭크 점수가 ${pts}점 올랐습니다. (${earnedMoney}원 획득)`;
             if (oldTier !== newTier) {
                 msg = `🎉 승급 축하합니다! [${newTier}] 티어로 승급했습니다! (점수 +${pts})`;
+            }
+            
+            if (gameState.compPoints >= 7500 && !localStorage.getItem('reward_pro_sword_v1')) {
+                localStorage.setItem('reward_pro_sword_v1', 'true');
+                gameState.inventory.push({ level: 38 }); // 38: 프로의검
+                msg += `\n🤖 [월드클래스 달성 기념] 기계의 정수 '프로의검'이 인벤토리에 지급되었습니다!`;
+                logEvent("특별 보상: 프로의검 획득!", 'success');
             }
         } else if (battleState.mode === 'pvp_sim') {
             earnedTrophies = Math.floor(Math.random() * 20) + 10;
@@ -4069,5 +4079,6 @@ function getCompTierInfo(points) {
     if (points < 1800) return { name: '다이아', color: '#00ffff', min: 1200, max: 1800 };
     if (points < 2500) return { name: '에메랄드', color: '#50c878', min: 1800, max: 2500 };
     if (points < 5000) return { name: '마스터', color: '#ff00ff', min: 2500, max: 5000 };
-    return { name: '프로', color: '#ff4500', min: 5000, max: null };
+    if (points < 7500) return { name: '프로', color: '#ff4500', min: 5000, max: 7500 };
+    return { name: '전설', color: '#ff0000', min: 7500, max: null };
 }
