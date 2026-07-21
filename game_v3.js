@@ -4039,6 +4039,15 @@ if (!localStorage.getItem('giveaway_comp_luck_3m_v1')) {
     localStorage.setItem('giveaway_comp_luck_3m_v1', 'true');
 }
 
+if (!localStorage.getItem('giveaway_fuse_luck_3m_v1')) {
+    if (typeof triggerLuckEvent === 'function') {
+        triggerLuckEvent(3);
+    }
+    saveGame();
+    logEvent('🎁 [운영자] 퓨즈 확률업 이벤트가 3분간 진행됩니다!', 'success');
+    localStorage.setItem('giveaway_fuse_luck_3m_v1', 'true');
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
