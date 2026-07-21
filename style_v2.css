@@ -1667,3 +1667,24 @@ h1, h2, h3, .stat-value, .btn-icon {
     box-shadow: 0 5px 25px rgba(245, 158, 11, 0.7) !important;
     transform: translateY(-2px);
 }
+
+/* Competitive Lobby Styles */
+.comp-play-btn {
+    background: linear-gradient(to bottom, #fde047, #f59e0b);
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 900;
+    border: 4px solid #fff;
+    border-radius: 15px;
+    padding: 15px 0;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+    box-shadow: 0 8px 0 #b45309, 0 15px 20px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.comp-play-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 #b45309, 0 5px 10px rgba(0,0,0,0.5);
+}

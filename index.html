@@ -82,6 +82,32 @@
         </main>
 
         <!-- ====== 전투 모드 선택 Modal ====== -->
+                <!-- Competitive Lobby Modal -->
+        <div id="comp-lobby-modal" class="modal hidden">
+            <div class="modal-content" style="background: linear-gradient(135deg, #2a0a0a, #1a1a2e); border: 4px solid #f59e0b; width: 600px;">
+                <h2 style="color: #fbbf24; text-align: left; border-bottom: 2px solid #555; padding-bottom: 10px;">⚔️ 경쟁전 로비</h2>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 30px 0;">
+                    <!-- Badge Display -->
+                    <div id="comp-lobby-badge" style="width: 150px; height: 150px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; font-size: 5rem; box-shadow: 0 0 30px #f59e0b; margin-bottom: 20px;">
+                        👑
+                    </div>
+                    <!-- Tier Name -->
+                    <div id="comp-lobby-tier" style="font-size: 3rem; font-weight: 900; color: #fbbf24; text-shadow: 0 0 20px #d97706; margin-bottom: 5px; letter-spacing: 5px;">
+                        브론즈
+                    </div>
+                    <!-- Points -->
+                    <div id="comp-lobby-points" style="font-size: 1.5rem; color: #fff;">
+                        0 점
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                    <button id="btn-exit-comp-lobby" class="action-btn" style="width: 30%; background: #555;">돌아가기</button>
+                    <button id="btn-start-comp-battle" class="comp-play-btn" style="width: 65%;">플레이</button>
+                </div>
+            </div>
+        </div>
+
         <div id="mode-select-modal" class="modal hidden">
             <div class="modal-content mode-select-content">
                 <h2>⚔️ 전투 모드 선택</h2>

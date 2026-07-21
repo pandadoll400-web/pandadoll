@@ -559,6 +559,17 @@ const modeSelectModal = document.getElementById('mode-select-modal');
 const btnModePve = document.getElementById('btn-mode-pve');
 const btnModePvp = document.getElementById('btn-mode-pvp');
 const btnModeBoss = document.getElementById('btn-mode-boss');
+// Comp Lobby Elements
+const compLobbyModal = document.getElementById('comp-lobby-modal');
+const btnExitCompLobby = document.getElementById('btn-exit-comp-lobby');
+const btnStartCompBattle = document.getElementById('btn-start-comp-battle');
+
+if (btnExitCompLobby) {
+    btnExitCompLobby.addEventListener('click', () => {
+        compLobbyModal.classList.add('hidden');
+    });
+}
+
 const btnModeComp = document.getElementById('btn-mode-comp');
 const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
 
@@ -3079,8 +3090,8 @@ if (welcomeToast) {
 updateUI();
 
 function updateBattleUI() {
-    battlePlayerHp.textContent = battleState.playerHp;
-    battleEnemyHp.textContent = battleState.enemyHp;
+    document.getElementById('battle-player-hp').textContent = battleState.playerHp;
+    document.getElementById('battle-enemy-hp').textContent = battleState.enemyHp;
     
     const pPercent = Math.max(0, (battleState.playerHp / gameState.maxHp) * 100);
     const ePercent = Math.max(0, (battleState.enemyHp / battleState.enemyMaxHp) * 100);
