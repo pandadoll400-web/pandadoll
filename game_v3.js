@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1936,18 +1936,33 @@ if (btnModeComp) {
         let p = gameState.compPoints;
         let tierInfo = getCompTierInfo(p);
         
-        let badge = "👑";
-        if (tierInfo.name === '브론즈') badge = "🥉";
-        else if (tierInfo.name === '실버') badge = "🥈";
-        else if (tierInfo.name === '골드') badge = "🥇";
-        else if (tierInfo.name === '다이아') badge = "💎";
-        else if (tierInfo.name === '에메랄드') badge = "❇️";
-        else if (tierInfo.name === '마스터') badge = "🔥";
+        let badgeHTML = "<div style='font-size:5rem;'>👑</div>";
+        if (tierInfo.name === '브론즈') {
+            badgeHTML = "<div style='font-size:5rem;'>🥉</div>";
+        } else if (tierInfo.name === '실버') {
+            badgeHTML = "<div style='font-size:5rem;'>🥈</div>";
+        } else if (tierInfo.name === '골드') {
+            badgeHTML = `<div style="width: 80px; height: 45px; background: linear-gradient(135deg, #fde047 0%, #ca8a04 50%, #854d0e 100%); border-radius: 5px; border: 2px solid #fff; box-shadow: 0 5px 15px rgba(234,179,8,0.5), inset 0 2px 5px rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; position: relative;"><div style="position: absolute; width: 60px; height: 25px; border: 1px solid rgba(255,255,255,0.3); border-radius: 3px;"></div></div>`;
+        } else if (tierInfo.name === '다이아') {
+            badgeHTML = "<div style='font-size:5rem; filter: drop-shadow(0 0 10px #00ffff);'>💎</div>";
+        } else if (tierInfo.name === '에메랄드') {
+            badgeHTML = `<div style="width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #86efac, #166534, #052e16); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); box-shadow: inset 0 0 10px rgba(255,255,255,0.5); border: 2px solid #fff;"></div>`;
+        } else if (tierInfo.name === '마스터') {
+            badgeHTML = `<div style="position: relative; display: flex; align-items: center; justify-content: center; width: 150px; height: 100px;">
+                <div style="position: absolute; left: 10px; font-size: 4rem; transform: scaleX(-1); filter: drop-shadow(0 0 10px #fff);">🕊️</div>
+                <div style="position: absolute; right: 10px; font-size: 4rem; filter: drop-shadow(0 0 10px #fff);">🕊️</div>
+                <div style="position: absolute; font-size: 5rem; z-index: 2; filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #fff); animation: pulse 1s infinite alternate;">⭐</div>
+            </div>`;
+        } else if (tierInfo.name === '프로') {
+            badgeHTML = `<div style="position: relative; display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #000 30%, #ff4500 100%); border: 3px solid #ff4500; box-shadow: 0 0 30px #ff4500, inset 0 0 20px #fff;">
+                <div style="font-size: 5rem; z-index: 2; filter: drop-shadow(0 0 10px #fff); animation: pulse 0.5s infinite alternate;">🏆</div>
+            </div>`;
+        }
         
         let badgeEl = document.getElementById('comp-lobby-badge');
         if (badgeEl) {
-            badgeEl.textContent = badge;
-            badgeEl.style.boxShadow = `0 0 30px ${tierInfo.color}`;
+            badgeEl.innerHTML = badgeHTML;
+            badgeEl.style.boxShadow = tierInfo.name === '프로' || tierInfo.name === '마스터' ? 'none' : `0 0 30px ${tierInfo.color}`;
             badgeEl.style.color = tierInfo.color;
         }
         
@@ -1991,12 +2006,15 @@ if (btnStartCompBattle) {
         let p = gameState.compPoints;
         let tierInfo = getCompTierInfo(p);
         let isMaster = tierInfo.name === '마스터';
+        let isPro = tierInfo.name === '프로';
         
         let aiHp = 3000 + (p * 20);
-        if (isMaster) aiHp = Math.min(aiHp, 25000);
+        if (isPro) aiHp = Math.min(aiHp, 30000);
+        else if (isMaster) aiHp = Math.min(aiHp, 25000);
         
         let aiDmg = 50 + (p * 2);
-        if (isMaster) aiDmg = Math.min(aiDmg, 7300);
+        if (isPro) aiDmg = Math.min(aiDmg, 8000);
+        else if (isMaster) aiDmg = Math.min(aiDmg, 7300);
         
         let aiName = tierInfo.name + " 수문장";
         
