@@ -1921,6 +1921,44 @@ btnModePve.addEventListener('click', () => {
 if (btnModeComp) {
     btnModeComp.addEventListener('click', () => {
         modeSelectModal.classList.add('hidden');
+        
+        let p = gameState.compPoints;
+        let tierInfo = getCompTierInfo(p);
+        
+        let badge = "👑";
+        if (tierInfo.name === '브론즈') badge = "🥉";
+        else if (tierInfo.name === '실버') badge = "🥈";
+        else if (tierInfo.name === '골드') badge = "🥇";
+        else if (tierInfo.name === '다이아') badge = "💎";
+        else if (tierInfo.name === '에메랄드') badge = "❇️";
+        else if (tierInfo.name === '마스터') badge = "🔥";
+        
+        let badgeEl = document.getElementById('comp-lobby-badge');
+        if (badgeEl) {
+            badgeEl.textContent = badge;
+            badgeEl.style.boxShadow = `0 0 30px ${tierInfo.color}`;
+            badgeEl.style.color = tierInfo.color;
+        }
+        
+        let tierEl = document.getElementById('comp-lobby-tier');
+        if (tierEl) {
+            tierEl.textContent = tierInfo.name;
+            tierEl.style.color = tierInfo.color;
+            tierEl.style.textShadow = `0 0 20px ${tierInfo.color}`;
+        }
+        
+        let ptsEl = document.getElementById('comp-lobby-points');
+        if (ptsEl) {
+            ptsEl.textContent = `${p} 점`;
+        }
+        
+        if (compLobbyModal) compLobbyModal.classList.remove('hidden');
+    });
+}
+
+if (btnStartCompBattle) {
+    btnStartCompBattle.addEventListener('click', () => {
+        if (compLobbyModal) compLobbyModal.classList.add('hidden');
         battleModal.classList.remove('hidden');
         
         let p = gameState.compPoints;
@@ -1959,7 +1997,10 @@ if (btnModeComp) {
             }
             const enemyDmg = battleState.enemyDamage;
             battleState.playerHp -= enemyDmg;
-            document.getElementById('battle-player-status').textContent = `적의 공격! ${enemyDmg} 피해!`;
+            
+            let pStatus = document.getElementById('battle-player-status');
+            if (pStatus) pStatus.textContent = `적의 공격! ${enemyDmg} 피해!`;
+            
             if (battleState.playerHp <= 0) {
                 battleState.playerHp = 0;
                 updateBattleUI();
@@ -1974,6 +2015,7 @@ if (btnModeComp) {
         logEvent('경쟁전이 시작되었습니다!', 'info');
     });
 }
+
 btnModeBoss.addEventListener('click', () => {
     modeSelectModal.classList.add('hidden');
     bossSelectModal.classList.remove('hidden');
