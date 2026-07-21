@@ -95,9 +95,17 @@
                     <div id="comp-lobby-tier" style="font-size: 3rem; font-weight: 900; color: #fbbf24; text-shadow: 0 0 20px #d97706; margin-bottom: 5px; letter-spacing: 5px;">
                         브론즈
                     </div>
-                    <!-- Points -->
-                    <div id="comp-lobby-points" style="font-size: 1.5rem; color: #fff;">
+                                        <!-- Points -->
+                    <div id="comp-lobby-points" style="font-size: 1.5rem; color: #fff; margin-bottom: 10px;">
                         0 점
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div style="width: 80%; background: rgba(0,0,0,0.5); height: 30px; border-radius: 15px; border: 2px solid #555; position: relative; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);">
+                        <div id="comp-lobby-progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #f59e0b, #fde047); transition: width 0.3s ease;"></div>
+                        <div id="comp-lobby-progress-text" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px #000;">
+                            0 / 300 (다음 승급까지 300점)
+                        </div>
                     </div>
                 </div>
                 

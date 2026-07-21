@@ -3922,10 +3922,10 @@ updateUI();
 }
 
 function getCompTierInfo(points) {
-    if (points < 300) return { name: '브론즈', color: '#cd7f32' };
-    if (points < 700) return { name: '실버', color: '#c0c0c0' };
-    if (points < 1200) return { name: '골드', color: '#ffd700' };
-    if (points < 1800) return { name: '다이아', color: '#00ffff' };
-    if (points < 2500) return { name: '에메랄드', color: '#50c878' };
-    return { name: '마스터', color: '#ff00ff' };
+    if (points < 300) return { name: '브론즈', color: '#cd7f32', min: 0, max: 300 };
+    if (points < 700) return { name: '실버', color: '#c0c0c0', min: 300, max: 700 };
+    if (points < 1200) return { name: '골드', color: '#ffd700', min: 700, max: 1200 };
+    if (points < 1800) return { name: '다이아', color: '#00ffff', min: 1200, max: 1800 };
+    if (points < 2500) return { name: '에메랄드', color: '#50c878', min: 1800, max: 2500 };
+    return { name: '마스터', color: '#ff00ff', min: 2500, max: null };
 }
