@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1957,6 +1957,22 @@ if (btnModeComp) {
         let ptsEl = document.getElementById('comp-lobby-points');
         if (ptsEl) {
             ptsEl.textContent = `${p} 점`;
+        }
+        
+        let progFill = document.getElementById('comp-lobby-progress-fill');
+        let progText = document.getElementById('comp-lobby-progress-text');
+        
+        if (progFill && progText) {
+            if (tierInfo.max === null) {
+                progFill.style.width = '100%';
+                progText.textContent = `MAX 점수 도달!`;
+            } else {
+                let range = tierInfo.max - tierInfo.min;
+                let current = p - tierInfo.min;
+                let pct = (current / range) * 100;
+                progFill.style.width = `${pct}%`;
+                progText.textContent = `${p} / ${tierInfo.max} (승급까지 ${tierInfo.max - p}점)`;
+            }
         }
         
         if (compLobbyModal) compLobbyModal.classList.remove('hidden');
