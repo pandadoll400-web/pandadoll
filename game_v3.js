@@ -688,6 +688,13 @@ function showPurchaseToast(msg) {
     }, 1500);
 }
 function updateUI() {
+    const compTierValueEl = document.getElementById('comp-tier-value');
+    if (compTierValueEl) {
+        let p = gameState.compPoints;
+        let tierInfo = getCompTierInfo(p);
+        compTierValueEl.textContent = `${tierInfo.name} (${p}점)`;
+        compTierValueEl.style.color = tierInfo.color;
+    }
     // Removed money limit
     hpValueEl.textContent = `${gameState.hp} / ${gameState.maxHp}`;
     trophyCountEl.textContent = gameState.trophies;
