@@ -2048,13 +2048,13 @@ if (btnStartCompBattle) {
         document.getElementById('enemy-name').innerHTML = `${aiName} (HP: <span id="battle-enemy-hp">${aiHp}</span>)`;
         document.getElementById('enemy-character').textContent = "⚔️🤖";
         
-        let aiAtkSpeed = 1000;
-        if (p >= 5000) aiAtkSpeed = 300;
-        else if (p >= 2500) aiAtkSpeed = 500;
-        else if (p >= 1800) aiAtkSpeed = 650;
-        else if (p >= 1200) aiAtkSpeed = 800;
-        else if (p >= 700) aiAtkSpeed = 900;
-        else if (p >= 300) aiAtkSpeed = 950;
+        let aiAtkSpeed = 900;
+        if (p >= 5000) aiAtkSpeed = 100;
+        else if (p >= 2500) aiAtkSpeed = 250;
+        else if (p >= 1800) aiAtkSpeed = 400;
+        else if (p >= 1200) aiAtkSpeed = 550;
+        else if (p >= 700) aiAtkSpeed = 700;
+        else if (p >= 300) aiAtkSpeed = 800;
         
         if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
         pveEnemyAttackInterval = setInterval(() => {
