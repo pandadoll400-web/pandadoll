@@ -3907,3 +3907,12 @@ updateUI();
     console.error(e);
     alert("상세 에러:\n" + e.message + "\n" + e.stack); fetch('http://localhost:12345/?err=' + encodeURIComponent(e.message + '\n' + e.stack));
 }
+
+function getCompTierInfo(points) {
+    if (points < 300) return { name: '브론즈', color: '#cd7f32' };
+    if (points < 700) return { name: '실버', color: '#c0c0c0' };
+    if (points < 1200) return { name: '골드', color: '#ffd700' };
+    if (points < 1800) return { name: '다이아', color: '#00ffff' };
+    if (points < 2500) return { name: '에메랄드', color: '#50c878' };
+    return { name: '마스터', color: '#ff00ff' };
+}
