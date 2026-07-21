@@ -2206,7 +2206,8 @@ function startBattle(mode) {
     sliceCanvas.height = sliceCanvas.offsetHeight;
     sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
     
-    battlePlayerName.textContent = battleState.p1Name;
+    const p1NameStr = battleState.p1Name || '나';
+    battlePlayerName.innerHTML = `${p1NameStr} (HP: <span id="battle-player-hp">${battleState.playerHp}</span>)`;
     
     const arena = document.querySelector('.battle-arena');
     if (arena) {
