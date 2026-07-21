@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -620,6 +620,22 @@ window.triggerTrophyLuckEvent = function(minutes) {
     saveGame();
     if (trophyLuckEventUi) trophyLuckEventUi.classList.remove('hidden');
     logEvent(`🏆 트로피 2배 버프 시간이 ${minutes}분 추가되었습니다!`, 'success');
+};
+
+// Comp Luck Event DOM
+const compLuckEventUi = document.getElementById('comp-luck-event-ui');
+const compLuckTimerText = document.getElementById('comp-luck-timer-text');
+
+window.triggerCompLuckEvent = function(minutes) {
+    const addMs = minutes * 60 * 1000;
+    if (gameState.compLuckEndTime > Date.now()) {
+        gameState.compLuckEndTime += addMs;
+    } else {
+        gameState.compLuckEndTime = Date.now() + addMs;
+    }
+    saveGame();
+    if (compLuckEventUi) compLuckEventUi.classList.remove('hidden');
+    logEvent(`🔥 경쟁전 점수 2배 버프 시간이 ${minutes}분 추가되었습니다!`, 'success');
 };
 
 // Slicing Canvas
@@ -2370,6 +2386,7 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
                 } else if (battleState.mode === 'comp') {
             let pts = Math.floor(Math.random() * 61) + 50; // 50 ~ 110
+            if (gameState.compLuckEndTime > Date.now()) pts *= 2; // 2x points if buff active
             let oldTier = getCompTierInfo(gameState.compPoints).name;
             gameState.compPoints += pts;
             let newTier = getCompTierInfo(gameState.compPoints).name;
@@ -4011,6 +4028,15 @@ if (!localStorage.getItem('giveaway_servermsg_v3')) {
             msgDiv.remove();
         }, 3000);
     }, 1500);
+}
+
+if (!localStorage.getItem('giveaway_comp_luck_3m_v1')) {
+    if (typeof triggerCompLuckEvent === 'function') {
+        triggerCompLuckEvent(3);
+    }
+    saveGame();
+    logEvent('🎁 [운영자] 경쟁전 점수 2배 이벤트가 3분간 진행됩니다!', 'success');
+    localStorage.setItem('giveaway_comp_luck_3m_v1', 'true');
 }
 
 initLoginSystem();
