@@ -559,6 +559,7 @@ const modeSelectModal = document.getElementById('mode-select-modal');
 const btnModePve = document.getElementById('btn-mode-pve');
 const btnModePvp = document.getElementById('btn-mode-pvp');
 const btnModeBoss = document.getElementById('btn-mode-boss');
+const btnModeComp = document.getElementById('btn-mode-comp');
 const btnExitModeSelect = document.getElementById('btn-exit-mode-select');
 
 
@@ -1906,6 +1907,62 @@ btnModePve.addEventListener('click', () => {
     startBattle('pve');
 });
 
+if (btnModeComp) {
+    btnModeComp.addEventListener('click', () => {
+        modeSelectModal.classList.add('hidden');
+        battleModal.classList.remove('hidden');
+        
+        let p = gameState.compPoints;
+        let tierInfo = getCompTierInfo(p);
+        let isMaster = tierInfo.name === '마스터';
+        
+        let aiHp = 3000 + (p * 20);
+        if (isMaster) aiHp = Math.min(aiHp, 25000);
+        
+        let aiDmg = 50 + (p * 2);
+        if (isMaster) aiDmg = Math.min(aiDmg, 7300);
+        
+        let aiName = tierInfo.name + " 수문장";
+        
+        battleState = {
+            active: true,
+            mode: 'comp',
+            enemyHp: aiHp,
+            enemyMaxHp: aiHp,
+            enemyDamage: aiDmg,
+            playerHp: gameState.maxHp,
+            skillUsed: false,
+            doubleSkillUsed: false
+        };
+        
+        document.getElementById('battle-title').textContent = "⚔️ 랭크 경쟁전";
+        document.getElementById('battle-mode-badge').textContent = "경쟁전";
+        document.getElementById('enemy-name').innerHTML = `${aiName} (HP: <span id="battle-enemy-hp">${aiHp}</span>)`;
+        document.getElementById('enemy-character').textContent = "⚔️🤖";
+        
+        if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
+        pveEnemyAttackInterval = setInterval(() => {
+            if (!battleState.active) {
+                clearInterval(pveEnemyAttackInterval);
+                return;
+            }
+            const enemyDmg = battleState.enemyDamage;
+            battleState.playerHp -= enemyDmg;
+            document.getElementById('battle-player-status').textContent = `적의 공격! ${enemyDmg} 피해!`;
+            if (battleState.playerHp <= 0) {
+                battleState.playerHp = 0;
+                updateBattleUI();
+                endBattle(false, '경쟁전 전투 패배...');
+                clearInterval(pveEnemyAttackInterval);
+                return;
+            }
+            updateBattleUI();
+        }, 1000);
+        
+        updateBattleUI();
+        logEvent('경쟁전이 시작되었습니다!', 'info');
+    });
+}
 btnModeBoss.addEventListener('click', () => {
     modeSelectModal.classList.add('hidden');
     bossSelectModal.classList.remove('hidden');
