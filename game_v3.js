@@ -2323,6 +2323,19 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             gameState.trophies += earnedTrophies;
             gameState.money += earnedMoney;
             msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
+                } else if (battleState.mode === 'comp') {
+            let pts = Math.floor(Math.random() * 61) + 50; // 50 ~ 110
+            let oldTier = getCompTierInfo(gameState.compPoints).name;
+            gameState.compPoints += pts;
+            let newTier = getCompTierInfo(gameState.compPoints).name;
+            
+            earnedMoney = 5000;
+            gameState.money += earnedMoney;
+            
+            msg = `⚔️ 경쟁전 승리! 랭크 점수가 ${pts}점 올랐습니다. (${earnedMoney}원 획득)`;
+            if (oldTier !== newTier) {
+                msg = `🎉 승급 축하합니다! [${newTier}] 티어로 승급했습니다! (점수 +${pts})`;
+            }
         } else if (battleState.mode === 'pvp_sim') {
             earnedTrophies = Math.floor(Math.random() * 20) + 10;
             if (gameState.trophyLuckEndTime > Date.now()) earnedTrophies *= 2;
