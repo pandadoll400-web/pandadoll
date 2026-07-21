@@ -3979,15 +3979,15 @@ if (!localStorage.getItem('giveaway_lucky_blocks_x4_v1')) {
     }, 2000);
 }
 
-if (!localStorage.getItem('giveaway_servermsg_v2')) {
+if (!localStorage.getItem('giveaway_servermsg_v3')) {
     gameState.inventory.push(32, 32, 32);
     saveGame();
-    logEvent('🎁 [서버메세지] 진하윤겔라디오징어부랄랄랄', 'success');
-    localStorage.setItem('giveaway_servermsg_v2', 'true');
+    logEvent('🎁 [서버메세지] 진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며', 'success');
+    localStorage.setItem('giveaway_servermsg_v3', 'true');
     
     // 화면 가운데에 뜨는 메세지
     setTimeout(() => {
-        alert("🎁 [서버공지]\n\n진하윤겔라디오징어부랄랄랄\n(럭키 블록 3개가 지급되었습니다!)");
+        alert("🎁 [서버공지]\n\n진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며\n(럭키 블록 3개가 지급되었습니다!)");
         
         const msgDiv = document.createElement('div');
         msgDiv.style.position = 'fixed';
@@ -4004,7 +4004,7 @@ if (!localStorage.getItem('giveaway_servermsg_v2')) {
         msgDiv.style.textAlign = 'center';
         msgDiv.style.zIndex = '999999';
         msgDiv.style.boxShadow = '0 0 50px #ff00ff';
-        msgDiv.innerHTML = '진하윤겔라디오징어부랄랄랄<br><span style="font-size:1.5rem; color:#fff;">(럭키 블록 3개 지급 완료!)</span>';
+        msgDiv.innerHTML = '진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며<br><span style="font-size:1.5rem; color:#fff;">(럭키 블록 3개 추가 지급 완료!)</span>';
         document.body.appendChild(msgDiv);
         
         setTimeout(() => {
