@@ -4128,3 +4128,26 @@ function getCompTierInfo(points) {
     if (points < 7500) return { name: '프로', color: '#ff4500', min: 5000, max: 7500 };
     return { name: '전설', color: '#ff0000', min: 7500, max: null };
 }
+function updateCompResetTimer() {
+    const timerEl = document.getElementById('comp-lobby-reset-timer');
+    const compLobbyModal = document.getElementById('comp-lobby-modal');
+    if (!timerEl || !compLobbyModal || compLobbyModal.classList.contains('hidden')) return;
+
+    const msInWeek = 7 * 24 * 60 * 60 * 1000;
+    const offset = 3 * 24 * 60 * 60 * 1000; // Monday 00:00 UTC
+    
+    const now = Date.now();
+    const currentWeekStart = Math.floor((now + offset) / msInWeek) * msInWeek - offset;
+    const nextWeekStart = currentWeekStart + msInWeek;
+    
+    let diff = nextWeekStart - now;
+    if (diff < 0) diff = 0;
+    
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / 1000 / 60) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+    
+    timerEl.textContent = `초기화까지: ${d}일 ${h}시간 ${m}분 ${s}초`;
+}
+setInterval(updateCompResetTimer, 1000);
