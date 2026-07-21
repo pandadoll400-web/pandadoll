@@ -3357,36 +3357,8 @@ function showFireworks() {
     }, 2000); 
 }
 
-if (!localStorage.getItem('giveaway_fuse_luck_10m_v8')) {
-    triggerLuckEvent(10);
-    triggerTrophyLuckEvent(10);
-    saveGame();
-    localStorage.setItem('giveaway_fuse_luck_10m_v8', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 운영자의 깜짝 선물! 퓨즈 럭 & 트로피 2배 10분이 (또) 발동되었습니다!', 'success');
-    }, 1000);
-}
 
-if (!localStorage.getItem('giveaway_swords_6_7_v6')) {
-    gameState.inventory.push(6, 7);
-    saveGame();
-    localStorage.setItem('giveaway_swords_6_7_v6', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 선물! 6강 검과 7강 검이 (또) 지급되었습니다!', 'success');
-    }, 1500);
-}
 
-if (!localStorage.getItem('giveaway_swords_10x4_v1')) {
-    gameState.inventory.push(10, 10, 10, 10);
-    saveGame();
-    localStorage.setItem('giveaway_swords_10x4_v1', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 특별 선물! 10강 검 4개가 지급되었습니다!', 'success');
-    }, 2000);
-}
 
 // 14강 버그 회수 로직
 if (!localStorage.getItem('recall_14_swords_bug')) {
@@ -3400,15 +3372,6 @@ if (!localStorage.getItem('recall_14_swords_bug')) {
     localStorage.setItem('recall_14_swords_bug', 'true');
 }
 
-if (!localStorage.getItem('giveaway_13_swords_v7')) {
-    gameState.inventory.push(13, 13);
-    saveGame();
-    localStorage.setItem('giveaway_13_swords_v7', 'true');
-    setTimeout(() => {
-        showFireworks();
-        logEvent('🎁 전 서버 특별 보상! 13강 봉인된 검 2자루가 지급되었습니다!', 'success');
-    }, 2000);
-}
 
 // ----------------------------------------------------
 // 계정 시스템 및 세이브 연동
@@ -3512,25 +3475,6 @@ if (btnLogout) {
 }
 
 // Start Game
-if (!localStorage.getItem('apology_compensation_v3')) {
-    // 잃어버린 유저들을 위한 역대급 보상 + 이펙트 전종 (빛, 해적, 14강 제외)
-    gameState.inventory.push(20, 20, 20, 19, 19, 19, 18, 18, 17, 16, 15);
-    gameState.money += 1000000;
-    if (gameState.level < 20) gameState.level = 20; 
-    
-    // 상점의 모든 이펙트 지급
-    allEffectsPool.forEach(eff => {
-        if (!gameState.ownedSkins.includes(eff.id)) {
-            gameState.ownedSkins.push(eff.id);
-        }
-    });
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v3', 'true');
-    setTimeout(() => {
-        alert("⚠️ [시스템 공지] ⚠️\n\n죄송합니다. 이펙트까지 모두 초기화된 것을 확인했습니다.\n추가 사죄의 의미로 게임 내 존재하는 【모든 이펙트 스킨】을 소유 처리해드렸습니다! (덤으로 검과 골드도 한 번 더 쏩니다!)\n거듭 죄송합니다!");
-    }, 1500);
-}
 
 // 빛의 검 잘못 뿌린 것 회수 (유저당 1회)
 if (!localStorage.getItem('recall_light_sword_v1')) {
@@ -3576,196 +3520,36 @@ if (!localStorage.getItem('recall_all_high_swords_v1')) {
 }
 
 // 새로운 유저 맞춤형 보상 (전체 서버)
-if (!localStorage.getItem('apology_compensation_v4')) {
-    // 13강 6개
-    gameState.inventory.push(13, 13, 13, 13, 13, 13);
-    // 0강 6개
-    gameState.inventory.push(0, 0, 0, 0, 0, 0);
-    // 16강 5개
-    gameState.inventory.push(16, 16, 16, 16, 16);
-    // 17강 4개
-    gameState.inventory.push(17, 17, 17, 17);
-    // 18강 3개
-    gameState.inventory.push(18, 18, 18);
-    
-    // 이펙트는 기본과 한정 등급(absolute)만 보유하도록 강제 초기화
-    gameState.ownedSkins = ['default', 'absolute'];
-    if (gameState.currentSkin !== 'default' && gameState.currentSkin !== 'absolute') {
-        gameState.currentSkin = 'default';
-    }
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v4', 'true');
-    setTimeout(() => {
-        alert("🎁 [시스템 특별 보상]\n\n서버 전체 유저에게 다음 아이템이 지급되었습니다!\n- 13강 검 6개\n- 평범한 검(0강) 6개\n- 공허의 검(16강) 5개\n- 블랙홀의 검(17강) 4개\n- 종말의 검(18강) 3개\n- 한정판 이펙트 스킨 (기존 이펙트 초기화)\n\n즐거운 게임 되세요!");
-    }, 2500);
-}
 
 // 추가 보상 (전체 서버)
-if (!localStorage.getItem('apology_compensation_v5')) {
-    // 10강 6개
-    gameState.inventory.push(10, 10, 10, 10, 10, 10);
-    // 11강 4개
-    gameState.inventory.push(11, 11, 11, 11);
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v5', 'true');
-    setTimeout(() => {
-        alert("🎁 [추가 보상 지급]\n\n- 10강 검 6개\n- 11강 검 4개\n인벤토리에 추가로 지급되었습니다!");
-    }, 4500);
-}
 
 // 트로피 5000개 지급 수정본 (변수명 오타 수정)
-if (!localStorage.getItem('apology_compensation_v7')) {
-    gameState.trophies = (gameState.trophies || 0) + 5000;
-    saveGame();
-    localStorage.setItem('apology_compensation_v7', 'true');
-    setTimeout(() => {
-        alert("🏆 [특별 보상]\n\n서버 전체 유저에게 트로피 5,000개가 정상적으로 지급되었습니다!");
-    }, 5500);
-}
 
 // 해적검, 문어검 추가 지급
-if (!localStorage.getItem('apology_compensation_v8')) {
-    // 22강 2개 (해적의 검)
-    gameState.inventory.push(22, 22);
-    // 21강 1개 (해적의 문어다리 검)
-    gameState.inventory.push(21);
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v8', 'true');
-    setTimeout(() => {
-        alert("🎁 [추가 보상 지급]\n\n- 해적의 검(22강) 2개\n- 해적의 문어다리 검(21강) 1개\n인벤토리에 추가로 지급되었습니다!");
-    }, 6500);
-}
 
 // 30만 골드 지급
-if (!localStorage.getItem('apology_compensation_v9')) {
-    gameState.money += 300000;
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v9', 'true');
-    setTimeout(() => {
-        alert("💰 [특별 지원금]\n\n서버 전체 유저에게 300,000 골드가 지급되었습니다!");
-    }, 7500);
-}
 
 // 진실의 검 1개 지급
-if (!localStorage.getItem('apology_compensation_v10')) {
-    gameState.inventory.push(14);
-    
-    saveGame();
-    localStorage.setItem('apology_compensation_v10', 'true');
-    setTimeout(() => {
-        alert("🎁 [추가 보상 지급]\n\n- 진실의 검(14강) 1개\n인벤토리에 추가로 지급되었습니다!");
-    }, 8500);
-}
 
 // 퓨즈 럭 15분 추가 이벤트
-if (!localStorage.getItem('giveaway_fuse_luck_15m_v11')) {
-    triggerLuckEvent(15);
-    saveGame();
-    localStorage.setItem('giveaway_fuse_luck_15m_v11', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert('✨ [깜짝 이벤트] 서버 전체에 퓨즈 럭(성공률 2배) 15분이 발동되었습니다! 게다가 퓨즈머신 소요 시간도 즉시 완료로 변경되었습니다!! 🏃‍♂️🏃‍♀️');
-    }, 9500);
-}
 
 // 20만 골드 지급
-if (!localStorage.getItem('apology_compensation_v12')) {
-    gameState.money += 200000;
-    saveGame();
-    localStorage.setItem('apology_compensation_v12', 'true');
-    setTimeout(() => {
-        alert("💰 [추가 자금 지원]\n\n서버 전체 유저에게 200,000 골드가 지급되었습니다!");
-    }, 10500);
-}
 
 // 트로피 2배 이벤트 10분 발동
-if (!localStorage.getItem('giveaway_trophy_luck_10m_v13')) {
-    triggerTrophyLuckEvent(10);
-    saveGame();
-    localStorage.setItem('giveaway_trophy_luck_10m_v13', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert('🏆 [깜짝 이벤트] 서버 전체에 트로피 획득량 2배 보너스가 10분간 발동되었습니다!');
-    }, 11500);
-}
 
 // 20만 골드 추가 지급 (2차)
-if (!localStorage.getItem('apology_compensation_v14')) {
-    gameState.money += 200000;
-    saveGame();
-    localStorage.setItem('apology_compensation_v14', 'true');
-    setTimeout(() => {
-        alert("💰 [추가 자금 지원]\n\n서버 전체 유저에게 200,000 골드가 한 번 더 지급되었습니다!");
-    }, 12500);
-}
 
 // 40만 골드 지급
-if (!localStorage.getItem('apology_compensation_v15')) {
-    gameState.money += 400000;
-    saveGame();
-    localStorage.setItem('apology_compensation_v15', 'true');
-    setTimeout(() => {
-        alert("💰 [역대급 자금 지원]\n\n서버 전체 유저에게 400,000 골드가 지급되었습니다!");
-    }, 13500);
-}
 
 // 서버 럭 15분 발동
-if (!localStorage.getItem('giveaway_luck_15m_v16')) {
-    triggerLuckEvent(15);
-    saveGame();
-    localStorage.setItem('giveaway_luck_15m_v16', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert('✨ [깜짝 이벤트] 서버 전체에 럭(성공률 2배) 15분이 발동되었습니다!');
-    }, 14500);
-}
 
 // 트로피 2배 이벤트 15분 발동 (2차)
-if (!localStorage.getItem('giveaway_trophy_luck_15m_v17')) {
-    triggerTrophyLuckEvent(15);
-    saveGame();
-    localStorage.setItem('giveaway_trophy_luck_15m_v17', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert('🏆 [깜짝 이벤트] 서버 전체에 트로피 획득량 2배 보너스가 15분간 발동되었습니다!');
-    }, 15500);
-}
 
 // 30만 골드 지급 (3차)
-if (!localStorage.getItem('apology_compensation_v18')) {
-    gameState.money += 300000;
-    saveGame();
-    localStorage.setItem('apology_compensation_v18', 'true');
-    setTimeout(() => {
-        alert("💰 [자금 지원]\n\n서버 전체 유저에게 300,000 골드가 지급되었습니다!");
-    }, 16500);
-}
 
 // 13강 검 (봉인된 검) 지급
-if (!localStorage.getItem('giveaway_13_sword_v19')) {
-    gameState.inventory.push(13); // 13강 (봉인된 검)
-    saveGame();
-    localStorage.setItem('giveaway_13_sword_v19', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert("🎁 [깜짝 선물]\n\n전 서버 유저에게 '13강 봉인된 검'이 지급되었습니다! 인벤토리를 확인하세요!");
-    }, 17500);
-}
 
 // 12강 검 (비밀의 검) 지급
-if (!localStorage.getItem('giveaway_12_sword_v20')) {
-    gameState.inventory.push(12); // 12강 (비밀의 검)
-    saveGame();
-    localStorage.setItem('giveaway_12_sword_v20', 'true');
-    setTimeout(() => {
-        showFireworks();
-        alert("🎁 [추가 선물]\n\n전 서버 유저에게 '12강 비밀의 검'이 추가로 지급되었습니다! 인벤토리를 확인하세요!");
-    }, 18500);
-}
 
 // 사명의 검 이벤트 타이머 초기화 (20분 카운트다운 시작)
 if (!localStorage.getItem('mission_event_start_v1')) {
@@ -4010,106 +3794,13 @@ if (btnClassicFuseStart) {
     });
 }
 
-if (!localStorage.getItem('giveaway_all_luck_15m_v20')) {
-    const fixedEndTime = Date.parse('2026-07-19T15:18:00+09:00');
-    if (Date.now() < fixedEndTime) {
-        gameState.luckEventEndTime = fixedEndTime;
-        gameState.trophyLuckEndTime = fixedEndTime;
-        saveGame();
-        logEvent('🎉 15분 퓨즈럭 & 트로피럭 이벤트가 시작되었습니다! (고정시간)', 'success');
-    }
-    localStorage.setItem('giveaway_all_luck_15m_v20', 'true');
-}
 
-if (!localStorage.getItem('giveaway_level_12_swords_x4_v1')) {
-    for(let i=0; i<4; i++) {
-        gameState.inventory.push(12);
-    }
-    saveGame();
-    logEvent('🎁 운영자 선물이 도착했습니다! 인벤토리에 [+12] 전설의 검 4개가 지급되었습니다.', 'success');
-    localStorage.setItem('giveaway_level_12_swords_x4_v1', 'true');
-}
 
-if (!localStorage.getItem('giveaway_level_13_swords_x4_v1')) {
-    for(let i=0; i<4; i++) {
-        gameState.inventory.push(13);
-    }
-    saveGame();
-    logEvent('🎁 운영자 선물이 도착했습니다! 인벤토리에 [+13] 봉인된 검 4개가 지급되었습니다.', 'success');
-    localStorage.setItem('giveaway_level_13_swords_x4_v1', 'true');
-}
 
-if (!localStorage.getItem('giveaway_lucky_blocks_x3_v1')) {
-    gameState.inventory.push(32, 32, 32);
-    saveGame();
-    logEvent('🎁 운영자 깜짝 선물! 럭키 블록 3개가 지급되었습니다.', 'success');
-    localStorage.setItem('giveaway_lucky_blocks_x3_v1', 'true');
-    setTimeout(() => {
-        alert("🎁 [운영자 깜짝 선물]\n\n인벤토리에 '럭키 블록' 3개가 지급되었습니다!\n대박을 기원합니다! 🎉");
-    }, 1500);
-}
 
-if (!localStorage.getItem('giveaway_lucky_blocks_x4_v1')) {
-    gameState.inventory.push(32, 32, 32, 32);
-    saveGame();
-    logEvent('🎁 운영자 특별 선물! 럭키 블록 4개가 지급되었습니다.', 'success');
-    localStorage.setItem('giveaway_lucky_blocks_x4_v1', 'true');
-    setTimeout(() => {
-        alert("🎁 [운영자 특별 선물]\n\n인벤토리에 '럭키 블록' 4개가 추가 지급되었습니다!\n마음껏 즐겨주세요! 🎉");
-    }, 2000);
-}
 
-if (!localStorage.getItem('giveaway_servermsg_v3')) {
-    gameState.inventory.push(32, 32, 32);
-    saveGame();
-    logEvent('🎁 [서버메세지] 진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며', 'success');
-    localStorage.setItem('giveaway_servermsg_v3', 'true');
-    
-    // 화면 가운데에 뜨는 메세지
-    setTimeout(() => {
-        alert("🎁 [서버공지]\n\n진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며\n(럭키 블록 3개가 지급되었습니다!)");
-        
-        const msgDiv = document.createElement('div');
-        msgDiv.style.position = 'fixed';
-        msgDiv.style.top = '50%';
-        msgDiv.style.left = '50%';
-        msgDiv.style.transform = 'translate(-50%, -50%)';
-        msgDiv.style.background = 'rgba(0, 0, 0, 0.9)';
-        msgDiv.style.color = '#ff00ff';
-        msgDiv.style.padding = '40px';
-        msgDiv.style.borderRadius = '20px';
-        msgDiv.style.border = '5px solid #ff4500';
-        msgDiv.style.fontSize = '3rem';
-        msgDiv.style.fontWeight = 'bold';
-        msgDiv.style.textAlign = 'center';
-        msgDiv.style.zIndex = '999999';
-        msgDiv.style.boxShadow = '0 0 50px #ff00ff';
-        msgDiv.innerHTML = '진하윤은 윤겔라디오징어부라라라라랄ㄹㄹ노래를 부르며<br><span style="font-size:1.5rem; color:#fff;">(럭키 블록 3개 추가 지급 완료!)</span>';
-        document.body.appendChild(msgDiv);
-        
-        setTimeout(() => {
-            msgDiv.remove();
-        }, 3000);
-    }, 1500);
-}
 
-if (!localStorage.getItem('giveaway_comp_luck_3m_v1')) {
-    if (typeof triggerCompLuckEvent === 'function') {
-        triggerCompLuckEvent(3);
-    }
-    saveGame();
-    logEvent('🎁 [운영자] 경쟁전 점수 2배 이벤트가 3분간 진행됩니다!', 'success');
-    localStorage.setItem('giveaway_comp_luck_3m_v1', 'true');
-}
 
-if (!localStorage.getItem('giveaway_fuse_luck_3m_v1')) {
-    if (typeof triggerLuckEvent === 'function') {
-        triggerLuckEvent(3);
-    }
-    saveGame();
-    logEvent('🎁 [운영자] 퓨즈 확률업 이벤트가 3분간 진행됩니다!', 'success');
-    localStorage.setItem('giveaway_fuse_luck_3m_v1', 'true');
-}
 
 initLoginSystem();
 updateUI();
