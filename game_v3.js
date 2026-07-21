@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -2025,7 +2025,7 @@ if (btnStartCompBattle) {
         let isPro = tierInfo.name === '프로';
         
         let aiHp = 3000 + (p * 20);
-        if (isPro) aiHp = Math.min(aiHp, 30000);
+        if (isPro) aiHp = Math.min(aiHp, 35000);
         else if (isMaster) aiHp = Math.min(aiHp, 25000);
         
         let aiDmg = 50 + (p * 2);
