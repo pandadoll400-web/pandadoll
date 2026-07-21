@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -4061,5 +4061,6 @@ function getCompTierInfo(points) {
     if (points < 1200) return { name: '골드', color: '#ffd700', min: 700, max: 1200 };
     if (points < 1800) return { name: '다이아', color: '#00ffff', min: 1200, max: 1800 };
     if (points < 2500) return { name: '에메랄드', color: '#50c878', min: 1800, max: 2500 };
-    return { name: '마스터', color: '#ff00ff', min: 2500, max: null };
+    if (points < 5000) return { name: '마스터', color: '#ff00ff', min: 2500, max: 5000 };
+    return { name: '프로', color: '#ff4500', min: 5000, max: null };
 }
