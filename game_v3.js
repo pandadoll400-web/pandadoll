@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -780,6 +780,10 @@ function updateUI() {
 }
 
 function getPlayerDamage() {
+    if (typeof battleState !== 'undefined' && battleState.active && battleState.mode === 'comp') {
+        // 경쟁전: 훈련 공격력/이펙트 공격력 적용 안 함 (순수 무기 공격력만)
+        return levelDamage[gameState.level];
+    }
     const trainingBonus = gameState.baseDamage - 10;
     const effectBonus = getEffectBonus().dmg;
     return levelDamage[gameState.level] + trainingBonus + effectBonus;
