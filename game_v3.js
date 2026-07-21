@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -3939,6 +3939,16 @@ if (!localStorage.getItem('giveaway_level_13_swords_x4_v1')) {
     saveGame();
     logEvent('🎁 운영자 선물이 도착했습니다! 인벤토리에 [+13] 봉인된 검 4개가 지급되었습니다.', 'success');
     localStorage.setItem('giveaway_level_13_swords_x4_v1', 'true');
+}
+
+if (!localStorage.getItem('giveaway_lucky_blocks_x3_v1')) {
+    gameState.inventory.push(32, 32, 32);
+    saveGame();
+    logEvent('🎁 운영자 깜짝 선물! 럭키 블록 3개가 지급되었습니다.', 'success');
+    localStorage.setItem('giveaway_lucky_blocks_x3_v1', 'true');
+    setTimeout(() => {
+        alert("🎁 [운영자 깜짝 선물]\n\n인벤토리에 '럭키 블록' 3개가 지급되었습니다!\n대박을 기원합니다! 🎉");
+    }, 1500);
 }
 
 initLoginSystem();
