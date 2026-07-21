@@ -1655,3 +1655,15 @@ h1, h2, h3, .stat-value, .btn-icon {
     0% { transform: scale(1); filter: hue-rotate(0deg); }
     100% { transform: scale(1.05); filter: hue-rotate(15deg); }
 }
+
+/* Competitive Mode Button */
+.comp-btn {
+    background: linear-gradient(135deg, #1e1b4b, #312e81, #4c1d95) !important;
+    color: #fbbf24 !important;
+    border: 3px solid #f59e0b !important;
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4) !important;
+}
+.comp-btn:hover {
+    box-shadow: 0 5px 25px rgba(245, 158, 11, 0.7) !important;
+    transform: translateY(-2px);
+}

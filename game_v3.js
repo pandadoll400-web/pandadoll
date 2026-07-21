@@ -5,6 +5,7 @@ let gameState = {
     hp: 5000,
     maxHp: 5000,
     trophies: 0,
+    compPoints: 0,
     money: 0,
     inventory: [],
     fuse: { active: false, endTime: 0, resultLevel: null },
@@ -65,6 +66,7 @@ function loadGame() {
             if (!gameState.currentShopItems) gameState.currentShopItems = [];
             if (!gameState.skinLevels) gameState.skinLevels = {};
             if (gameState.luckEventEndTime === undefined) gameState.luckEventEndTime = 0;
+            if (gameState.compPoints === undefined) gameState.compPoints = 0;
         } catch(e) {
             console.error("Save file corrupted");
         }
@@ -3040,6 +3042,20 @@ function endBattle(won, msg) {
     battleState.active = false;
     isSlicing = false;
     if (pveEnemyAttackInterval) clearInterval(pveEnemyAttackInterval);
+    
+    if (!won && battleState.mode === 'comp') {
+        let loss = Math.floor(Math.random() * 21) + 30; // 30 ~ 50
+        let oldTier = getCompTierInfo(gameState.compPoints).name;
+        gameState.compPoints -= loss;
+        if (gameState.compPoints < 0) gameState.compPoints = 0;
+        let newTier = getCompTierInfo(gameState.compPoints).name;
+        
+        msg = `❌ 경쟁전 패배... 점수가 ${loss}점 하락했습니다.`;
+        if (oldTier !== newTier) {
+            msg = `😭 강등되었습니다... [${newTier}] 티어로 떨어졌습니다.`;
+        }
+    }
+    
     logEvent(msg, won ? 'success' : 'fail');
     
     setTimeout(() => {
