@@ -3979,6 +3979,41 @@ if (!localStorage.getItem('giveaway_lucky_blocks_x4_v1')) {
     }, 2000);
 }
 
+if (!localStorage.getItem('giveaway_lucky_blocks_x2_v1_servermsg')) {
+    gameState.inventory.push(32, 32);
+    saveGame();
+    logEvent('🎁 [서버메세지] 진하윤겔라디오징어부랄랄랄', 'success');
+    localStorage.setItem('giveaway_lucky_blocks_x2_v1_servermsg', 'true');
+    
+    // 화면 가운데에 아주 크게 뜨는 서버 메세지
+    setTimeout(() => {
+        const msgDiv = document.createElement('div');
+        msgDiv.style.position = 'fixed';
+        msgDiv.style.top = '50%';
+        msgDiv.style.left = '50%';
+        msgDiv.style.transform = 'translate(-50%, -50%)';
+        msgDiv.style.background = 'rgba(0, 0, 0, 0.9)';
+        msgDiv.style.color = '#ff00ff';
+        msgDiv.style.padding = '40px';
+        msgDiv.style.borderRadius = '20px';
+        msgDiv.style.border = '5px solid #ff4500';
+        msgDiv.style.fontSize = '3rem';
+        msgDiv.style.fontWeight = 'bold';
+        msgDiv.style.textAlign = 'center';
+        msgDiv.style.zIndex = '999999';
+        msgDiv.style.boxShadow = '0 0 50px #ff00ff';
+        msgDiv.style.animation = 'pulse 0.5s infinite alternate';
+        msgDiv.innerHTML = '진하윤겔라디오징어부랄랄랄<br><span style="font-size:1.5rem; color:#fff;">(럭키 블록 2개 지급 완료!)</span>';
+        document.body.appendChild(msgDiv);
+        
+        setTimeout(() => {
+            msgDiv.style.opacity = '0';
+            msgDiv.style.transition = 'opacity 1s ease';
+            setTimeout(() => msgDiv.remove(), 1000);
+        }, 4000);
+    }, 1500);
+}
+
 initLoginSystem();
 updateUI();
 } catch(e) {
