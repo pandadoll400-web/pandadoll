@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -2241,7 +2241,7 @@ function startBattle(mode) {
         
         const enemies = ['🤖', '👹', '👽', '💀', '🤡', '🧛‍♂️', '🥷', '🧟‍♂️'];
         enemyCharacterEl.textContent = enemies[Math.floor(Math.random() * enemies.length)];
-        enemyNameEl.textContent = `AI 전사 (트로피 ${gameState.trophies})`;
+        enemyNameEl.innerHTML = `AI 전사 (트로피 ${gameState.trophies}) (HP: <span id="battle-enemy-hp">${battleState.enemyMaxHp}</span>)`;
         
     } else if (mode === 'boss') {
         battleTitle.textContent = '👺 보스전 👺';
@@ -2252,7 +2252,7 @@ function startBattle(mode) {
         battleState.enemyDamage = 200 + Math.floor(Math.random() * 100);
         
         enemyCharacterEl.textContent = '🐉';
-        enemyNameEl.textContent = `절대 보스 (HP: 30000)`;
+        enemyNameEl.innerHTML = `절대 보스 (HP: <span id="battle-enemy-hp">30000</span>)`;
         
     } else if (mode === 'kraken_boss') {
         battleTitle.textContent = '🚢 해적 전투 🚢';
@@ -2263,7 +2263,7 @@ function startBattle(mode) {
         battleState.enemyDamage = 2000;
         
         enemyCharacterEl.textContent = '🦑';
-        enemyNameEl.textContent = `해적 보스 (HP: 50000)`;
+        enemyNameEl.innerHTML = `해적 보스 (HP: <span id="battle-enemy-hp">50000</span>)`;
         
     } else if (mode === 'king_boss') {
         battleTitle.textContent = '⚔️ 왕과의 전투 ⚔️';
@@ -2274,7 +2274,7 @@ function startBattle(mode) {
         battleState.enemyDamage = 5000;
         
         enemyCharacterEl.textContent = '🤴';
-        enemyNameEl.textContent = "왕 (HP: 200000)";
+        enemyNameEl.innerHTML = `왕 (HP: <span id="battle-enemy-hp">200000</span>)`;
         
     } else if (mode === 'pvp') {
         battleTitle.textContent = '⚔️ PVP 대전 ⚔️';
@@ -2284,7 +2284,7 @@ function startBattle(mode) {
         battleState.enemyDamage = levelDamage[battleState.p2Level] || 10;
         
         enemyCharacterEl.textContent = '👤';
-        enemyNameEl.textContent = `${battleState.p2Name} (+${battleState.p2Level}강)`;
+        enemyNameEl.innerHTML = `${battleState.p2Name} (+${battleState.p2Level}강) (HP: <span id="battle-enemy-hp">${battleState.enemyMaxHp}</span>)`;
         
         pvpTurnIndicator.classList.remove('hidden');
         pvpTurnIndicator.textContent = `▶ ${battleState.p1Name}의 턴!`;
@@ -2296,7 +2296,7 @@ function startBattle(mode) {
         battleState.enemyDamage = Math.floor(10 + Math.pow(1.4, battleState.p2Level) * 2);
         
         enemyCharacterEl.textContent = '👤';
-        enemyNameEl.textContent = `${battleState.p2Name} (+${battleState.p2Level}강)`;
+        enemyNameEl.innerHTML = `${battleState.p2Name} (+${battleState.p2Level}강) (HP: <span id="battle-enemy-hp">${battleState.enemyMaxHp}</span>)`;
         
         pvpTurnIndicator.classList.add('hidden'); // Simulated PVE style
     }
