@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -2098,7 +2098,8 @@ if (btnStartCompBattle) {
         document.getElementById('enemy-character').textContent = "⚔️🤖";
         
         let aiAtkSpeed = 900;
-        if (p >= 5000) aiAtkSpeed = 200;
+        if (p >= 7500) aiAtkSpeed = 181;
+        else if (p >= 5000) aiAtkSpeed = 200;
         else if (p >= 2500) aiAtkSpeed = 250;
         else if (p >= 1800) aiAtkSpeed = 400;
         else if (p >= 1200) aiAtkSpeed = 550;
