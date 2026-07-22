@@ -110,7 +110,7 @@ function checkCompWeeklyReset() {
         
         if (rewardCount > 0) {
             for (let i = 0; i < rewardCount; i++) {
-                gameState.inventory.push({ level: 32 }); // 32: 럭키블록
+                gameState.inventory.push(32); // 32: 럭키블록
             }
             setTimeout(() => {
                 alert(`🏆 주간 경쟁전 시즌이 종료되었습니다!\n최종 티어: [${tierName}]\n보상으로 럭키블록 ${rewardCount}개가 지급되었습니다!\n새로운 시즌이 시작되어 브론즈 티어로 초기화됩니다.`);
@@ -2545,7 +2545,7 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             
             if (gameState.compPoints >= 7500 && !localStorage.getItem('reward_pro_sword_v1')) {
                 localStorage.setItem('reward_pro_sword_v1', 'true');
-                gameState.inventory.push({ level: 38 }); // 38: 프로의검
+                gameState.inventory.push(38); // 38: 프로의검
                 msg += `\n🤖 [월드클래스 달성 기념] 기계의 정수 '프로의검'이 인벤토리에 지급되었습니다!`;
                 logEvent("특별 보상: 프로의검 획득!", 'success');
             }
