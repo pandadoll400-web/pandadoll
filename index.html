@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검 강화하기 (Sword Enhancement)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style_v2.css?v=6">
+    <link rel="stylesheet" href="style_v2.css?v=47">
 </head>
 <body>
     <div id="app-container">
@@ -192,50 +192,23 @@
                 <div id="battle-mode-badge"></div>
                 <p id="slice-instruction" class="blinking-text">마우스를 드래그하여 적을 베어 공격하세요!</p>
                 <div class="battle-arena" style="position: relative;">
-                    <!-- Slicing Canvas (still kept for normal/boss battles) -->
+                    <!-- Slicing Canvas -->
                     <canvas id="slice-canvas"></canvas>
                     
-                    <!-- New 2D Arena (only visible in comp mode) -->
-                    <div id="comp-2d-arena" class="hidden" style="position: absolute; top:0; left:0; width:100%; height:100%; background: #1e293b; border-radius:10px; overflow:hidden; z-index: 10;">
-                        <div id="comp-player" style="position: absolute; width: 50px; height: 50px; font-size: 2.5rem; bottom: 0; left: 50px; display:flex; align-items:center; justify-content:center; transform: scaleX(1); z-index: 15;">
-                            🥷
-                            <div id="comp-player-sword" style="position: absolute; right: -25px; top: 10px; font-size: 2rem; transform-origin: bottom left; transition: transform 0.1s;">🗡️</div>
-                        </div>
-                        <div id="comp-enemy" style="position: absolute; width: 50px; height: 50px; font-size: 2.5rem; bottom: 0; right: 50px; display:flex; align-items:center; justify-content:center; transform: scaleX(-1); z-index: 15;">
-                            🤖
-                            <div id="comp-enemy-sword" style="position: absolute; right: -25px; top: 10px; font-size: 2rem; transform-origin: bottom left; transition: transform 0.1s;">🗡️</div>
-                        </div>
+                    <div class="fighter player">
+                        <h3 id="battle-player-name">나 (HP: <span id="battle-player-hp">3000</span>)</h3>
+                        <div class="health-bar"><div id="player-hp-fill" class="hp-fill"></div></div>
+                        <p id="battle-player-status">대기 중...</p>
                     </div>
-
-                    <!-- Regular Battle UI (hidden in comp mode) -->
-                    <div id="regular-battle-ui" style="display: flex; justify-content: space-between; width: 100%;">
-                        <div class="fighter player">
-                            <h3 id="battle-player-name">나 (HP: <span id="battle-player-hp">3000</span>)</h3>
-                            <div class="health-bar"><div id="player-hp-fill" class="hp-fill"></div></div>
-                            <p id="battle-player-status">대기 중...</p>
+                    <div class="vs">VS</div>
+                    <div class="fighter enemy">
+                        <h3 id="enemy-name">무명 기사 (HP: <span id="battle-enemy-hp">???</span>)</h3>
+                        <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill enemy-hp-bar"></div></div>
+                        <div id="enemy-visual-container">
+                            <div id="enemy-character">🧛‍♂️</div>
                         </div>
-                        <div class="vs">VS</div>
-                        <div class="fighter enemy">
-                            <h3 id="enemy-name">무명 기사 (HP: <span id="battle-enemy-hp">???</span>)</h3>
-                            <div class="health-bar"><div id="enemy-hp-fill" class="hp-fill enemy-hp-bar"></div></div>
-                            <div id="enemy-visual-container">
-                                <div id="enemy-character">🧛‍♂️</div>
-                            </div>
-                            <p id="battle-enemy-status">대기 중...</p>
-                        </div>
+                        <p id="battle-enemy-status">대기 중...</p>
                     </div>
-                </div>
-                
-                <!-- Comp Mode HUD (HP bars outside arena) -->
-                <div id="comp-battle-hud" class="hidden" style="display:flex; justify-content:space-between; width:100%; margin-top: 15px; margin-bottom: 5px;">
-                     <div style="flex:1; margin-right:10px;">
-                        <h3 id="comp-player-name" style="color:var(--text-primary); font-size: 1rem; margin-bottom:5px;">🥷 나 (HP: <span id="comp-player-hp-text"></span>)</h3>
-                        <div class="health-bar" style="height:12px; margin:0;"><div id="comp-player-hp-fill" class="hp-fill"></div></div>
-                     </div>
-                     <div style="flex:1; margin-left:10px; text-align:right;">
-                        <h3 id="comp-enemy-name" style="color:var(--text-primary); font-size: 1rem; margin-bottom:5px;">🤖 적 (HP: <span id="comp-enemy-hp-text"></span>)</h3>
-                        <div class="health-bar" style="height:12px; margin:0;"><div id="comp-enemy-hp-fill" class="hp-fill enemy-hp-bar"></div></div>
-                     </div>
                 </div>
 
                 <!-- PVP Turn Indicator -->
@@ -703,6 +676,6 @@
         </div>
     </div>
 
-    <script src="game_v3.js?v=46" charset="utf-8"></script>
+    <script src="game_v3.js?v=47" charset="utf-8"></script>
 </body>
 </html>
