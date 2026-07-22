@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -103,7 +103,7 @@ function checkCompWeeklyReset() {
         else if (tierName === '에메랄드') rewardCount = 5;
         else if (tierName === '마스터') rewardCount = 6;
         else if (tierName === '프로') rewardCount = 7;
-        else if (tierName === '전설') rewardCount = 8;
+        else if (tierName === '엘리트') rewardCount = 8;
         
         if (rewardCount > 0) {
             for (let i = 0; i < rewardCount; i++) {
@@ -2071,7 +2071,7 @@ if (btnStartCompBattle) {
         let tierInfo = getCompTierInfo(p);
         let isMaster = tierInfo.name === '마스터';
         let isPro = tierInfo.name === '프로';
-        let isLegend = tierInfo.name === '전설';
+        let isLegend = tierInfo.name === '엘리트';
         
         let aiHp = 3000 + (p * 20);
         if (isPro || isMaster || isLegend) aiHp = 35000;
@@ -3817,7 +3817,7 @@ function getCompTierInfo(points) {
     if (points < 2500) return { name: '에메랄드', color: '#50c878', min: 1800, max: 2500 };
     if (points < 5000) return { name: '마스터', color: '#ff00ff', min: 2500, max: 5000 };
     if (points < 7500) return { name: '프로', color: '#ff4500', min: 5000, max: 7500 };
-    return { name: '전설', color: '#ff0000', min: 7500, max: null };
+    return { name: '엘리트', color: '#ff0000', min: 7500, max: null };
 }
 function updateCompResetTimer() {
     const timerEl = document.getElementById('comp-lobby-reset-timer');
