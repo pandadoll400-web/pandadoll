@@ -2094,8 +2094,6 @@ if (compLobbyModal) compLobbyModal.classList.add('hidden');
         
         document.getElementById('battle-title').textContent = "⚔️ 랭크 경쟁전";
         document.getElementById('battle-mode-badge').textContent = "경쟁전";
-        document.getElementById('comp-enemy-name').innerHTML = `🤖 ${aiName} (HP: <span id="comp-enemy-hp-text">${aiHp}</span>)`;
-        
                 // 2D UI Setup
         let ca = document.getElementById('comp-2d-arena');
         if (!ca) {
@@ -2103,6 +2101,8 @@ if (compLobbyModal) compLobbyModal.classList.add('hidden');
             battleState.active = false;
             return;
         }
+        
+        document.getElementById('comp-enemy-name').innerHTML = `🤖 ${aiName} (HP: <span id="comp-enemy-hp-text">${aiHp}</span>)`;
         ca.classList.remove('hidden');
         document.getElementById('comp-battle-hud').classList.remove('hidden');
         document.getElementById('regular-battle-ui').style.display = 'none';
