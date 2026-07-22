@@ -2094,8 +2094,19 @@ if (btnStartCompBattle) {
         
         document.getElementById('battle-title').textContent = "⚔️ 랭크 경쟁전";
         document.getElementById('battle-mode-badge').textContent = "경쟁전";
-        document.getElementById('enemy-name').innerHTML = `${aiName} (HP: <span id="battle-enemy-hp">${aiHp}</span>)`;
-        document.getElementById('enemy-character').textContent = "⚔️🤖";
+        document.getElementById('comp-enemy-name').innerHTML = `🤖 ${aiName} (HP: <span id="comp-enemy-hp-text">${aiHp}</span>)`;
+        
+        // 2D UI Setup
+        document.getElementById('comp-2d-arena').classList.remove('hidden');
+        document.getElementById('comp-battle-hud').classList.remove('hidden');
+        document.getElementById('regular-battle-ui').style.display = 'none';
+        document.getElementById('slice-canvas').style.display = 'none';
+        
+        phys.px = 50; phys.py = 0; phys.pvx = 0; phys.pvy = 0;
+        phys.ex = document.getElementById('comp-2d-arena').clientWidth - 100; phys.ey = 0; phys.evx = 0; phys.evy = 0;
+        phys.isJumping = false; phys.eJumping = false;
+        
+        compPhysicsLoop();
         
         let aiAtkSpeed = 900;
         if (p >= 7500) aiAtkSpeed = 181;
@@ -2112,18 +2123,26 @@ if (btnStartCompBattle) {
                 clearInterval(pveEnemyAttackInterval);
                 return;
             }
-            const enemyDmg = battleState.enemyDamage;
-            battleState.playerHp -= enemyDmg;
             
-            let pStatus = document.getElementById('battle-player-status');
-            if (pStatus) pStatus.textContent = `적의 공격! ${enemyDmg} 피해!`;
+            // Swing animation
+            compEnemySword.classList.remove('swing-e');
+            void compEnemySword.offsetWidth;
+            compEnemySword.classList.add('swing-e');
             
-            if (battleState.playerHp <= 0) {
-                battleState.playerHp = 0;
-                updateBattleUI();
-                endBattle(false, '경쟁전 전투 패배...');
-                clearInterval(pveEnemyAttackInterval);
-                return;
+            // Check Collision
+            let dist = Math.abs(phys.px - phys.ex);
+            let yDist = Math.abs(phys.py - phys.ey);
+            if (dist < 80 && yDist < 60) {
+                const enemyDmg = battleState.enemyDamage;
+                battleState.playerHp -= enemyDmg;
+                
+                if (battleState.playerHp <= 0) {
+                    battleState.playerHp = 0;
+                    updateBattleUI();
+                    endBattle(false, '경쟁전 전투 패배...');
+                    clearInterval(pveEnemyAttackInterval);
+                    return;
+                }
             }
             updateBattleUI();
         }, aiAtkSpeed);
