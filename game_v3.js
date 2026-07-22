@@ -2064,9 +2064,7 @@ if (btnModeComp) {
 
 if (btnStartCompBattle) {
     btnStartCompBattle.addEventListener('click', () => {
-try {
-
-        if (compLobbyModal) compLobbyModal.classList.add('hidden');
+if (compLobbyModal) compLobbyModal.classList.add('hidden');
         battleModal.classList.remove('hidden');
         
         let p = gameState.compPoints;
@@ -2157,8 +2155,6 @@ try {
         updateBattleUI();
         logEvent('경쟁전이 시작되었습니다!', 'info');
     });
-} catch (e) { alert('ERROR IN START COMP: ' + e.message + '\n' + e.stack); }
-
 }
 
 btnModeBoss.addEventListener('click', () => {
