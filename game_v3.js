@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -2557,7 +2557,7 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
                 msg = `🎉 승급 축하합니다! [${newTier}] 티어로 승급했습니다! (점수 +${pts})`;
             }
             
-            if (gameState.compPoints >= 7500 && !localStorage.getItem('reward_pro_sword_v1')) {
+            if (gameState.compPoints >= 10000 && !localStorage.getItem('reward_pro_sword_v1')) {
                 localStorage.setItem('reward_pro_sword_v1', 'true');
                 gameState.inventory.push(38); // 38: 프로의검
                 msg += `\n🤖 [월드클래스 달성 기념] 기계의 정수 '프로의검'이 인벤토리에 지급되었습니다!`;
