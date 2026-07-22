@@ -2442,9 +2442,9 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             gameState.money += earnedMoney;
             msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
                 } else if (battleState.mode === 'comp') {
-            let pts = Math.floor(Math.random() * 61) + 50; // 50 ~ 110
-            if (gameState.compLuckEndTime > Date.now()) pts *= 2; // 2x points if buff active
             let oldTier = getCompTierInfo(gameState.compPoints).name;
+            let pts = oldTier === '엘리트' ? 40 : Math.floor(Math.random() * 61) + 50;
+            if (gameState.compLuckEndTime > Date.now()) pts *= 2; // 2x points if buff active
             gameState.compPoints += pts;
             let newTier = getCompTierInfo(gameState.compPoints).name;
             
