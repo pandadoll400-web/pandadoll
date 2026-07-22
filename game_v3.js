@@ -2064,6 +2064,8 @@ if (btnModeComp) {
 
 if (btnStartCompBattle) {
     btnStartCompBattle.addEventListener('click', () => {
+try {
+
         if (compLobbyModal) compLobbyModal.classList.add('hidden');
         battleModal.classList.remove('hidden');
         
@@ -2096,8 +2098,14 @@ if (btnStartCompBattle) {
         document.getElementById('battle-mode-badge').textContent = "경쟁전";
         document.getElementById('comp-enemy-name').innerHTML = `🤖 ${aiName} (HP: <span id="comp-enemy-hp-text">${aiHp}</span>)`;
         
-        // 2D UI Setup
-        document.getElementById('comp-2d-arena').classList.remove('hidden');
+                // 2D UI Setup
+        let ca = document.getElementById('comp-2d-arena');
+        if (!ca) {
+            alert("강제 새로고침(Ctrl+F5)이 필요합니다! 이전 버전의 게임이 로드되었습니다.");
+            battleState.active = false;
+            return;
+        }
+        ca.classList.remove('hidden');
         document.getElementById('comp-battle-hud').classList.remove('hidden');
         document.getElementById('regular-battle-ui').style.display = 'none';
         document.getElementById('slice-canvas').style.display = 'none';
@@ -2125,9 +2133,8 @@ if (btnStartCompBattle) {
             }
             
             // Swing animation
-            compEnemySword.classList.remove('swing-e');
-            void compEnemySword.offsetWidth;
-            compEnemySword.classList.add('swing-e');
+                        if (compEnemySword) compEnemySword.classList.remove('swing-e');
+                        if (compEnemySword) { void compEnemySword.offsetWidth; compEnemySword.classList.add('swing-e'); }
             
             // Check Collision
             let dist = Math.abs(phys.px - phys.ex);
@@ -2150,6 +2157,8 @@ if (btnStartCompBattle) {
         updateBattleUI();
         logEvent('경쟁전이 시작되었습니다!', 'info');
     });
+} catch (e) { alert('ERROR IN START COMP: ' + e.message + '\n' + e.stack); }
+
 }
 
 btnModeBoss.addEventListener('click', () => {
@@ -3898,6 +3907,7 @@ const compEnemy = document.getElementById('comp-enemy');
 const compPlayerSword = document.getElementById('comp-player-sword');
 const compEnemySword = document.getElementById('comp-enemy-sword');
 
+if (compArena) {
 compArena.addEventListener('mousedown', (e) => {
     if (!battleState.active || battleState.mode !== 'comp') return;
     const now = Date.now();
@@ -3924,7 +3934,14 @@ compArena.addEventListener('mousedown', (e) => {
     }
 });
 
+} // close if(compArena)
+
 function compPhysicsLoop() {
+    if (!compArena || !compPlayer || !compEnemy) {
+        console.error("2D Arena elements missing!");
+        if (phys.loop) cancelAnimationFrame(phys.loop);
+        return;
+    }
     if (!battleState.active || battleState.mode !== 'comp') {
         if (phys.loop) cancelAnimationFrame(phys.loop);
         return;
