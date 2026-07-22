@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -74,6 +74,20 @@ function loadGame() {
         } catch(e) {
             console.error("Save file corrupted");
         }
+    }
+    
+    // Migration: Fix corrupted inventory items
+    if (gameState.inventory && Array.isArray(gameState.inventory)) {
+        gameState.inventory = gameState.inventory.map(item => {
+            if (typeof item === 'object' && item !== null && item.level !== undefined) {
+                return item.level;
+            }
+            return item;
+        });
+    }
+    // Migration: Fix corrupted level
+    if (typeof gameState.level === 'object' && gameState.level !== null && gameState.level.level !== undefined) {
+        gameState.level = gameState.level.level;
     }
     
     // 이펙트 체력 보너스 계산 (비정상적으로 저장된 hp가 있을경우 대비)
