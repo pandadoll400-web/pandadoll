@@ -1688,3 +1688,24 @@ h1, h2, h3, .stat-value, .btn-icon {
     transform: translateY(8px);
     box-shadow: 0 0 0 #b45309, 0 5px 10px rgba(0,0,0,0.5);
 }
+
+/* 2D Arena Swing Animations */
+@keyframes swing-anim-p {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes swing-anim-e {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.swing-p {
+    animation: swing-anim-p 0.15s ease-out;
+}
+
+.swing-e {
+    animation: swing-anim-e 0.15s ease-out;
+}

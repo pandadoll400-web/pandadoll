@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -3843,3 +3843,144 @@ function updateCompResetTimer() {
     timerEl.textContent = `초기화까지: ${d}일 ${h}시간 ${m}분 ${s}초`;
 }
 setInterval(updateCompResetTimer, 1000);
+
+// --- 2D Arena Physics System ---
+let phys = {
+    px: 50, py: 0, pvx: 0, pvy: 0,
+    ex: 500, ey: 0, evx: 0, evy: 0,
+    keys: { w: false, a: false, d: false },
+    groundY: 0,
+    isJumping: false,
+    eJumping: false,
+    lastPAttack: 0,
+    lastEAttack: 0,
+    loop: null
+};
+
+document.addEventListener('keydown', (e) => {
+    if (!battleState.active || battleState.mode !== 'comp') return;
+    const k = e.key.toLowerCase();
+    if (k === 'w' || k === 'ㅈ') phys.keys.w = true;
+    if (k === 'a' || k === 'ㅁ') phys.keys.a = true;
+    if (k === 'd' || k === 'ㅇ') phys.keys.d = true;
+});
+
+document.addEventListener('keyup', (e) => {
+    if (!battleState.active || battleState.mode !== 'comp') return;
+    const k = e.key.toLowerCase();
+    if (k === 'w' || k === 'ㅈ') phys.keys.w = false;
+    if (k === 'a' || k === 'ㅁ') phys.keys.a = false;
+    if (k === 'd' || k === 'ㅇ') phys.keys.d = false;
+});
+
+const compArena = document.getElementById('comp-2d-arena');
+const compPlayer = document.getElementById('comp-player');
+const compEnemy = document.getElementById('comp-enemy');
+const compPlayerSword = document.getElementById('comp-player-sword');
+const compEnemySword = document.getElementById('comp-enemy-sword');
+
+compArena.addEventListener('mousedown', (e) => {
+    if (!battleState.active || battleState.mode !== 'comp') return;
+    const now = Date.now();
+    if (now - phys.lastPAttack > 250) { // 250ms cooldown for player
+        phys.lastPAttack = now;
+        compPlayerSword.classList.remove('swing-p');
+        void compPlayerSword.offsetWidth;
+        compPlayerSword.classList.add('swing-p');
+        
+        // Check collision
+        let dist = Math.abs(phys.px - phys.ex);
+        let yDist = Math.abs(phys.py - phys.ey);
+        if (dist < 80 && yDist < 60) {
+            let dmg = gameState.damage;
+            if (Math.random() < gameState.critChance) dmg *= gameState.critDamage;
+            battleState.enemyHp -= dmg;
+            logEvent(`[경쟁전] 적에게 ${Math.floor(dmg)} 피해를 입혔습니다!`, 'info');
+            if (battleState.enemyHp <= 0) {
+                battleState.enemyHp = 0;
+                endBattle(true, '');
+            }
+            updateBattleUI();
+        }
+    }
+});
+
+function compPhysicsLoop() {
+    if (!battleState.active || battleState.mode !== 'comp') {
+        if (phys.loop) cancelAnimationFrame(phys.loop);
+        return;
+    }
+    
+    // Player horizontal movement
+    const speed = 5;
+    if (phys.keys.a) phys.pvx = -speed;
+    else if (phys.keys.d) phys.pvx = speed;
+    else phys.pvx = 0;
+    
+    // Player jump
+    if (phys.keys.w && !phys.isJumping) {
+        phys.pvy = -12;
+        phys.isJumping = true;
+    }
+    
+    // Gravity
+    phys.pvy += 0.6;
+    phys.py += phys.pvy;
+    phys.px += phys.pvx;
+    
+    // Player floor collision
+    if (phys.py >= phys.groundY) {
+        phys.py = phys.groundY;
+        phys.pvy = 0;
+        phys.isJumping = false;
+    }
+    
+    // Player wall collision
+    const arenaW = compArena.clientWidth;
+    if (phys.px < 0) phys.px = 0;
+    if (phys.px > arenaW - 50) phys.px = arenaW - 50;
+    
+    // AI Logic (Move towards player)
+    let distToPlayer = phys.px - phys.ex;
+    if (distToPlayer < -40) {
+        phys.evx = -3.5;
+        compEnemy.style.transform = 'scaleX(1)';
+    } else if (distToPlayer > 40) {
+        phys.evx = 3.5;
+        compEnemy.style.transform = 'scaleX(-1)';
+    } else {
+        phys.evx = 0;
+    }
+    
+    // AI Random Jump
+    if (Math.random() < 0.01 && !phys.eJumping) {
+        phys.evy = -10;
+        phys.eJumping = true;
+    }
+    
+    // AI Gravity
+    phys.evy += 0.6;
+    phys.ey += phys.evy;
+    phys.ex += phys.evx;
+    
+    if (phys.ey >= phys.groundY) {
+        phys.ey = phys.groundY;
+        phys.evy = 0;
+        phys.eJumping = false;
+    }
+    
+    if (phys.ex < 0) phys.ex = 0;
+    if (phys.ex > arenaW - 50) phys.ex = arenaW - 50;
+    
+    // Face player
+    if (phys.px < phys.ex) compPlayer.style.transform = 'scaleX(1)';
+    else compPlayer.style.transform = 'scaleX(-1)';
+    
+    // Update DOM
+    compPlayer.style.left = phys.px + 'px';
+    compPlayer.style.bottom = phys.py + 'px';
+    compEnemy.style.left = phys.ex + 'px';
+    compEnemy.style.bottom = phys.ey + 'px';
+    
+    phys.loop = requestAnimationFrame(compPhysicsLoop);
+}
