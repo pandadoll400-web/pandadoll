@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -97,13 +97,13 @@ function checkCompWeeklyReset() {
     if (currentWeekId > gameState.lastCompResetWeek) {
         const tierName = getCompTierInfo(gameState.compPoints).name;
         let rewardCount = 0;
-        if (tierName === '실버') rewardCount = 1;
-        else if (tierName === '골드') rewardCount = 2;
-        else if (tierName === '다이아') rewardCount = 3;
-        else if (tierName === '에메랄드') rewardCount = 5;
-        else if (tierName === '마스터') rewardCount = 6;
-        else if (tierName === '프로') rewardCount = 7;
-        else if (tierName === '엘리트') rewardCount = 8;
+        if (tierName.startsWith('실버')) rewardCount = 1;
+        else if (tierName.startsWith('골드')) rewardCount = 2;
+        else if (tierName.startsWith('다이아')) rewardCount = 3;
+        else if (tierName.startsWith('에메랄드')) rewardCount = 5;
+        else if (tierName.startsWith('마스터')) rewardCount = 6;
+        else if (tierName.startsWith('프로')) rewardCount = 7;
+        else if (tierName.startsWith('엘리트')) rewardCount = 8;
         
         if (rewardCount > 0) {
             for (let i = 0; i < rewardCount; i++) {
@@ -2001,23 +2001,23 @@ if (btnModeComp) {
         let tierInfo = getCompTierInfo(p);
         
         let badgeHTML = "<div style='font-size:5rem;'>👑</div>";
-        if (tierInfo.name === '브론즈') {
+        if (tierInfo.name.startsWith('브론즈')) {
             badgeHTML = "<div style='font-size:5rem;'>🥉</div>";
-        } else if (tierInfo.name === '실버') {
+        } else if (tierInfo.name.startsWith('실버')) {
             badgeHTML = "<div style='font-size:5rem;'>🥈</div>";
-        } else if (tierInfo.name === '골드') {
+        } else if (tierInfo.name.startsWith('골드')) {
             badgeHTML = `<div style="width: 80px; height: 45px; background: linear-gradient(135deg, #fde047 0%, #ca8a04 50%, #854d0e 100%); border-radius: 5px; border: 2px solid #fff; box-shadow: 0 5px 15px rgba(234,179,8,0.5), inset 0 2px 5px rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; position: relative;"><div style="position: absolute; width: 60px; height: 25px; border: 1px solid rgba(255,255,255,0.3); border-radius: 3px;"></div></div>`;
-        } else if (tierInfo.name === '다이아') {
+        } else if (tierInfo.name.startsWith('다이아')) {
             badgeHTML = "<div style='font-size:5rem; filter: drop-shadow(0 0 10px #00ffff);'>💎</div>";
-        } else if (tierInfo.name === '에메랄드') {
+        } else if (tierInfo.name.startsWith('에메랄드')) {
             badgeHTML = `<div style="width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #86efac, #166534, #052e16); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); box-shadow: inset 0 0 10px rgba(255,255,255,0.5); border: 2px solid #fff;"></div>`;
-        } else if (tierInfo.name === '마스터') {
+        } else if (tierInfo.name.startsWith('마스터')) {
             badgeHTML = `<div style="position: relative; display: flex; align-items: center; justify-content: center; width: 150px; height: 100px;">
                 <div style="position: absolute; left: 10px; font-size: 4rem; transform: scaleX(-1); filter: drop-shadow(0 0 10px #fff);">🕊️</div>
                 <div style="position: absolute; right: 10px; font-size: 4rem; filter: drop-shadow(0 0 10px #fff);">🕊️</div>
                 <div style="position: absolute; font-size: 5rem; z-index: 2; filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #fff); animation: pulse 1s infinite alternate;">⭐</div>
             </div>`;
-        } else if (tierInfo.name === '프로') {
+        } else if (tierInfo.name.startsWith('프로')) {
             badgeHTML = `<div style="position: relative; display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #000 30%, #ff4500 100%); border: 3px solid #ff4500; box-shadow: 0 0 30px #ff4500, inset 0 0 20px #fff;">
                 <div style="font-size: 5rem; z-index: 2; filter: drop-shadow(0 0 10px #fff); animation: pulse 0.5s infinite alternate;">🏆</div>
             </div>`;
@@ -2069,9 +2069,9 @@ if (btnStartCompBattle) {
         
         let p = gameState.compPoints;
         let tierInfo = getCompTierInfo(p);
-        let isMaster = tierInfo.name === '마스터';
-        let isPro = tierInfo.name === '프로';
-        let isLegend = tierInfo.name === '엘리트';
+        let isMaster = tierInfo.name.startsWith('마스터');
+        let isPro = tierInfo.name.startsWith('프로');
+        let isLegend = tierInfo.name.startsWith('엘리트');
         
         let aiHp = 3000 + (p * 20);
         if (isPro || isMaster || isLegend) aiHp = 35000;
@@ -2443,7 +2443,7 @@ function dealEnemyDamage(dmg, isWinCallback, isNextHitCallback) {
             msg = `🌊 대해수 크라켄 격파 성공! 트로피 ${earnedTrophies}점과 보상금 ${earnedMoney.toLocaleString()}원을 획득했습니다!`;
                 } else if (battleState.mode === 'comp') {
             let oldTier = getCompTierInfo(gameState.compPoints).name;
-            let pts = oldTier === '엘리트' ? 40 : Math.floor(Math.random() * 61) + 50;
+            let pts = oldTier.startsWith('엘리트') ? 40 : Math.floor(Math.random() * 61) + 50;
             if (gameState.compLuckEndTime > Date.now()) pts *= 2; // 2x points if buff active
             gameState.compPoints += pts;
             let newTier = getCompTierInfo(gameState.compPoints).name;
@@ -3811,13 +3811,41 @@ updateUI();
 }
 
 function getCompTierInfo(points) {
-    if (points < 300) return { name: '브론즈', color: '#cd7f32', min: 0, max: 300 };
-    if (points < 700) return { name: '실버', color: '#c0c0c0', min: 300, max: 700 };
-    if (points < 1200) return { name: '골드', color: '#ffd700', min: 700, max: 1200 };
-    if (points < 1800) return { name: '다이아', color: '#00ffff', min: 1200, max: 1800 };
-    if (points < 2500) return { name: '에메랄드', color: '#50c878', min: 1800, max: 2500 };
-    if (points < 5000) return { name: '마스터', color: '#ff00ff', min: 2500, max: 5000 };
-    if (points < 7500) return { name: '프로', color: '#ff4500', min: 5000, max: 7500 };
+    if (points < 300) {
+        if (points < 100) return { name: '브론즈 1', color: '#cd7f32', min: 0, max: 100 };
+        if (points < 200) return { name: '브론즈 2', color: '#cd7f32', min: 100, max: 200 };
+        return { name: '브론즈 3', color: '#cd7f32', min: 200, max: 300 };
+    }
+    if (points < 700) {
+        if (points < 433) return { name: '실버 1', color: '#c0c0c0', min: 300, max: 433 };
+        if (points < 566) return { name: '실버 2', color: '#c0c0c0', min: 433, max: 566 };
+        return { name: '실버 3', color: '#c0c0c0', min: 566, max: 700 };
+    }
+    if (points < 1200) {
+        if (points < 866) return { name: '골드 1', color: '#ffd700', min: 700, max: 866 };
+        if (points < 1033) return { name: '골드 2', color: '#ffd700', min: 866, max: 1033 };
+        return { name: '골드 3', color: '#ffd700', min: 1033, max: 1200 };
+    }
+    if (points < 1800) {
+        if (points < 1400) return { name: '다이아 1', color: '#00ffff', min: 1200, max: 1400 };
+        if (points < 1600) return { name: '다이아 2', color: '#00ffff', min: 1400, max: 1600 };
+        return { name: '다이아 3', color: '#00ffff', min: 1600, max: 1800 };
+    }
+    if (points < 2500) {
+        if (points < 2033) return { name: '에메랄드 1', color: '#50c878', min: 1800, max: 2033 };
+        if (points < 2266) return { name: '에메랄드 2', color: '#50c878', min: 2033, max: 2266 };
+        return { name: '에메랄드 3', color: '#50c878', min: 2266, max: 2500 };
+    }
+    if (points < 5000) {
+        if (points < 3333) return { name: '마스터 1', color: '#ff00ff', min: 2500, max: 3333 };
+        if (points < 4166) return { name: '마스터 2', color: '#ff00ff', min: 3333, max: 4166 };
+        return { name: '마스터 3', color: '#ff00ff', min: 4166, max: 5000 };
+    }
+    if (points < 7500) {
+        if (points < 5833) return { name: '프로 1', color: '#ff4500', min: 5000, max: 5833 };
+        if (points < 6666) return { name: '프로 2', color: '#ff4500', min: 5833, max: 6666 };
+        return { name: '프로 3', color: '#ff4500', min: 6666, max: 7500 };
+    }
     return { name: '엘리트', color: '#ff0000', min: 7500, max: null };
 }
 function updateCompResetTimer() {
