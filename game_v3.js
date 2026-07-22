@@ -1,4 +1,4 @@
-try {
+﻿try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -1177,6 +1177,8 @@ tabEffect.addEventListener('click', () => {
     inventoryLuckyBlockSection.classList.add('hidden');
 });
 btnInventory.addEventListener('click', () => {
+    const invSearchInput = document.getElementById('inventory-search-input');
+    if(invSearchInput) invSearchInput.value = '';
     renderInventory();
     renderEffectInventory();
     inventoryModal.classList.remove('hidden');
@@ -3956,3 +3958,23 @@ function updateCompResetTimer() {
     timerEl.textContent = `초기화까지: ${d}일 ${h}시간 ${m}분 ${s}초`;
 }
 setInterval(updateCompResetTimer, 1000);
+
+// Inventory Search Logic
+const invSearchInput = document.getElementById('inventory-search-input');
+if (invSearchInput) {
+    invSearchInput.addEventListener('input', (e) => {
+        let term = e.target.value.toLowerCase().replace(/\s+/g, '');
+        let items = document.querySelectorAll('#inventory-list .shop-item');
+        items.forEach(item => {
+            let nameSpan = item.querySelector('.item-name');
+            if (nameSpan) {
+                let name = nameSpan.textContent.toLowerCase().replace(/\s+/g, '');
+                if (name.includes(term)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
+    });
+}
