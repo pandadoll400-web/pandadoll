@@ -1,4 +1,4 @@
-﻿try {
+try {
 let gameState = {
     level: 0,
     baseDamage: 10,
@@ -2070,7 +2070,7 @@ if (btnModeComp) {
                 for (let i = 1; i <= numSegments; i++) {
                     let cpPct = (i / numSegments) * 100;
                     let cpPoints = baseMin + Math.floor(range * (i / numSegments));
-                    let cpName = ${baseMin}-;
+                    let cpName = `${baseMin}-${cpPoints}`;
                     let isReached = (gameState.compClaimedRewards && gameState.compClaimedRewards.includes(cpName)) || p >= cpPoints;
                     
                     let cpDiv = document.createElement('div');
