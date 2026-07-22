@@ -6,6 +6,7 @@ let gameState = {
     maxHp: 5000,
     trophies: 0,
     compPoints: 0,
+    compClaimedRewards: [],
     money: 0,
     inventory: [],
     fuse: { active: false, endTime: 0, resultLevel: null },
@@ -67,6 +68,8 @@ function loadGame() {
             if (!gameState.skinLevels) gameState.skinLevels = {};
             if (gameState.luckEventEndTime === undefined) gameState.luckEventEndTime = 0;
             if (gameState.compPoints === undefined) gameState.compPoints = 0;
+        gameState.compClaimedRewards = [];
+            if (!gameState.compClaimedRewards) gameState.compClaimedRewards = [];
     if (gameState.lastCompResetWeek === undefined) gameState.lastCompResetWeek = Math.floor((Date.now() + 3 * 24 * 60 * 60 * 1000) / (7 * 24 * 60 * 60 * 1000));
         } catch(e) {
             console.error("Save file corrupted");
@@ -120,6 +123,7 @@ function checkCompWeeklyReset() {
         }
         
         gameState.compPoints = 0;
+        gameState.compClaimedRewards = [];
         gameState.lastCompResetWeek = currentWeekId;
         saveGame();
         updateUI();
@@ -2044,17 +2048,98 @@ if (btnModeComp) {
         
         let progFill = document.getElementById('comp-lobby-progress-fill');
         let progText = document.getElementById('comp-lobby-progress-text');
+        let checkpointsContainer = document.getElementById('comp-lobby-progress-checkpoints');
         
-        if (progFill && progText) {
+        if (progFill && progText && checkpointsContainer) {
             if (tierInfo.max === null) {
                 progFill.style.width = '100%';
-                progText.textContent = `MAX 점수 도달!`;
+                progText.textContent = `MAX 티어 달성!`;
+                checkpointsContainer.innerHTML = '';
             } else {
-                let range = tierInfo.max - tierInfo.min;
-                let current = p - tierInfo.min;
-                let pct = (current / range) * 100;
+                let baseMin = tierInfo.baseMin;
+                let baseMax = tierInfo.baseMax;
+                let range = baseMax - baseMin;
+                let current = p - baseMin;
+                let pct = Math.max(0, Math.min(100, (current / range) * 100));
                 progFill.style.width = `${pct}%`;
-                progText.textContent = `${p} / ${tierInfo.max} (승급까지 ${tierInfo.max - p}점)`;
+                progText.textContent = `${p} / ${baseMax} (다음 티어까지 ${baseMax - p}점)`;
+                
+                checkpointsContainer.innerHTML = '';
+                
+                let numSegments = 3;
+                for (let i = 1; i <= numSegments; i++) {
+                    let cpPct = (i / numSegments) * 100;
+                    let cpPoints = baseMin + Math.floor(range * (i / numSegments));
+                    let cpName = ${baseMin}-;
+                    let isReached = (gameState.compClaimedRewards && gameState.compClaimedRewards.includes(cpName)) || p >= cpPoints;
+                    
+                    let cpDiv = document.createElement('div');
+                    cpDiv.style.position = 'absolute';
+                    cpDiv.style.left = `calc(${cpPct}% - 20px)`; // center the icon
+                    cpDiv.style.top = '-15px';
+                    cpDiv.style.width = '40px';
+                    cpDiv.style.height = '40px';
+                    cpDiv.style.display = 'flex';
+                    cpDiv.style.flexDirection = 'column';
+                    cpDiv.style.alignItems = 'center';
+                    
+                    let lbImg = document.createElement('div');
+                    lbImg.style.width = '30px';
+                    lbImg.style.height = '30px';
+                    lbImg.style.background = 'radial-gradient(circle, #fde047 30%, #ca8a04 100%)';
+                    lbImg.style.border = '2px solid #000';
+                    lbImg.style.borderRadius = '5px';
+                    lbImg.style.boxShadow = '0 2px 5px rgba(0,0,0,0.5)';
+                    lbImg.style.position = 'relative';
+                    
+                    if (isReached) {
+                        // Show checkmark
+                        let check = document.createElement('div');
+                        check.innerHTML = '✔';
+                        check.style.position = 'absolute';
+                        check.style.right = '-5px';
+                        check.style.bottom = '-5px';
+                        check.style.color = '#22c55e'; // green
+                        check.style.background = '#fff';
+                        check.style.borderRadius = '50%';
+                        check.style.width = '18px';
+                        check.style.height = '18px';
+                        check.style.fontSize = '12px';
+                        check.style.fontWeight = 'bold';
+                        check.style.display = 'flex';
+                        check.style.alignItems = 'center';
+                        check.style.justifyContent = 'center';
+                        check.style.border = '1px solid #000';
+                        lbImg.appendChild(check);
+                    } else {
+                        // Grayscale if not reached
+                        lbImg.style.filter = 'grayscale(100%) brightness(0.7)';
+                    }
+                    
+                    // Line separating segments
+                    if (i < numSegments) {
+                        let line = document.createElement('div');
+                        line.style.position = 'absolute';
+                        line.style.left = `${cpPct}%`;
+                        line.style.top = '0';
+                        line.style.width = '2px';
+                        line.style.height = '100%';
+                        line.style.background = 'rgba(255,255,255,0.5)';
+                        checkpointsContainer.appendChild(line);
+                    }
+                    
+                    cpDiv.appendChild(lbImg);
+                    
+                    let label = document.createElement('div');
+                    label.textContent = cpPoints;
+                    label.style.color = '#fff';
+                    label.style.fontSize = '0.7rem';
+                    label.style.fontWeight = 'bold';
+                    label.style.textShadow = '1px 1px 2px #000';
+                    cpDiv.appendChild(label);
+                    
+                    checkpointsContainer.appendChild(cpDiv);
+                }
             }
         }
         
@@ -3812,41 +3897,41 @@ updateUI();
 
 function getCompTierInfo(points) {
     if (points < 300) {
-        if (points < 100) return { name: '브론즈 1', color: '#cd7f32', min: 0, max: 100 };
-        if (points < 200) return { name: '브론즈 2', color: '#cd7f32', min: 100, max: 200 };
-        return { name: '브론즈 3', color: '#cd7f32', min: 200, max: 300 };
+        if (points < 100) return { name: '브론즈 1', color: '#cd7f32', min: 0, max: 100, baseMin: 0, baseMax: 300 };
+        if (points < 200) return { name: '브론즈 2', color: '#cd7f32', min: 100, max: 200, baseMin: 0, baseMax: 300 };
+        return { name: '브론즈 3', color: '#cd7f32', min: 200, max: 300, baseMin: 0, baseMax: 300 };
     }
     if (points < 700) {
-        if (points < 433) return { name: '실버 1', color: '#c0c0c0', min: 300, max: 433 };
-        if (points < 566) return { name: '실버 2', color: '#c0c0c0', min: 433, max: 566 };
-        return { name: '실버 3', color: '#c0c0c0', min: 566, max: 700 };
+        if (points < 433) return { name: '실버 1', color: '#c0c0c0', min: 300, max: 433, baseMin: 300, baseMax: 700 };
+        if (points < 566) return { name: '실버 2', color: '#c0c0c0', min: 433, max: 566, baseMin: 300, baseMax: 700 };
+        return { name: '실버 3', color: '#c0c0c0', min: 566, max: 700, baseMin: 300, baseMax: 700 };
     }
     if (points < 1200) {
-        if (points < 866) return { name: '골드 1', color: '#ffd700', min: 700, max: 866 };
-        if (points < 1033) return { name: '골드 2', color: '#ffd700', min: 866, max: 1033 };
-        return { name: '골드 3', color: '#ffd700', min: 1033, max: 1200 };
+        if (points < 866) return { name: '골드 1', color: '#ffd700', min: 700, max: 866, baseMin: 700, baseMax: 1200 };
+        if (points < 1033) return { name: '골드 2', color: '#ffd700', min: 866, max: 1033, baseMin: 700, baseMax: 1200 };
+        return { name: '골드 3', color: '#ffd700', min: 1033, max: 1200, baseMin: 700, baseMax: 1200 };
     }
     if (points < 1800) {
-        if (points < 1400) return { name: '다이아 1', color: '#00ffff', min: 1200, max: 1400 };
-        if (points < 1600) return { name: '다이아 2', color: '#00ffff', min: 1400, max: 1600 };
-        return { name: '다이아 3', color: '#00ffff', min: 1600, max: 1800 };
+        if (points < 1400) return { name: '다이아 1', color: '#00ffff', min: 1200, max: 1400, baseMin: 1200, baseMax: 1800 };
+        if (points < 1600) return { name: '다이아 2', color: '#00ffff', min: 1400, max: 1600, baseMin: 1200, baseMax: 1800 };
+        return { name: '다이아 3', color: '#00ffff', min: 1600, max: 1800, baseMin: 1200, baseMax: 1800 };
     }
     if (points < 2500) {
-        if (points < 2033) return { name: '에메랄드 1', color: '#50c878', min: 1800, max: 2033 };
-        if (points < 2266) return { name: '에메랄드 2', color: '#50c878', min: 2033, max: 2266 };
-        return { name: '에메랄드 3', color: '#50c878', min: 2266, max: 2500 };
+        if (points < 2033) return { name: '에메랄드 1', color: '#50c878', min: 1800, max: 2033, baseMin: 1800, baseMax: 2500 };
+        if (points < 2266) return { name: '에메랄드 2', color: '#50c878', min: 2033, max: 2266, baseMin: 1800, baseMax: 2500 };
+        return { name: '에메랄드 3', color: '#50c878', min: 2266, max: 2500, baseMin: 1800, baseMax: 2500 };
     }
     if (points < 5000) {
-        if (points < 3333) return { name: '마스터 1', color: '#ff00ff', min: 2500, max: 3333 };
-        if (points < 4166) return { name: '마스터 2', color: '#ff00ff', min: 3333, max: 4166 };
-        return { name: '마스터 3', color: '#ff00ff', min: 4166, max: 5000 };
+        if (points < 3333) return { name: '마스터 1', color: '#ff00ff', min: 2500, max: 3333, baseMin: 2500, baseMax: 5000 };
+        if (points < 4166) return { name: '마스터 2', color: '#ff00ff', min: 3333, max: 4166, baseMin: 2500, baseMax: 5000 };
+        return { name: '마스터 3', color: '#ff00ff', min: 4166, max: 5000, baseMin: 2500, baseMax: 5000 };
     }
     if (points < 7500) {
-        if (points < 5833) return { name: '프로 1', color: '#ff4500', min: 5000, max: 5833 };
-        if (points < 6666) return { name: '프로 2', color: '#ff4500', min: 5833, max: 6666 };
-        return { name: '프로 3', color: '#ff4500', min: 6666, max: 7500 };
+        if (points < 5833) return { name: '프로 1', color: '#ff4500', min: 5000, max: 5833, baseMin: 5000, baseMax: 7500 };
+        if (points < 6666) return { name: '프로 2', color: '#ff4500', min: 5833, max: 6666, baseMin: 5000, baseMax: 7500 };
+        return { name: '프로 3', color: '#ff4500', min: 6666, max: 7500, baseMin: 5000, baseMax: 7500 };
     }
-    return { name: '엘리트', color: '#ff0000', min: 7500, max: null };
+    return { name: '엘리트', color: '#ff0000', min: 7500, max: null, baseMin: 7500, baseMax: null };
 }
 function updateCompResetTimer() {
     const timerEl = document.getElementById('comp-lobby-reset-timer');
